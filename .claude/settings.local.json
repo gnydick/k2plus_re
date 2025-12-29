@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(~/ghidra_11.2_PUBLIC/support/analyzeHeadless:*)",
+      "Bash(~/ghidra_12.0_PUBLIC/support/analyzeHeadless:*)",
+      "Bash(sort:*)",
+      "Bash(for so in /home/gnydick/src/K2_Series_Klipper/klippy/extras/*.cpython-39.so)",
+      "Bash(do)",
+      "Bash(done)",
+      "Bash(wc:*)",
+      "Bash(find:*)",
+      "Bash(cat:*)",
+      "Bash(nm:*)",
+      "Bash(readelf:*)",
+      "Bash(objdump:*)",
+      "Bash(git init:*)"
+    ]
+  }
+}
