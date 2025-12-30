@@ -29,7 +29,8 @@
       "Bash(else)",
       "Bash(fi)",
       "Bash(timeout:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(KLIPPER_SOURCE=/home/gnydick/src/K2_Series_Klipper python3:*)"
     ]
   }
 }

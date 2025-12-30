@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document maps the Creality K2 Series Klipper firmware codebase from `~/src/K2_Series_Klipper`. The firmware extends standard Klipper with proprietary modules for multi-material printing, closed-loop motor control, and pressure-based Z probing.
+This document maps the Creality K2 Series Klipper firmware codebase. Set the `KLIPPER_SOURCE` environment variable to point to your local copy (e.g., `export KLIPPER_SOURCE=~/src/K2_Series_Klipper`). The firmware extends standard Klipper with proprietary modules for multi-material printing, closed-loop motor control, and pressure-based Z probing.
 
 ### Related Documents
 - **[ALGORITHMS.md](analysis/ALGORITHMS.md)** - Reverse engineered algorithm details
@@ -479,7 +479,7 @@ Response: [0xF7][addr][len_lo][len_hi][cmd][data...][checksum]
 ## Files Location Summary
 
 ```
-~/src/K2_Series_Klipper/
+$KLIPPER_SOURCE/
 ├── klippy/
 │   ├── extras/           # Klipper extras modules
 │   │   ├── *.py          # Python source (some)

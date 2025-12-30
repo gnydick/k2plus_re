@@ -17,22 +17,34 @@ import inspect
 from types import FunctionType, MethodType
 
 # Add Klipper paths - K2 printer uses /usr/share/klipper/
+# For local development, set KLIPPER_SOURCE environment variable
+KLIPPER_SOURCE = os.environ.get('KLIPPER_SOURCE', '')
+
 KLIPPER_PATHS = [
     '/usr/share/klipper/klippy',
     '/usr/share/klipper/klippy/extras',
     '/usr/share/klipper/klippy/mymodule',
-    # Fallback for local development
-    '/home/gnydick/src/K2_Series_Klipper/klippy',
-    '/home/gnydick/src/K2_Series_Klipper/klippy/extras',
 ]
+
+# Add fallback paths for local development if KLIPPER_SOURCE is set
+if KLIPPER_SOURCE:
+    KLIPPER_PATHS.extend([
+        os.path.join(KLIPPER_SOURCE, 'klippy'),
+        os.path.join(KLIPPER_SOURCE, 'klippy/extras'),
+    ])
 
 for path in KLIPPER_PATHS:
     if os.path.exists(path) and path not in sys.path:
         sys.path.insert(0, path)
 
 # Modules to introspect with their .so file paths for direct loading
-EXTRAS_DIR = '/usr/share/klipper/klippy/extras'
-MYMODULE_DIR = '/usr/share/klipper/klippy/mymodule'
+# Use KLIPPER_SOURCE if set, otherwise default to printer paths
+if KLIPPER_SOURCE:
+    EXTRAS_DIR = os.path.join(KLIPPER_SOURCE, 'klippy/extras')
+    MYMODULE_DIR = os.path.join(KLIPPER_SOURCE, 'klippy/mymodule')
+else:
+    EXTRAS_DIR = '/usr/share/klipper/klippy/extras'
+    MYMODULE_DIR = '/usr/share/klipper/klippy/mymodule'
 
 MODULES = [
     ('box_wrapper', f'{EXTRAS_DIR}/box_wrapper.cpython-39.so'),
