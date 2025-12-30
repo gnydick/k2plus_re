@@ -15,7 +15,21 @@
       "Bash(nm:*)",
       "Bash(readelf:*)",
       "Bash(objdump:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(rm:*)",
+      "Bash(git restore:*)",
+      "Bash(chmod:*)",
+      "Bash(python3:*)",
+      "Bash(for:*)",
+      "Bash(do mv \"$f\" \"$f/_stub/\")",
+      "Bash(__NEW_LINE__ echo '\n\nclass error\\(Exception\\):\n    \"\"\"\"\"\"Exception class for module errors.\"\"\"\"\"\"\n    pass\n')",
+      "Bash(if python3 -m py_compile \"$f\")",
+      "Bash(then)",
+      "Bash(echo:*)",
+      "Bash(else)",
+      "Bash(fi)",
+      "Bash(timeout:*)",
+      "Bash(pkill:*)"
     ]
   }
 }

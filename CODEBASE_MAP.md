@@ -208,13 +208,12 @@ Same structure as v1, adds:
 
 ## Reconstructed Python Source
 
-All 8 Cython-compiled modules have been reverse engineered and reconstructed as Python source code. These files provide readable implementations that match the original binary functionality.
+7 of 8 Cython-compiled modules have been reverse engineered and reconstructed as Python source code. (`serial_485_wrapper.py` was removed due to unreliable implementation logic - use `serial_485_queue_decompiled.c` for the C backend instead.)
 
 ### Location: `reconstructed/`
 
 | File | Lines | Classes | Description |
 |------|-------|---------|-------------|
-| `serial_485_wrapper.py` | 315 | `Serialhdl_485`, `Serial_485_Wrapper` | RS-485 communication layer |
 | `box_wrapper.py` | 1938 | `MultiColorMeterialBoxWrapper`, `BoxAction`, `BoxState`, `BoxSave`, `BoxCfg`, `CutSensor`, `ParseData` | AMS-style material box control |
 | `motor_control_wrapper.py` | 956 | `Motor_Control` | Closed-loop motor control via RS-485 |
 | `prtouch_v1_wrapper.py` | 1193 | `PRTouchEndstopWrapper` | Pressure probe v1 (base) |
@@ -241,7 +240,7 @@ All 8 Cython-compiled modules have been reverse engineered and reconstructed as 
 
 ## Object Files (Decompiled - See `decompiled/` Directory)
 
-All decompiled files include **provenance headers** documenting the source of different elements (Ghidra decompilation vs human interpretation). Two files (`serial_485_wrapper_decompiled.c` and `box_wrapper_decompiled.c`) are raw Ghidra output with FUN_* placeholder names, provided for reference only.
+All decompiled files include **provenance headers** documenting the source of different elements (Ghidra decompilation vs human interpretation). Only `.o` object files are decompiled here; Cython `.cpython-39.so` binaries produce unusable output and are represented by the reconstructed Python files in `reconstructed/` instead.
 
 ### `klippy/chelper/` (C Helper Modules)
 
@@ -389,13 +388,91 @@ All decompiled files include **provenance headers** documenting the source of di
 
 ---
 
+## Live Tracing Infrastructure (NEW - 2024-12-30)
+
+Runtime method tracing system for capturing live behavior from compiled modules.
+
+### Components
+
+| File | Purpose |
+|------|---------|
+| `scripts/trace_hooks_streaming.py` | Klipper extra that wraps methods and streams traces over TCP |
+| `scripts/trace_capture.py` | Client that captures streaming traces to per-object JSONL files |
+| `scripts/flush_data_collector.py` | Automation for systematic tool change data collection |
+
+### Tracing Commands
+
+| Command | Description |
+|---------|-------------|
+| `TRACE_ALL OBJECT=<name>` | Trace all public methods |
+| `TRACE_DEEP OBJECT=<name>` | Trace all methods including `_private` |
+| `TRACE_ATTRS OBJECT=<name> ENABLE=1` | Trace attribute access |
+| `TRACE_ATTRS OBJECT=<name> ENABLE=1 RECURSIVE=1` | Recursive attribute tracing |
+| `TRACE_EVERYTHING` | Trace all discovered objects |
+
+### Deployment
+
+```bash
+scp scripts/trace_hooks_streaming.py root@<printer>:/usr/share/klipper/klippy/extras/trace_hooks.py
+# Add [trace_hooks] to printer.cfg, restart Klipper
+python3 scripts/trace_capture.py <printer-ip>
+```
+
+### Captured Data (in `captures/`)
+
+- Per-object JSONL files: `box_<timestamp>.jsonl`, `prtouch_v3_<timestamp>.jsonl`
+- Event types: `call`, `return`, `error`, `attr_read`
+- Full argument and return value capture with hex-encoded bytes
+
+---
+
+## Stubs vs Reconstructed vs Merged
+
+| Directory | Purpose | Confidence |
+|-----------|---------|------------|
+| `stubs/` | Accurate signatures from live introspection, stub implementations | Signatures: HIGH, Impl: NONE |
+| `reconstructed/` | Full implementations from Ghidra + trace analysis | Varies by method |
+| `merged/` | Combined: accurate signatures + inferred implementations | Signatures: HIGH, Impl: MEDIUM |
+
+### Key Files Updated (2024-12-30)
+
+- `stubs/serial_485_wrapper.py` - Full RS-485 protocol implementation from traces
+- `stubs/filament_rack_wrapper.py` - Material speed mappings from traces
+- `stubs/prtouch_v3_wrapper.py` - `unzip_data()` decompression algorithm
+- `reconstructed/motor_control_impl.py` - Protocol packet format verified
+
+---
+
+## Discovered from Live Traces
+
+### RS-485 Protocol (verified)
+```
+Request:  [addr][len][cmd][data...]
+Response: [0xF7][addr][len_lo][len_hi][cmd][data...][checksum]
+```
+
+### Material Type Codes
+| Code | Material | Speed (mm/min) |
+|------|----------|----------------|
+| `011002` | Standard PLA | 360 |
+| `0P1002` | High-speed material | 450 |
+| `-1` | Default/unknown | 360 |
+
+### Box Flushing (partial)
+- `get_flush_len(None, "T2A")` → 160.83 (first load)
+- `get_flush_len("T2A", "T3A")` → 140.0 (color change)
+- `calc_flushing_volume` algorithm still under investigation
+
+---
+
 ## Next Steps for RE
 
-1. **Analyze Ghidra decompiled C code** for algorithm details
-2. **Map C FFI functions** in chelper .o files
-3. **Extract firmware communication protocols** from prtouch_v2.o/v3.o
-4. **Document flush volume algorithms** in filament_change.o
-5. **Trace motor control sequences** in motor_control_wrapper
+1. ~~Analyze Ghidra decompiled C code for algorithm details~~ DONE
+2. ~~Map C FFI functions in chelper .o files~~ DONE
+3. ~~Extract firmware communication protocols from prtouch_v2.o/v3.o~~ PARTIAL
+4. **Document flush volume algorithms** - Use TRACE_DEEP + TRACE_ATTRS on box
+5. **Complete unzip_data() algorithm** - Need more trace samples
+6. **Verify checksum algorithm** - Current implementation doesn't match observed values
 
 ---
 
