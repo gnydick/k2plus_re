@@ -1,0 +1,2 @@
+{"type": "call", "id": 40665, "time": 1767130747.5534773, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 40665, "time": 1767130747.5538466, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3592967987060547}

@@ -1,0 +1,2 @@
+{"type": "call", "id": 40664, "time": 1767130747.5529318, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 40664, "time": 1767130747.5542629, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 1.3206005096435547}

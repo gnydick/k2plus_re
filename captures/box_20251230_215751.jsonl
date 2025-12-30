@@ -1,0 +1,6 @@
+{"type": "call", "id": 5607, "time": 1767128338.26009, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "args": ""}
+{"type": "return", "id": 5607, "time": 1767128338.2607563, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "result": false, "duration_ms": 0.6520748138427734}
+{"type": "call", "id": 6288, "time": 1767128359.4714267, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "args": ""}
+{"type": "return", "id": 6288, "time": 1767128359.4721034, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "result": false, "duration_ms": 0.6608963012695312}
+{"type": "call", "id": 6968, "time": 1767128380.635415, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "args": ""}
+{"type": "return", "id": 6968, "time": 1767128380.636039, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "result": false, "duration_ms": 0.6105899810791016}

@@ -30,7 +30,12 @@
       "Bash(fi)",
       "Bash(timeout:*)",
       "Bash(pkill:*)",
-      "Bash(KLIPPER_SOURCE=/home/gnydick/src/K2_Series_Klipper python3:*)"
+      "Bash(KLIPPER_SOURCE=/home/gnydick/src/K2_Series_Klipper python3:*)",
+      "Bash(ssh:*)",
+      "Bash(rsync:*)",
+      "Bash(mv:*)",
+      "Bash(curl:*)",
+      "Bash(grep:*)"
     ]
   }
 }

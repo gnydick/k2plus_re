@@ -1,0 +1,279 @@
+{"type": "connected", "time": 1767128271.3101187, "message": "TraceHooks streaming connected", "active_traces": [["prtouch_v3", "PRTouchEndstopWrapper", "_build_config"], ["prtouch_v3", "PRTouchEndstopWrapper", "_handle_home_rails_begin"], ["prtouch_v3", "PRTouchEndstopWrapper", "_handle_home_rails_end"], ["prtouch_v3", "PRTouchEndstopWrapper", "_handle_homing_move_begin"], ["prtouch_v3", "PRTouchEndstopWrapper", "_handle_homing_move_end"], ["prtouch_v3", "PRTouchEndstopWrapper", "_handle_motor_off"], ["prtouch_v3", "PRTouchEndstopWrapper", "add_stepper"], ["prtouch_v3", "PRTouchEndstopWrapper", "calc_z"], ["prtouch_v3", "PRTouchEndstopWrapper", "check_reise"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_BED_MESH_CALIBRATE"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_BED_MESH_PROFILE"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_NEXT_HOMEZ_NACCU"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_NOZZLE_CLEAR"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_SAFE_MOVE_Z"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_SET_TEMP_NOT_LINEAR"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_TEST_BED_MESH_CAL"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_TEST_PRTOUCH"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_TEST_REPROBE"], ["prtouch_v3", "PRTouchEndstopWrapper", "cmd_TEST_SWAP"], ["prtouch_v3", "PRTouchEndstopWrapper", "delay_s"], ["prtouch_v3", "PRTouchEndstopWrapper", "disturb_ctl"], ["prtouch_v3", "PRTouchEndstopWrapper", "gcode_move"], ["prtouch_v3", "PRTouchEndstopWrapper", "get_mcu"], ["prtouch_v3", "PRTouchEndstopWrapper", "get_status"], ["prtouch_v3", "PRTouchEndstopWrapper", "get_steppers"], ["prtouch_v3", "PRTouchEndstopWrapper", "get_temp_compensate"], ["prtouch_v3", "PRTouchEndstopWrapper", "get_temperature_compensate"], ["prtouch_v3", "PRTouchEndstopWrapper", "get_z_now_comp"], ["prtouch_v3", "PRTouchEndstopWrapper", "home_start"], ["prtouch_v3", "PRTouchEndstopWrapper", "home_wait"], ["prtouch_v3", "PRTouchEndstopWrapper", "multi_probe_begin"], ["prtouch_v3", "PRTouchEndstopWrapper", "multi_probe_end"], ["prtouch_v3", "PRTouchEndstopWrapper", "prec_get_zeor_z"], ["prtouch_v3", "PRTouchEndstopWrapper", "print_msg"], ["prtouch_v3", "PRTouchEndstopWrapper", "probe_finish"], ["prtouch_v3", "PRTouchEndstopWrapper", "probe_outlier_check"], ["prtouch_v3", "PRTouchEndstopWrapper", "probe_prepare"], ["prtouch_v3", "PRTouchEndstopWrapper", "query_endstop"], ["prtouch_v3", "PRTouchEndstopWrapper", "run_script_from_command"], ["prtouch_v3", "PRTouchEndstopWrapper", "unzip_data"], ["prtouch_v3", "PRTouchEndstopWrapper", "wait_moves"]], "available_objects": ["box", "motor_control", "filament_rack", "prtouch_v3", "gcode_macro BOX_EXTRUDE_POS_SET", "gcode_macro MOTOR_CANCEL_PRINT", "serial_485 serial485", "gcode_macro BOX_CHECK_MATERIAL", "gcode_macro BOX_LOAD_MATERIAL_WITH_MATERIAL", "gcode_macro BOX_LOAD_MATERIAL_WITHOUT_MATERIAL", "gcode_macro BOX_RETRUDE_MATERIAL_WITH_TNN", "gcode_macro BOX_QUIT_MATERIAL", "gcode_macro BOX_INFO_REFRESH", "filament_switch_sensor filament_sensor", "axis_twist_compensation", "mymovie.PyMove", "mymovie.PyMoveSplitter", "mymodule.mymovie.PyMove", "mymodule.mymovie.PyMoveSplitter", "extras.serial_485_wrapper.Serial_485_Wrapper", "extras.serial_485_wrapper.Serialhdl_485", "extras.serial_485_wrapper.error", "extras.serial_485.Serial_485_Wrapper", "extras.filament_rack_wrapper.FilamentRackWrapper", "extras.filament_rack_wrapper.RemainMaterial", "extras.filament_rack.FilamentRackWrapper", "extras.box_wrapper.BoxAction", "extras.box_wrapper.BoxCfg", "extras.box_wrapper.BoxSave", "extras.box_wrapper.BoxState", "extras.box_wrapper.CutSensor", "extras.box_wrapper.MultiColorMeterialBoxWrapper", "extras.box_wrapper.ParseData", "extras.box_wrapper.error", "extras.motor_control_wrapper.Motor_Control", "extras.motor_control_wrapper.ParseData", "extras.prtouch_v3_wrapper.CommandError", "extras.prtouch_v3_wrapper.CommandQueryWrapper", "extras.prtouch_v3_wrapper.CommandWrapper", "extras.prtouch_v3_wrapper.ConfigWrapper", "extras.prtouch_v3_wrapper.Coord", "extras.prtouch_v3_wrapper.DripModeEndSignal", "extras.prtouch_v3_wrapper.EPollReactor", "extras.prtouch_v3_wrapper.ExtruderRetryAsyncCommand", "extras.prtouch_v3_wrapper.GCodeCommand", "extras.prtouch_v3_wrapper.GCodeDispatch", "extras.prtouch_v3_wrapper.GCodeIO", "extras.prtouch_v3_wrapper.MCU", "extras.prtouch_v3_wrapper.MCU_adc", "extras.prtouch_v3_wrapper.MCU_digital_out", "extras.prtouch_v3_wrapper.MCU_endstop", "extras.prtouch_v3_wrapper.MCU_pwm", "extras.prtouch_v3_wrapper.MCU_stepper", "extras.prtouch_v3_wrapper.MCU_trsync", "extras.prtouch_v3_wrapper.MoveQueue", "extras.prtouch_v3_wrapper.PRTouchEndstopWrapper", "extras.prtouch_v3_wrapper.PollReactor", "extras.prtouch_v3_wrapper.PrinterConfig", "extras.prtouch_v3_wrapper.PrinterRail", "extras.prtouch_v3_wrapper.PrtouchApax", "extras.prtouch_v3_wrapper.PrtouchPres", "extras.prtouch_v3_wrapper.PrtouchStep", "extras.prtouch_v3_wrapper.Reactor", "extras.prtouch_v3_wrapper.ReactorCallback", "extras.prtouch_v3_wrapper.ReactorCompletion", "extras.prtouch_v3_wrapper.ReactorFileHandler", "extras.prtouch_v3_wrapper.ReactorGreenlet", "extras.prtouch_v3_wrapper.ReactorMutex", "extras.prtouch_v3_wrapper.ReactorTimer", "extras.prtouch_v3_wrapper.RetryAsyncCommand", "extras.prtouch_v3_wrapper.SelectReactor", "extras.prtouch_v3_wrapper.ToolHead", "extras.prtouch_v3_wrapper.error", "extras.prtouch_v3_wrapper.sentinel"]}
+{"type": "trace_enabled", "time": 1767128273.3250225, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tn_action"}
+{"type": "trace_enabled", "time": 1767128273.3259935, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tnn_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3266022, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "box_connect_state_check"}
+{"type": "trace_enabled", "time": 1767128273.327042, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "box_end"}
+{"type": "trace_enabled", "time": 1767128273.3274376, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "box_extrude_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3279011, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "box_filament_state_get"}
+{"type": "trace_enabled", "time": 1767128273.3283696, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "box_start_get_connect"}
+{"type": "trace_enabled", "time": 1767128273.3288217, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "box_start_get_rfid_and_remain_len"}
+{"type": "trace_enabled", "time": 1767128273.3293114, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_BOX_SET_CURRENT_BOX_IDLE_MODE"}
+{"type": "trace_enabled", "time": 1767128273.3297896, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_Tn_Extrude"}
+{"type": "trace_enabled", "time": 1767128273.3302472, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_Tnn_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3308184, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_blow"}
+{"type": "trace_enabled", "time": 1767128273.3313165, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_box_enable_CFS_print"}
+{"type": "trace_enabled", "time": 1767128273.3317707, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_box_end"}
+{"type": "trace_enabled", "time": 1767128273.332224, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_box_end_print"}
+{"type": "trace_enabled", "time": 1767128273.332708, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_box_extrude_material"}
+{"type": "trace_enabled", "time": 1767128273.3331578, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_box_retrude_material"}
+{"type": "trace_enabled", "time": 1767128273.3335888, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_box_start_print"}
+{"type": "trace_enabled", "time": 1767128273.3340933, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_check_material_refill"}
+{"type": "trace_enabled", "time": 1767128273.334679, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_communication_test"}
+{"type": "trace_enabled", "time": 1767128273.3351808, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_create_connect"}
+{"type": "trace_enabled", "time": 1767128273.3357277, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_ctrl_connection_motor_action"}
+{"type": "trace_enabled", "time": 1767128273.3363266, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_cut_material"}
+{"type": "trace_enabled", "time": 1767128273.3368669, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_cut_state"}
+{"type": "trace_enabled", "time": 1767128273.3373828, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_disable_heart_process"}
+{"type": "trace_enabled", "time": 1767128273.337876, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_enable_heart_process"}
+{"type": "trace_enabled", "time": 1767128273.338343, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_error_clear"}
+{"type": "trace_enabled", "time": 1767128273.338809, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_error_resume_process"}
+{"type": "trace_enabled", "time": 1767128273.339295, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_extrude2_process"}
+{"type": "trace_enabled", "time": 1767128273.3397932, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_extrude_process"}
+{"type": "trace_enabled", "time": 1767128273.3402705, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_extruder_extrude"}
+{"type": "trace_enabled", "time": 1767128273.3407862, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_extrusion_all_materials"}
+{"type": "trace_enabled", "time": 1767128273.3412855, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_first_power_on_preload"}
+{"type": "trace_enabled", "time": 1767128273.3419344, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_generate_flush_array"}
+{"type": "trace_enabled", "time": 1767128273.3426428, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_box_state"}
+{"type": "trace_enabled", "time": 1767128273.3433273, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_buffer_state"}
+{"type": "trace_enabled", "time": 1767128273.3439183, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_filament_sensor_state"}
+{"type": "trace_enabled", "time": 1767128273.344513, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_flush_len"}
+{"type": "trace_enabled", "time": 1767128273.3450909, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_flush_velocity_test"}
+{"type": "trace_enabled", "time": 1767128273.3455336, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_gcode_used_tnn"}
+{"type": "trace_enabled", "time": 1767128273.3459237, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_hardware_status"}
+{"type": "trace_enabled", "time": 1767128273.3463032, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_remain_len"}
+{"type": "trace_enabled", "time": 1767128273.3466697, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_rfid"}
+{"type": "trace_enabled", "time": 1767128273.3471634, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_get_version_sn"}
+{"type": "trace_enabled", "time": 1767128273.3476973, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_go_to_extrude_pos"}
+{"type": "trace_enabled", "time": 1767128273.3481612, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_hall_test"}
+{"type": "trace_enabled", "time": 1767128273.3486557, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_hall_zero"}
+{"type": "trace_enabled", "time": 1767128273.3490965, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_make_error"}
+{"type": "trace_enabled", "time": 1767128273.3494995, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_material_change_flush"}
+{"type": "trace_enabled", "time": 1767128273.3499324, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_material_flush"}
+{"type": "trace_enabled", "time": 1767128273.3503125, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_measuring_wheel"}
+{"type": "trace_enabled", "time": 1767128273.3506842, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_modify_Tn_data"}
+{"type": "trace_enabled", "time": 1767128273.35105, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_modify_Tn_inner_data"}
+{"type": "trace_enabled", "time": 1767128273.3514173, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_modify_Tnn_map"}
+{"type": "trace_enabled", "time": 1767128273.3518896, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_move_to_cut"}
+{"type": "trace_enabled", "time": 1767128273.3523977, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_move_to_safe_pos"}
+{"type": "trace_enabled", "time": 1767128273.3528266, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_nozzle_clean"}
+{"type": "trace_enabled", "time": 1767128273.353205, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_power_loss_restore"}
+{"type": "trace_enabled", "time": 1767128273.3535686, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_restore_fan"}
+{"type": "trace_enabled", "time": 1767128273.3539321, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_retrude_material_with_tnn"}
+{"type": "trace_enabled", "time": 1767128273.3544693, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_retrude_process"}
+{"type": "trace_enabled", "time": 1767128273.3549464, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_save_fan"}
+{"type": "trace_enabled", "time": 1767128273.355475, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_send_data"}
+{"type": "trace_enabled", "time": 1767128273.3559, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_set_box_mode"}
+{"type": "trace_enabled", "time": 1767128273.3562825, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_set_enable_auto_refill"}
+{"type": "trace_enabled", "time": 1767128273.3567777, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_set_pre_loading"}
+{"type": "trace_enabled", "time": 1767128273.3572521, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_set_temp"}
+{"type": "trace_enabled", "time": 1767128273.3576818, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_show_Tnn_data"}
+{"type": "trace_enabled", "time": 1767128273.3580673, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_show_error"}
+{"type": "trace_enabled", "time": 1767128273.3584404, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_show_flush_list"}
+{"type": "trace_enabled", "time": 1767128273.3588088, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_tighten_up_enable"}
+{"type": "trace_enabled", "time": 1767128273.3591692, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "cmd_update_same_material_list"}
+{"type": "trace_enabled", "time": 1767128273.3595304, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "empty_print_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3599145, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "error_clear"}
+{"type": "trace_enabled", "time": 1767128273.3603246, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "error_resume_process"}
+{"type": "trace_enabled", "time": 1767128273.3607044, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "extruder_extrude_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3611734, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "filament_conflict_check"}
+{"type": "trace_enabled", "time": 1767128273.361669, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "filament_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.362092, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "find_objs"}
+{"type": "trace_enabled", "time": 1767128273.3624804, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "flush_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3628592, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "flush_material"}
+{"type": "trace_enabled", "time": 1767128273.363227, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "generate_Tn_func"}
+{"type": "trace_enabled", "time": 1767128273.36359, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "generate_Tnn_func"}
+{"type": "trace_enabled", "time": 1767128273.3639653, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "get_connect_state"}
+{"type": "trace_enabled", "time": 1767128273.3644524, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "get_flush_len"}
+{"type": "trace_enabled", "time": 1767128273.3649006, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "get_flush_length_from_gcode"}
+{"type": "trace_enabled", "time": 1767128273.3653543, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.3659754, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign"}
+{"type": "trace_enabled", "time": 1767128273.3664865, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "heart_process"}
+{"type": "trace_enabled", "time": 1767128273.3669186, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "macro_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3673077, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "macro_extrusion_all_materials_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3676853, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "material_change_flush"}
+{"type": "trace_enabled", "time": 1767128273.3680592, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "print_end_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3684344, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "print_end_move_to_cut_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.3688018, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "retrude_err_retry_process"}
+{"type": "trace_enabled", "time": 1767128273.369162, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "test_error"}
+{"type": "trace_enabled", "time": 1767128273.370025, "object": "motor_control", "class": "Motor_Control", "method": "_build_config"}
+{"type": "trace_enabled", "time": 1767128273.3706126, "object": "motor_control", "class": "Motor_Control", "method": "_button_handler_e"}
+{"type": "trace_enabled", "time": 1767128273.3711739, "object": "motor_control", "class": "Motor_Control", "method": "_button_handler_x"}
+{"type": "trace_enabled", "time": 1767128273.371615, "object": "motor_control", "class": "Motor_Control", "method": "_button_handler_y"}
+{"type": "trace_enabled", "time": 1767128273.3720205, "object": "motor_control", "class": "Motor_Control", "method": "_button_handler_z"}
+{"type": "trace_enabled", "time": 1767128273.372469, "object": "motor_control", "class": "Motor_Control", "method": "_button_handler_z1"}
+{"type": "trace_enabled", "time": 1767128273.3729224, "object": "motor_control", "class": "Motor_Control", "method": "button_stall_pin_init"}
+{"type": "trace_enabled", "time": 1767128273.3733225, "object": "motor_control", "class": "Motor_Control", "method": "bytes_to_int"}
+{"type": "trace_enabled", "time": 1767128273.3736982, "object": "motor_control", "class": "Motor_Control", "method": "check_and_retry"}
+{"type": "trace_enabled", "time": 1767128273.374136, "object": "motor_control", "class": "Motor_Control", "method": "check_motor_pin_io"}
+{"type": "trace_enabled", "time": 1767128273.3745835, "object": "motor_control", "class": "Motor_Control", "method": "check_motor_pin_io_restore"}
+{"type": "trace_enabled", "time": 1767128273.375033, "object": "motor_control", "class": "Motor_Control", "method": "check_protection_code"}
+{"type": "trace_enabled", "time": 1767128273.3755503, "object": "motor_control", "class": "Motor_Control", "method": "cmd_MOTOR_EXTRUDER_RETRY_PROCESS"}
+{"type": "trace_enabled", "time": 1767128273.3760986, "object": "motor_control", "class": "Motor_Control", "method": "data_pack"}
+{"type": "trace_enabled", "time": 1767128273.3766274, "object": "motor_control", "class": "Motor_Control", "method": "data_pack_extruder"}
+{"type": "trace_enabled", "time": 1767128273.3770497, "object": "motor_control", "class": "Motor_Control", "method": "extruder_motor_err_clear"}
+{"type": "trace_enabled", "time": 1767128273.3774674, "object": "motor_control", "class": "Motor_Control", "method": "extruder_motor_err_state_query"}
+{"type": "trace_enabled", "time": 1767128273.3779087, "object": "motor_control", "class": "Motor_Control", "method": "extruder_motor_retry"}
+{"type": "trace_enabled", "time": 1767128273.3783226, "object": "motor_control", "class": "Motor_Control", "method": "find_objs"}
+{"type": "trace_enabled", "time": 1767128273.378752, "object": "motor_control", "class": "Motor_Control", "method": "force_stop"}
+{"type": "trace_enabled", "time": 1767128273.3791397, "object": "motor_control", "class": "Motor_Control", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.3795161, "object": "motor_control", "class": "Motor_Control", "method": "motor_auto_check_protection"}
+{"type": "trace_enabled", "time": 1767128273.3798912, "object": "motor_control", "class": "Motor_Control", "method": "motor_boot"}
+{"type": "trace_enabled", "time": 1767128273.3803747, "object": "motor_control", "class": "Motor_Control", "method": "motor_check_cut_pos"}
+{"type": "trace_enabled", "time": 1767128273.3808923, "object": "motor_control", "class": "Motor_Control", "method": "motor_check_protection_after_home"}
+{"type": "trace_enabled", "time": 1767128273.3813415, "object": "motor_control", "class": "Motor_Control", "method": "motor_clear_err_warn_code"}
+{"type": "trace_enabled", "time": 1767128273.3817384, "object": "motor_control", "class": "Motor_Control", "method": "motor_config_params_init"}
+{"type": "trace_enabled", "time": 1767128273.3821108, "object": "motor_control", "class": "Motor_Control", "method": "motor_control"}
+{"type": "trace_enabled", "time": 1767128273.3824825, "object": "motor_control", "class": "Motor_Control", "method": "motor_e_init"}
+{"type": "trace_enabled", "time": 1767128273.3828464, "object": "motor_control", "class": "Motor_Control", "method": "motor_elec_offset_calibrate"}
+{"type": "trace_enabled", "time": 1767128273.3832033, "object": "motor_control", "class": "Motor_Control", "method": "motor_elec_offset_calibrate_all"}
+{"type": "trace_enabled", "time": 1767128273.3835902, "object": "motor_control", "class": "Motor_Control", "method": "motor_encoder_calibrate_official"}
+{"type": "trace_enabled", "time": 1767128273.3840868, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_boot"}
+{"type": "trace_enabled", "time": 1767128273.3845565, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_clear_err_warn_code"}
+{"type": "trace_enabled", "time": 1767128273.3851452, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_control"}
+{"type": "trace_enabled", "time": 1767128273.3856523, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_elec_offset_calibrate"}
+{"type": "trace_enabled", "time": 1767128273.3860893, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_encoder_calibrate_official"}
+{"type": "trace_enabled", "time": 1767128273.386567, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_flash_param"}
+{"type": "trace_enabled", "time": 1767128273.3870523, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_get"}
+{"type": "trace_enabled", "time": 1767128273.3874657, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_protection"}
+{"type": "trace_enabled", "time": 1767128273.3878467, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_read485_addr"}
+{"type": "trace_enabled", "time": 1767128273.3882182, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_reboot"}
+{"type": "trace_enabled", "time": 1767128273.3885808, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_set485_addr"}
+{"type": "trace_enabled", "time": 1767128273.3889759, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_sys_param"}
+{"type": "trace_enabled", "time": 1767128273.3894763, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_sys_param_init"}
+{"type": "trace_enabled", "time": 1767128273.3899972, "object": "motor_control", "class": "Motor_Control", "method": "motor_extruder_version"}
+{"type": "trace_enabled", "time": 1767128273.3904338, "object": "motor_control", "class": "Motor_Control", "method": "motor_flash_param"}
+{"type": "trace_enabled", "time": 1767128273.390829, "object": "motor_control", "class": "Motor_Control", "method": "motor_get"}
+{"type": "trace_enabled", "time": 1767128273.3912046, "object": "motor_control", "class": "Motor_Control", "method": "motor_init"}
+{"type": "trace_enabled", "time": 1767128273.3915675, "object": "motor_control", "class": "Motor_Control", "method": "motor_pin_init"}
+{"type": "trace_enabled", "time": 1767128273.391932, "object": "motor_control", "class": "Motor_Control", "method": "motor_read485_addr"}
+{"type": "trace_enabled", "time": 1767128273.392311, "object": "motor_control", "class": "Motor_Control", "method": "motor_read_all_pin_io_status"}
+{"type": "trace_enabled", "time": 1767128273.39269, "object": "motor_control", "class": "Motor_Control", "method": "motor_read_pin_io"}
+{"type": "trace_enabled", "time": 1767128273.3930595, "object": "motor_control", "class": "Motor_Control", "method": "motor_reboot"}
+{"type": "trace_enabled", "time": 1767128273.39342, "object": "motor_control", "class": "Motor_Control", "method": "motor_set485_addr"}
+{"type": "trace_enabled", "time": 1767128273.393881, "object": "motor_control", "class": "Motor_Control", "method": "motor_sys_param"}
+{"type": "trace_enabled", "time": 1767128273.3946338, "object": "motor_control", "class": "Motor_Control", "method": "motor_sys_param_init"}
+{"type": "trace_enabled", "time": 1767128273.3951583, "object": "motor_control", "class": "Motor_Control", "method": "motor_version"}
+{"type": "trace_enabled", "time": 1767128273.395652, "object": "motor_control", "class": "Motor_Control", "method": "motor_x_init"}
+{"type": "trace_enabled", "time": 1767128273.396061, "object": "motor_control", "class": "Motor_Control", "method": "motor_y_init"}
+{"type": "trace_enabled", "time": 1767128273.3964374, "object": "motor_control", "class": "Motor_Control", "method": "motor_z1_init"}
+{"type": "trace_enabled", "time": 1767128273.3968744, "object": "motor_control", "class": "Motor_Control", "method": "motor_z_init"}
+{"type": "trace_enabled", "time": 1767128273.3973603, "object": "motor_control", "class": "Motor_Control", "method": "motort_stall_mode"}
+{"type": "trace_enabled", "time": 1767128273.397775, "object": "motor_control", "class": "Motor_Control", "method": "result_to_value"}
+{"type": "trace_enabled", "time": 1767128273.3981557, "object": "motor_control", "class": "Motor_Control", "method": "set_e_stall_mode"}
+{"type": "trace_enabled", "time": 1767128273.398526, "object": "motor_control", "class": "Motor_Control", "method": "set_motor_pin"}
+{"type": "trace_enabled", "time": 1767128273.399051, "object": "motor_control", "class": "Motor_Control", "method": "set_motor_pin_dir"}
+{"type": "trace_enabled", "time": 1767128273.3995636, "object": "motor_control", "class": "Motor_Control", "method": "set_motor_pin_normal"}
+{"type": "trace_enabled", "time": 1767128273.4000025, "object": "motor_control", "class": "Motor_Control", "method": "set_z_stall_mode"}
+{"type": "trace_enabled", "time": 1767128273.400383, "object": "motor_control", "class": "Motor_Control", "method": "transparent_send_gcmd"}
+{"type": "trace_enabled", "time": 1767128273.4007473, "object": "motor_control", "class": "Motor_Control", "method": "validate_data_params"}
+{"type": "trace_enabled", "time": 1767128273.4011073, "object": "motor_control", "class": "Motor_Control", "method": "validate_id_params"}
+{"type": "trace_enabled", "time": 1767128273.4014592, "object": "motor_control", "class": "Motor_Control", "method": "validate_num_params"}
+{"type": "trace_enabled", "time": 1767128273.4018126, "object": "motor_control", "class": "Motor_Control", "method": "validate_param"}
+{"type": "trace_enabled", "time": 1767128273.4021595, "object": "motor_control", "class": "Motor_Control", "method": "validate_param_type_params"}
+{"type": "trace_enabled", "time": 1767128273.4025035, "object": "motor_control", "class": "Motor_Control", "method": "web_force_stop"}
+{"type": "trace_enabled", "time": 1767128273.403194, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "_button_handler"}
+{"type": "trace_enabled", "time": 1767128273.4037244, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "beep"}
+{"type": "trace_enabled", "time": 1767128273.4043038, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "blow"}
+{"type": "trace_enabled", "time": 1767128273.4048014, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "check_rfid_valid"}
+{"type": "trace_enabled", "time": 1767128273.4052577, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "cmd_filament_rack"}
+{"type": "trace_enabled", "time": 1767128273.4056973, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "cmd_filament_rack_flush"}
+{"type": "trace_enabled", "time": 1767128273.406104, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "cmd_filament_rack_modify"}
+{"type": "trace_enabled", "time": 1767128273.4064894, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "cmd_filament_rack_pre_flush"}
+{"type": "trace_enabled", "time": 1767128273.4068644, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "cmd_filament_rack_set_temp"}
+{"type": "trace_enabled", "time": 1767128273.4073462, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "cmd_restore_fan"}
+{"type": "trace_enabled", "time": 1767128273.4078066, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "cmd_save_fan"}
+{"type": "trace_enabled", "time": 1767128273.408205, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "cmd_set_cool_temp"}
+{"type": "trace_enabled", "time": 1767128273.4086895, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "enable_get_filament"}
+{"type": "trace_enabled", "time": 1767128273.4091537, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "find_objs"}
+{"type": "trace_enabled", "time": 1767128273.409608, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "get_material_target_speed"}
+{"type": "trace_enabled", "time": 1767128273.4100223, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "get_material_target_temp"}
+{"type": "trace_enabled", "time": 1767128273.4104009, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.410766, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "quickly_wait_heating"}
+{"type": "trace_enabled", "time": 1767128273.4111266, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "send_data"}
+{"type": "trace_enabled", "time": 1767128273.412892, "object": "gcode_macro BOX_EXTRUDE_POS_SET", "class": "GCodeMacro", "method": "cmd"}
+{"type": "trace_enabled", "time": 1767128273.4133353, "object": "gcode_macro BOX_EXTRUDE_POS_SET", "class": "GCodeMacro", "method": "cmd_SET_GCODE_VARIABLE"}
+{"type": "trace_enabled", "time": 1767128273.4137304, "object": "gcode_macro BOX_EXTRUDE_POS_SET", "class": "GCodeMacro", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.4141548, "object": "gcode_macro BOX_EXTRUDE_POS_SET", "class": "GCodeMacro", "method": "handle_connect"}
+{"type": "trace_enabled", "time": 1767128273.4149113, "object": "gcode_macro MOTOR_CANCEL_PRINT", "class": "GCodeMacro", "method": "cmd"}
+{"type": "trace_enabled", "time": 1767128273.4154675, "object": "gcode_macro MOTOR_CANCEL_PRINT", "class": "GCodeMacro", "method": "cmd_SET_GCODE_VARIABLE"}
+{"type": "trace_enabled", "time": 1767128273.4159477, "object": "gcode_macro MOTOR_CANCEL_PRINT", "class": "GCodeMacro", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.4163609, "object": "gcode_macro MOTOR_CANCEL_PRINT", "class": "GCodeMacro", "method": "handle_connect"}
+{"type": "trace_enabled", "time": 1767128273.4170132, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "_connect"}
+{"type": "trace_enabled", "time": 1767128273.4175007, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "_disconnect"}
+{"type": "trace_enabled", "time": 1767128273.418049, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "_firmware_restart"}
+{"type": "trace_enabled", "time": 1767128273.418466, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "_shutdown"}
+{"type": "trace_enabled", "time": 1767128273.4188485, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "add_send_data"}
+{"type": "trace_enabled", "time": 1767128273.4192138, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "cmd_485_send_data"}
+{"type": "trace_enabled", "time": 1767128273.4196737, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "cmd_send_data_with_response"}
+{"type": "trace_enabled", "time": 1767128273.420181, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "handle_callback"}
+{"type": "trace_enabled", "time": 1767128273.420619, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "is_exist_in_send_list"}
+{"type": "trace_enabled", "time": 1767128273.4210465, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "register_response"}
+{"type": "trace_enabled", "time": 1767128273.4214413, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "remove_send_data"}
+{"type": "trace_enabled", "time": 1767128273.4218135, "object": "serial_485 serial485", "class": "Serial_485_Wrapper", "method": "send_queue_process"}
+{"type": "trace_enabled", "time": 1767128273.4224322, "object": "gcode_macro BOX_CHECK_MATERIAL", "class": "GCodeMacro", "method": "cmd"}
+{"type": "trace_enabled", "time": 1767128273.4228666, "object": "gcode_macro BOX_CHECK_MATERIAL", "class": "GCodeMacro", "method": "cmd_SET_GCODE_VARIABLE"}
+{"type": "trace_enabled", "time": 1767128273.4232721, "object": "gcode_macro BOX_CHECK_MATERIAL", "class": "GCodeMacro", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.4236698, "object": "gcode_macro BOX_CHECK_MATERIAL", "class": "GCodeMacro", "method": "handle_connect"}
+{"type": "trace_enabled", "time": 1767128273.424347, "object": "gcode_macro BOX_LOAD_MATERIAL_WITH_MATERIAL", "class": "GCodeMacro", "method": "cmd"}
+{"type": "trace_enabled", "time": 1767128273.4248655, "object": "gcode_macro BOX_LOAD_MATERIAL_WITH_MATERIAL", "class": "GCodeMacro", "method": "cmd_SET_GCODE_VARIABLE"}
+{"type": "trace_enabled", "time": 1767128273.4253292, "object": "gcode_macro BOX_LOAD_MATERIAL_WITH_MATERIAL", "class": "GCodeMacro", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.4257693, "object": "gcode_macro BOX_LOAD_MATERIAL_WITH_MATERIAL", "class": "GCodeMacro", "method": "handle_connect"}
+{"type": "trace_enabled", "time": 1767128273.4273715, "object": "gcode_macro BOX_LOAD_MATERIAL_WITHOUT_MATERIAL", "class": "GCodeMacro", "method": "cmd"}
+{"type": "trace_enabled", "time": 1767128273.4278681, "object": "gcode_macro BOX_LOAD_MATERIAL_WITHOUT_MATERIAL", "class": "GCodeMacro", "method": "cmd_SET_GCODE_VARIABLE"}
+{"type": "trace_enabled", "time": 1767128273.4284084, "object": "gcode_macro BOX_LOAD_MATERIAL_WITHOUT_MATERIAL", "class": "GCodeMacro", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.428841, "object": "gcode_macro BOX_LOAD_MATERIAL_WITHOUT_MATERIAL", "class": "GCodeMacro", "method": "handle_connect"}
+{"type": "trace_enabled", "time": 1767128273.429451, "object": "gcode_macro BOX_RETRUDE_MATERIAL_WITH_TNN", "class": "GCodeMacro", "method": "cmd"}
+{"type": "trace_enabled", "time": 1767128273.429835, "object": "gcode_macro BOX_RETRUDE_MATERIAL_WITH_TNN", "class": "GCodeMacro", "method": "cmd_SET_GCODE_VARIABLE"}
+{"type": "trace_enabled", "time": 1767128273.4301956, "object": "gcode_macro BOX_RETRUDE_MATERIAL_WITH_TNN", "class": "GCodeMacro", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.430657, "object": "gcode_macro BOX_RETRUDE_MATERIAL_WITH_TNN", "class": "GCodeMacro", "method": "handle_connect"}
+{"type": "trace_enabled", "time": 1767128273.43138, "object": "gcode_macro BOX_QUIT_MATERIAL", "class": "GCodeMacro", "method": "cmd"}
+{"type": "trace_enabled", "time": 1767128273.4318082, "object": "gcode_macro BOX_QUIT_MATERIAL", "class": "GCodeMacro", "method": "cmd_SET_GCODE_VARIABLE"}
+{"type": "trace_enabled", "time": 1767128273.4321878, "object": "gcode_macro BOX_QUIT_MATERIAL", "class": "GCodeMacro", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.4325414, "object": "gcode_macro BOX_QUIT_MATERIAL", "class": "GCodeMacro", "method": "handle_connect"}
+{"type": "trace_enabled", "time": 1767128273.4331028, "object": "gcode_macro BOX_INFO_REFRESH", "class": "GCodeMacro", "method": "cmd"}
+{"type": "trace_enabled", "time": 1767128273.433468, "object": "gcode_macro BOX_INFO_REFRESH", "class": "GCodeMacro", "method": "cmd_SET_GCODE_VARIABLE"}
+{"type": "trace_enabled", "time": 1767128273.4338667, "object": "gcode_macro BOX_INFO_REFRESH", "class": "GCodeMacro", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.4343216, "object": "gcode_macro BOX_INFO_REFRESH", "class": "GCodeMacro", "method": "handle_connect"}
+{"type": "trace_enabled", "time": 1767128273.434916, "object": "filament_switch_sensor filament_sensor", "class": "SwitchSensor", "method": "_button_handler"}
+{"type": "trace_enabled", "time": 1767128273.4357693, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "_build_config"}
+{"type": "trace_enabled", "time": 1767128273.4362833, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "_handle_home_rails_begin"}
+{"type": "trace_enabled", "time": 1767128273.436691, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "_handle_home_rails_end"}
+{"type": "trace_enabled", "time": 1767128273.4370568, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "_handle_homing_move_begin"}
+{"type": "trace_enabled", "time": 1767128273.4374113, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "_handle_homing_move_end"}
+{"type": "trace_enabled", "time": 1767128273.4377522, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "_handle_motor_off"}
+{"type": "trace_enabled", "time": 1767128273.4380927, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "add_stepper"}
+{"type": "trace_enabled", "time": 1767128273.4385743, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "calc_z"}
+{"type": "trace_enabled", "time": 1767128273.4390442, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "check_reise"}
+{"type": "trace_enabled", "time": 1767128273.439446, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_BED_MESH_CALIBRATE"}
+{"type": "trace_enabled", "time": 1767128273.439932, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_BED_MESH_PROFILE"}
+{"type": "trace_enabled", "time": 1767128273.4403932, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_NEXT_HOMEZ_NACCU"}
+{"type": "trace_enabled", "time": 1767128273.440812, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_NOZZLE_CLEAR"}
+{"type": "trace_enabled", "time": 1767128273.4411912, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_SAFE_MOVE_Z"}
+{"type": "trace_enabled", "time": 1767128273.4415596, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_SET_TEMP_NOT_LINEAR"}
+{"type": "trace_enabled", "time": 1767128273.4419205, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_TEST_BED_MESH_CAL"}
+{"type": "trace_enabled", "time": 1767128273.442271, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_TEST_PRTOUCH"}
+{"type": "trace_enabled", "time": 1767128273.4426115, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_TEST_REPROBE"}
+{"type": "trace_enabled", "time": 1767128273.442952, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "cmd_TEST_SWAP"}
+{"type": "trace_enabled", "time": 1767128273.4432933, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "delay_s"}
+{"type": "trace_enabled", "time": 1767128273.4437284, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "disturb_ctl"}
+{"type": "trace_enabled", "time": 1767128273.4442027, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "gcode_move"}
+{"type": "trace_enabled", "time": 1767128273.4446828, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "get_mcu"}
+{"type": "trace_enabled", "time": 1767128273.4450798, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "get_status"}
+{"type": "trace_enabled", "time": 1767128273.445438, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "get_steppers"}
+{"type": "trace_enabled", "time": 1767128273.445787, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "get_temp_compensate"}
+{"type": "trace_enabled", "time": 1767128273.446158, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "get_temperature_compensate"}
+{"type": "trace_enabled", "time": 1767128273.4465623, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp"}
+{"type": "trace_enabled", "time": 1767128273.4469237, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "home_start"}
+{"type": "trace_enabled", "time": 1767128273.4472716, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "home_wait"}
+{"type": "trace_enabled", "time": 1767128273.4476113, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "multi_probe_begin"}
+{"type": "trace_enabled", "time": 1767128273.4480653, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "multi_probe_end"}
+{"type": "trace_enabled", "time": 1767128273.4485028, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "prec_get_zeor_z"}
+{"type": "trace_enabled", "time": 1767128273.4490433, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "print_msg"}
+{"type": "trace_enabled", "time": 1767128273.4494777, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "probe_finish"}
+{"type": "trace_enabled", "time": 1767128273.4498754, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "probe_outlier_check"}
+{"type": "trace_enabled", "time": 1767128273.4502375, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "probe_prepare"}
+{"type": "trace_enabled", "time": 1767128273.4505894, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "query_endstop"}
+{"type": "trace_enabled", "time": 1767128273.450935, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "run_script_from_command"}
+{"type": "trace_enabled", "time": 1767128273.4512758, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "unzip_data"}
+{"type": "trace_enabled", "time": 1767128273.4516096, "object": "axis_twist_compensation", "class": "PRTouchEndstopWrapper", "method": "wait_moves"}
+{"type": "deep_traces_enabled", "total": 277, "objects": ["box(96)", "motor_control(76)", "filament_rack(19)", "gcode_macro BOX_EXTRUDE_POS_SET(4)", "gcode_macro MOTOR_CANCEL_PRINT(4)", "serial_485 serial485(12)", "gcode_macro BOX_CHECK_MATERIAL(4)", "gcode_macro BOX_LOAD_MATERIAL_WITH_MATERIAL(4)", "gcode_macro BOX_LOAD_MATERIAL_WITHOUT_MATERIAL(4)", "gcode_macro BOX_RETRUDE_MATERIAL_WITH_TNN(4)", "gcode_macro BOX_QUIT_MATERIAL(4)", "gcode_macro BOX_INFO_REFRESH(4)", "filament_switch_sensor filament_sensor(1)", "axis_twist_compensation(41)"]}

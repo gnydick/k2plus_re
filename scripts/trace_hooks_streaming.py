@@ -211,6 +211,8 @@ class TraceHooks:
             'prtouch_v1', 'prtouch_v2', 'prtouch_v3',
             # Try common Klipper object names
             'prtouch', 'multi_material', 'filament_switch_sensor',
+            # Low-level serial handler
+            'serial_485 serial485', 'serialhdl_485',
         ]
 
         for name in object_names_to_try:
@@ -247,7 +249,7 @@ class TraceHooks:
             mod_name_lower = mod_name.lower()
             if any(target in mod_name_lower
                    for target in ['box_wrapper', 'motor_control', 'filament_rack',
-                                  'prtouch', 'serial_485', 'mymovie']):
+                                  'prtouch', 'serial_485', 'serialhdl', 'mymovie']):
                 # Found a module, extract classes from it
                 for attr_name in dir(module):
                     if attr_name.startswith('_'):

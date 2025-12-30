@@ -1,0 +1,422 @@
+{"type": "call", "id": 32991, "time": 1767130225.5266626, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 32991, "time": 1767130225.5281324, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 1.4562606811523438}
+{"type": "call", "id": 32993, "time": 1767130225.9542232, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 32993, "time": 1767130225.955611, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 1.3740062713623047}
+{"type": "call", "id": 32995, "time": 1767130225.9604936, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 32995, "time": 1767130225.960914, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4093647003173828}
+{"type": "call", "id": 32997, "time": 1767130225.9641342, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 32997, "time": 1767130225.964703, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5583763122558594}
+{"type": "call", "id": 32999, "time": 1767130225.966809, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 32999, "time": 1767130225.9672515, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.431060791015625}
+{"type": "call", "id": 33001, "time": 1767130225.9714322, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33001, "time": 1767130225.9717803, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.339508056640625}
+{"type": "call", "id": 33576, "time": 1767130264.226161, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33576, "time": 1767130264.2265847, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4134178161621094}
+{"type": "call", "id": 33679, "time": 1767130276.2353659, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33679, "time": 1767130276.2357452, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3688335418701172}
+{"type": "call", "id": 33700, "time": 1767130277.0538075, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33700, "time": 1767130277.0542376, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.42057037353515625}
+{"type": "call", "id": 33810, "time": 1767130285.2604802, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33810, "time": 1767130285.2608733, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3819465637207031}
+{"type": "call", "id": 33875, "time": 1767130289.1895237, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33875, "time": 1767130289.189908, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.37360191345214844}
+{"type": "call", "id": 33945, "time": 1767130293.6011484, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33945, "time": 1767130293.6016502, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4901885986328125}
+{"type": "call", "id": 33947, "time": 1767130293.6244078, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33947, "time": 1767130293.6248329, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.41413307189941406}
+{"type": "call", "id": 33954, "time": 1767130293.681504, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 33954, "time": 1767130293.6819274, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4105567932128906}
+{"type": "call", "id": 34215, "time": 1767130312.327997, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34215, "time": 1767130312.3284364, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4296302795410156}
+{"type": "call", "id": 34217, "time": 1767130312.331667, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34217, "time": 1767130312.3320825, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4038810729980469}
+{"type": "call", "id": 34219, "time": 1767130312.3351238, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34219, "time": 1767130312.3356588, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5218982696533203}
+{"type": "call", "id": 34221, "time": 1767130312.3406718, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34221, "time": 1767130312.3411095, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.42724609375}
+{"type": "call", "id": 34223, "time": 1767130312.3432434, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34223, "time": 1767130312.3436399, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3867149353027344}
+{"type": "call", "id": 34225, "time": 1767130312.3482685, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34225, "time": 1767130312.3486717, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.39267539978027344}
+{"type": "call", "id": 34227, "time": 1767130312.3508859, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34227, "time": 1767130312.3512957, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.39958953857421875}
+{"type": "call", "id": 34229, "time": 1767130312.3536878, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34229, "time": 1767130312.354215, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5140304565429688}
+{"type": "call", "id": 34231, "time": 1767130312.3563762, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34231, "time": 1767130312.3567858, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3993511199951172}
+{"type": "call", "id": 34233, "time": 1767130312.3590586, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34233, "time": 1767130312.3595052, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4322528839111328}
+{"type": "call", "id": 34235, "time": 1767130312.3617713, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34235, "time": 1767130312.3621488, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.36835670471191406}
+{"type": "call", "id": 34237, "time": 1767130312.3646178, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34237, "time": 1767130312.365158, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5278587341308594}
+{"type": "call", "id": 34239, "time": 1767130312.3673754, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34239, "time": 1767130312.3677633, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.377655029296875}
+{"type": "call", "id": 34241, "time": 1767130312.3712623, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34241, "time": 1767130312.3717146, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.44083595275878906}
+{"type": "call", "id": 34243, "time": 1767130312.3742843, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34243, "time": 1767130312.3747175, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4220008850097656}
+{"type": "call", "id": 34245, "time": 1767130312.3769639, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34245, "time": 1767130312.3774, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4248619079589844}
+{"type": "call", "id": 34247, "time": 1767130312.380816, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34247, "time": 1767130312.3813043, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.47588348388671875}
+{"type": "call", "id": 34249, "time": 1767130312.383671, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34249, "time": 1767130312.3842502, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.568389892578125}
+{"type": "call", "id": 34251, "time": 1767130312.3867247, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34251, "time": 1767130312.3871953, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4584789276123047}
+{"type": "call", "id": 34253, "time": 1767130312.3897982, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34253, "time": 1767130312.3902414, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.43082237243652344}
+{"type": "call", "id": 34255, "time": 1767130312.3923464, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34255, "time": 1767130312.3928537, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.48065185546875}
+{"type": "call", "id": 34257, "time": 1767130312.3954778, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34257, "time": 1767130312.3959227, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.43392181396484375}
+{"type": "call", "id": 34259, "time": 1767130312.3981698, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34259, "time": 1767130312.3985493, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.36907196044921875}
+{"type": "call", "id": 34261, "time": 1767130312.401002, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34261, "time": 1767130312.4014187, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.40650367736816406}
+{"type": "call", "id": 34263, "time": 1767130312.4035807, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34263, "time": 1767130312.40412, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5261898040771484}
+{"type": "call", "id": 34265, "time": 1767130312.4065514, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34265, "time": 1767130312.4069798, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.41747093200683594}
+{"type": "call", "id": 34267, "time": 1767130312.4100683, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34267, "time": 1767130312.4104946, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4172325134277344}
+{"type": "call", "id": 34269, "time": 1767130312.4127147, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34269, "time": 1767130312.4131804, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.45371055603027344}
+{"type": "call", "id": 34271, "time": 1767130312.4154527, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34271, "time": 1767130312.415848, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3845691680908203}
+{"type": "call", "id": 34273, "time": 1767130312.4194858, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34273, "time": 1767130312.4199622, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4658699035644531}
+{"type": "call", "id": 34275, "time": 1767130312.4220603, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34275, "time": 1767130312.4223819, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.31280517578125}
+{"type": "call", "id": 34277, "time": 1767130312.4245746, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34277, "time": 1767130312.4250538, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.46825408935546875}
+{"type": "call", "id": 34279, "time": 1767130312.427407, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34279, "time": 1767130312.4277883, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3719329833984375}
+{"type": "call", "id": 34281, "time": 1767130312.429771, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34281, "time": 1767130312.430136, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.354766845703125}
+{"type": "call", "id": 34283, "time": 1767130312.432198, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34283, "time": 1767130312.4325783, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.370025634765625}
+{"type": "call", "id": 34285, "time": 1767130312.434758, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34285, "time": 1767130312.4351616, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3924369812011719}
+{"type": "call", "id": 34287, "time": 1767130312.4372485, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34287, "time": 1767130312.437677, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4181861877441406}
+{"type": "call", "id": 34289, "time": 1767130312.4395778, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34289, "time": 1767130312.4399314, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.34356117248535156}
+{"type": "call", "id": 34291, "time": 1767130312.4418242, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34291, "time": 1767130312.4422479, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4134178161621094}
+{"type": "call", "id": 34293, "time": 1767130312.4444368, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34293, "time": 1767130312.4448307, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3838539123535156}
+{"type": "call", "id": 34295, "time": 1767130312.4469364, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34295, "time": 1767130312.447304, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.35881996154785156}
+{"type": "call", "id": 34297, "time": 1767130312.449439, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34297, "time": 1767130312.4497728, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3235340118408203}
+{"type": "call", "id": 34299, "time": 1767130312.4517307, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34299, "time": 1767130312.4521143, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3750324249267578}
+{"type": "call", "id": 34301, "time": 1767130312.4542046, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34301, "time": 1767130312.4545846, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.370025634765625}
+{"type": "call", "id": 34303, "time": 1767130312.4565728, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34303, "time": 1767130312.4569256, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.34427642822265625}
+{"type": "call", "id": 34305, "time": 1767130312.4589682, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34305, "time": 1767130312.4594147, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4363059997558594}
+{"type": "call", "id": 34307, "time": 1767130312.4613695, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34307, "time": 1767130312.4617028, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.32520294189453125}
+{"type": "call", "id": 34309, "time": 1767130312.4634926, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34309, "time": 1767130312.4639213, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4191398620605469}
+{"type": "call", "id": 34311, "time": 1767130312.4661343, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34311, "time": 1767130312.4665198, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.37384033203125}
+{"type": "call", "id": 34313, "time": 1767130312.468573, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34313, "time": 1767130312.4689488, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3647804260253906}
+{"type": "call", "id": 34315, "time": 1767130312.4712417, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34315, "time": 1767130312.4715786, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3275871276855469}
+{"type": "call", "id": 34317, "time": 1767130312.473359, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34317, "time": 1767130312.4737108, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.34236907958984375}
+{"type": "call", "id": 34319, "time": 1767130312.4758332, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34319, "time": 1767130312.476172, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3299713134765625}
+{"type": "call", "id": 34321, "time": 1767130312.4781263, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34321, "time": 1767130312.4784646, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.32830238342285156}
+{"type": "call", "id": 34323, "time": 1767130312.4805646, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34323, "time": 1767130312.4810216, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4451274871826172}
+{"type": "call", "id": 34325, "time": 1767130312.4830322, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34325, "time": 1767130312.4834082, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3654956817626953}
+{"type": "call", "id": 34327, "time": 1767130312.4861965, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34327, "time": 1767130312.4866471, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.44035911560058594}
+{"type": "call", "id": 34329, "time": 1767130312.48956, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34329, "time": 1767130312.4898822, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.31304359436035156}
+{"type": "call", "id": 34331, "time": 1767130312.4923456, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34331, "time": 1767130312.4927561, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4017353057861328}
+{"type": "call", "id": 34333, "time": 1767130312.495809, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34333, "time": 1767130312.4961545, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.33593177795410156}
+{"type": "call", "id": 34380, "time": 1767130315.0060074, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34380, "time": 1767130315.0064178, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4000663757324219}
+{"type": "call", "id": 34598, "time": 1767130330.3085198, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34598, "time": 1767130330.3089406, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.408172607421875}
+{"type": "call", "id": 34600, "time": 1767130330.312197, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34600, "time": 1767130330.3125618, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3540515899658203}
+{"type": "call", "id": 34602, "time": 1767130330.315849, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34602, "time": 1767130330.3163753, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5152225494384766}
+{"type": "call", "id": 34604, "time": 1767130330.321256, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34604, "time": 1767130330.321656, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3895759582519531}
+{"type": "call", "id": 34606, "time": 1767130330.3239703, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34606, "time": 1767130330.324607, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.6165504455566406}
+{"type": "call", "id": 34608, "time": 1767130330.3272107, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34608, "time": 1767130330.3276033, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3821849822998047}
+{"type": "call", "id": 34610, "time": 1767130330.3296912, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34610, "time": 1767130330.3300626, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3616809844970703}
+{"type": "call", "id": 34612, "time": 1767130330.3322952, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34612, "time": 1767130330.3327925, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.48613548278808594}
+{"type": "call", "id": 34614, "time": 1767130330.33526, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34614, "time": 1767130330.3356664, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.39577484130859375}
+{"type": "call", "id": 34616, "time": 1767130330.3379805, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34616, "time": 1767130330.3384392, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4475116729736328}
+{"type": "call", "id": 34618, "time": 1767130330.3404906, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34618, "time": 1767130330.3409073, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.40602684020996094}
+{"type": "call", "id": 34620, "time": 1767130330.343171, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34620, "time": 1767130330.3436892, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5068778991699219}
+{"type": "call", "id": 34622, "time": 1767130330.3463922, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34622, "time": 1767130330.3468149, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4115104675292969}
+{"type": "call", "id": 34624, "time": 1767130330.3489804, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34624, "time": 1767130330.3493686, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.37741661071777344}
+{"type": "call", "id": 34626, "time": 1767130330.3518155, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34626, "time": 1767130330.3522182, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.39267539978027344}
+{"type": "call", "id": 34628, "time": 1767130330.354502, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34628, "time": 1767130330.3549254, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4107952117919922}
+{"type": "call", "id": 34630, "time": 1767130330.3572726, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34630, "time": 1767130330.357691, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.408172607421875}
+{"type": "call", "id": 34632, "time": 1767130330.3598244, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34632, "time": 1767130330.3602164, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3821849822998047}
+{"type": "call", "id": 34634, "time": 1767130330.3624735, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34634, "time": 1767130330.3629174, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.43129920959472656}
+{"type": "call", "id": 34636, "time": 1767130330.3653424, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34636, "time": 1767130330.3657343, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.38051605224609375}
+{"type": "call", "id": 34638, "time": 1767130330.367789, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34638, "time": 1767130330.3684697, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.6659030914306641}
+{"type": "call", "id": 34640, "time": 1767130330.3713048, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34640, "time": 1767130330.3716776, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.36454200744628906}
+{"type": "call", "id": 34642, "time": 1767130330.3737006, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34642, "time": 1767130330.3741524, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.44155120849609375}
+{"type": "call", "id": 34644, "time": 1767130330.3765364, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34644, "time": 1767130330.3769093, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3635883331298828}
+{"type": "call", "id": 34646, "time": 1767130330.3801577, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34646, "time": 1767130330.3806057, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.43702125549316406}
+{"type": "call", "id": 34648, "time": 1767130330.3828416, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34648, "time": 1767130330.383226, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3750324249267578}
+{"type": "call", "id": 34650, "time": 1767130330.3853781, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34650, "time": 1767130330.3857658, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.37670135498046875}
+{"type": "call", "id": 34652, "time": 1767130330.388042, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34652, "time": 1767130330.388512, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.45752525329589844}
+{"type": "call", "id": 34654, "time": 1767130330.3907828, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34654, "time": 1767130330.391162, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3693103790283203}
+{"type": "call", "id": 34656, "time": 1767130330.3957121, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34656, "time": 1767130330.3964372, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.70953369140625}
+{"type": "call", "id": 34658, "time": 1767130330.3991232, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34658, "time": 1767130330.3995376, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.40268898010253906}
+{"type": "call", "id": 34660, "time": 1767130330.4018059, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34660, "time": 1767130330.402223, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4057884216308594}
+{"type": "call", "id": 34662, "time": 1767130330.404824, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34662, "time": 1767130330.4052444, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.408172607421875}
+{"type": "call", "id": 34664, "time": 1767130330.4074178, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34664, "time": 1767130330.4077957, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3695487976074219}
+{"type": "call", "id": 34666, "time": 1767130330.4112859, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34666, "time": 1767130330.4117203, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4220008850097656}
+{"type": "call", "id": 34668, "time": 1767130330.4141273, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34668, "time": 1767130330.414546, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4086494445800781}
+{"type": "call", "id": 34670, "time": 1767130330.4168236, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34670, "time": 1767130330.4172585, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4222393035888672}
+{"type": "call", "id": 34672, "time": 1767130330.4194627, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34672, "time": 1767130330.4198227, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3497600555419922}
+{"type": "call", "id": 34674, "time": 1767130330.4218538, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34674, "time": 1767130330.4223406, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.47588348388671875}
+{"type": "call", "id": 34676, "time": 1767130330.4248748, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34676, "time": 1767130330.4252443, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.35881996154785156}
+{"type": "call", "id": 34678, "time": 1767130330.4276218, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34678, "time": 1767130330.428221, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5838871002197266}
+{"type": "call", "id": 34680, "time": 1767130330.430657, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34680, "time": 1767130330.4310696, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4012584686279297}
+{"type": "call", "id": 34682, "time": 1767130330.433052, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34682, "time": 1767130330.4334319, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3695487976074219}
+{"type": "call", "id": 34684, "time": 1767130330.4358058, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34684, "time": 1767130330.436172, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3554821014404297}
+{"type": "call", "id": 34686, "time": 1767130330.438124, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34686, "time": 1767130330.4384673, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.33402442932128906}
+{"type": "call", "id": 34688, "time": 1767130330.4406023, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34688, "time": 1767130330.4409611, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.34880638122558594}
+{"type": "call", "id": 34690, "time": 1767130330.4428303, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34690, "time": 1767130330.4431682, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3292560577392578}
+{"type": "call", "id": 34692, "time": 1767130330.4455385, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34692, "time": 1767130330.4459813, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.43129920959472656}
+{"type": "call", "id": 34694, "time": 1767130330.4479773, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34694, "time": 1767130330.4483137, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3268718719482422}
+{"type": "call", "id": 34696, "time": 1767130330.4502969, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34696, "time": 1767130330.450725, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.41675567626953125}
+{"type": "call", "id": 34698, "time": 1767130330.4526796, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34698, "time": 1767130330.4530275, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3390312194824219}
+{"type": "call", "id": 34700, "time": 1767130330.4550984, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34700, "time": 1767130330.4555538, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4451274871826172}
+{"type": "call", "id": 34702, "time": 1767130330.457616, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34702, "time": 1767130330.4579487, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.324249267578125}
+{"type": "call", "id": 34704, "time": 1767130330.4598777, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34704, "time": 1767130330.4602597, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.37360191345214844}
+{"type": "call", "id": 34706, "time": 1767130330.4626067, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34706, "time": 1767130330.4629478, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.331878662109375}
+{"type": "call", "id": 34708, "time": 1767130330.4651172, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34708, "time": 1767130330.4654799, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.35381317138671875}
+{"type": "call", "id": 34710, "time": 1767130330.4682233, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34710, "time": 1767130330.4685678, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.33473968505859375}
+{"type": "call", "id": 34712, "time": 1767130330.4711223, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34712, "time": 1767130330.4714658, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3337860107421875}
+{"type": "call", "id": 34714, "time": 1767130330.4742393, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34714, "time": 1767130330.4747186, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4680156707763672}
+{"type": "call", "id": 34716, "time": 1767130330.4773295, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34716, "time": 1767130330.477667, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3275871276855469}
+{"type": "call", "id": 34718, "time": 1767130330.4801118, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34718, "time": 1767130330.4805663, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4439353942871094}
+{"type": "call", "id": 34720, "time": 1767130330.483334, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34720, "time": 1767130330.4836695, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3261566162109375}
+{"type": "call", "id": 34755, "time": 1767130333.4138765, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34755, "time": 1767130333.4144075, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5190372467041016}
+{"type": "call", "id": 34757, "time": 1767130333.4162955, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34757, "time": 1767130333.416716, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.40912628173828125}
+{"type": "call", "id": 34802, "time": 1767130335.7295547, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34802, "time": 1767130335.7299945, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4291534423828125}
+{"type": "call", "id": 34804, "time": 1767130335.73193, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34804, "time": 1767130335.7323925, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4513263702392578}
+{"type": "call", "id": 34806, "time": 1767130335.7369611, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34806, "time": 1767130335.7374127, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4401206970214844}
+{"type": "call", "id": 34808, "time": 1767130335.7395813, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34808, "time": 1767130335.739986, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.39315223693847656}
+{"type": "call", "id": 34810, "time": 1767130335.74219, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34810, "time": 1767130335.7425997, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3972053527832031}
+{"type": "call", "id": 34857, "time": 1767130339.2317672, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34857, "time": 1767130339.2321787, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4010200500488281}
+{"type": "call", "id": 34862, "time": 1767130339.8408582, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34862, "time": 1767130339.8412158, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.34809112548828125}
+{"type": "call", "id": 34969, "time": 1767130347.0938363, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34969, "time": 1767130347.0947037, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.8480548858642578}
+{"type": "call", "id": 34986, "time": 1767130347.9212334, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34986, "time": 1767130347.9217095, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.46324729919433594}
+{"type": "call", "id": 34988, "time": 1767130347.9252229, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34988, "time": 1767130347.9257467, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5118846893310547}
+{"type": "call", "id": 34990, "time": 1767130347.9292603, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34990, "time": 1767130347.9297676, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4951953887939453}
+{"type": "call", "id": 34992, "time": 1767130347.9356308, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34992, "time": 1767130347.9378924, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 2.2454261779785156}
+{"type": "call", "id": 34994, "time": 1767130347.9405787, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34994, "time": 1767130347.941004, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4143714904785156}
+{"type": "call", "id": 34996, "time": 1767130347.9434474, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34996, "time": 1767130347.9438484, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3914833068847656}
+{"type": "call", "id": 34998, "time": 1767130347.946265, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 34998, "time": 1767130347.9466846, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.40793418884277344}
+{"type": "call", "id": 35000, "time": 1767130347.9490483, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35000, "time": 1767130347.9494896, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4286766052246094}
+{"type": "call", "id": 35002, "time": 1767130347.9518435, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35002, "time": 1767130347.9522586, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4048347473144531}
+{"type": "call", "id": 35004, "time": 1767130347.9559937, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35004, "time": 1767130347.9565103, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5042552947998047}
+{"type": "call", "id": 35006, "time": 1767130347.9592137, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35006, "time": 1767130347.9596384, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4124641418457031}
+{"type": "call", "id": 35008, "time": 1767130347.961876, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35008, "time": 1767130347.962421, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5326271057128906}
+{"type": "call", "id": 35010, "time": 1767130347.9649048, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35010, "time": 1767130347.965298, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3819465637207031}
+{"type": "call", "id": 35012, "time": 1767130347.967537, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35012, "time": 1767130347.967948, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.39958953857421875}
+{"type": "call", "id": 35014, "time": 1767130347.9703405, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35014, "time": 1767130347.9707963, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4405975341796875}
+{"type": "call", "id": 35016, "time": 1767130347.9729667, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35016, "time": 1767130347.9734213, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.44155120849609375}
+{"type": "call", "id": 35018, "time": 1767130347.9759808, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35018, "time": 1767130347.9764009, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.408172607421875}
+{"type": "call", "id": 35020, "time": 1767130347.978653, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35020, "time": 1767130347.9790986, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4336833953857422}
+{"type": "call", "id": 35022, "time": 1767130347.9815066, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35022, "time": 1767130347.9819424, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4239082336425781}
+{"type": "call", "id": 35024, "time": 1767130347.9843497, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35024, "time": 1767130347.9847724, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4127025604248047}
+{"type": "call", "id": 35026, "time": 1767130347.9870193, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35026, "time": 1767130347.9875476, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5171298980712891}
+{"type": "call", "id": 35028, "time": 1767130347.9897466, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35028, "time": 1767130347.9901521, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3955364227294922}
+{"type": "call", "id": 35030, "time": 1767130347.9924283, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35030, "time": 1767130347.9928088, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3685951232910156}
+{"type": "call", "id": 35032, "time": 1767130347.996967, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35032, "time": 1767130347.9974723, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4932880401611328}
+{"type": "call", "id": 35034, "time": 1767130347.999706, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35034, "time": 1767130348.0001497, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.43201446533203125}
+{"type": "call", "id": 35036, "time": 1767130348.0027354, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35036, "time": 1767130348.003165, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4172325134277344}
+{"type": "call", "id": 35038, "time": 1767130348.0055141, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35038, "time": 1767130348.0059114, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.385284423828125}
+{"type": "call", "id": 35040, "time": 1767130348.0081365, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35040, "time": 1767130348.0085716, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4239082336425781}
+{"type": "call", "id": 35042, "time": 1767130348.010756, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35042, "time": 1767130348.011184, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4150867462158203}
+{"type": "call", "id": 35044, "time": 1767130348.0153131, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35044, "time": 1767130348.0158823, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5545616149902344}
+{"type": "call", "id": 35046, "time": 1767130348.0182776, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35046, "time": 1767130348.0186784, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3905296325683594}
+{"type": "call", "id": 35048, "time": 1767130348.0209155, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35048, "time": 1767130348.021326, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4000663757324219}
+{"type": "call", "id": 35050, "time": 1767130348.0237846, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35050, "time": 1767130348.0243154, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5192756652832031}
+{"type": "call", "id": 35052, "time": 1767130348.0265276, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35052, "time": 1767130348.0269978, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4589557647705078}
+{"type": "call", "id": 35054, "time": 1767130348.029508, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35054, "time": 1767130348.029906, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3867149353027344}
+{"type": "call", "id": 35056, "time": 1767130348.0323339, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35056, "time": 1767130348.0327845, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4353523254394531}
+{"type": "call", "id": 35058, "time": 1767130348.0356724, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35058, "time": 1767130348.0361707, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4851818084716797}
+{"type": "call", "id": 35060, "time": 1767130348.0384383, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35060, "time": 1767130348.0388668, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4169940948486328}
+{"type": "call", "id": 35062, "time": 1767130348.0412376, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35062, "time": 1767130348.0417864, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.5357265472412109}
+{"type": "call", "id": 35064, "time": 1767130348.0442235, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35064, "time": 1767130348.0446405, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.40602684020996094}
+{"type": "call", "id": 35066, "time": 1767130348.0469127, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35066, "time": 1767130348.0473433, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4172325134277344}
+{"type": "call", "id": 35068, "time": 1767130348.0498483, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35068, "time": 1767130348.05025, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3914833068847656}
+{"type": "call", "id": 35070, "time": 1767130348.052553, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35070, "time": 1767130348.052972, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.40793418884277344}
+{"type": "call", "id": 35072, "time": 1767130348.0555208, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35072, "time": 1767130348.0559602, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4265308380126953}
+{"type": "call", "id": 35074, "time": 1767130348.0581877, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35074, "time": 1767130348.0586164, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4169940948486328}
+{"type": "call", "id": 35076, "time": 1767130348.061023, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35076, "time": 1767130348.0614576, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4215240478515625}
+{"type": "call", "id": 35078, "time": 1767130348.0635748, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35078, "time": 1767130348.0640666, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4031658172607422}
+{"type": "call", "id": 35080, "time": 1767130348.0664313, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35080, "time": 1767130348.066933, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.49114227294921875}
+{"type": "call", "id": 35082, "time": 1767130348.0693285, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35082, "time": 1767130348.0697632, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4229545593261719}
+{"type": "call", "id": 35084, "time": 1767130348.0718915, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35084, "time": 1767130348.0723615, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4596710205078125}
+{"type": "call", "id": 35086, "time": 1767130348.0775692, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35086, "time": 1767130348.0780668, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4851818084716797}
+{"type": "call", "id": 35088, "time": 1767130348.080414, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35088, "time": 1767130348.0807965, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3724098205566406}
+{"type": "call", "id": 35090, "time": 1767130348.083034, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35090, "time": 1767130348.0834363, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3914833068847656}
+{"type": "call", "id": 35092, "time": 1767130348.0857708, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35092, "time": 1767130348.0861669, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3857612609863281}
+{"type": "call", "id": 35094, "time": 1767130348.0884633, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35094, "time": 1767130348.088907, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4303455352783203}
+{"type": "call", "id": 35096, "time": 1767130348.0911386, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35096, "time": 1767130348.0915492, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.3991127014160156}
+{"type": "call", "id": 35098, "time": 1767130348.0957892, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35098, "time": 1767130348.0964355, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.6327629089355469}
+{"type": "call", "id": 35100, "time": 1767130348.0995696, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35100, "time": 1767130348.0999806, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4012584686279297}
+{"type": "call", "id": 35102, "time": 1767130348.1030803, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35102, "time": 1767130348.1034808, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.38933753967285156}
+{"type": "call", "id": 35104, "time": 1767130348.1067348, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35104, "time": 1767130348.1071384, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.392913818359375}
+{"type": "call", "id": 35106, "time": 1767130348.1101427, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35106, "time": 1767130348.1105616, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.4074573516845703}
+{"type": "call", "id": 35108, "time": 1767130348.1138225, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35108, "time": 1767130348.1153574, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 1.5213489532470703}
+{"type": "call", "id": 35155, "time": 1767130351.0661066, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35155, "time": 1767130351.066448, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 0.33211708068847656}
+{"type": "call", "id": 35157, "time": 1767130351.0682828, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "args": ""}
+{"type": "return", "id": 35157, "time": 1767130351.0693765, "object": "prtouch_v3", "class": "PRTouchEndstopWrapper", "method": "get_z_now_comp", "result": 0.0, "duration_ms": 1.0831356048583984}
