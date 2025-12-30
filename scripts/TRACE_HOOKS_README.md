@@ -106,9 +106,10 @@ TRACE_DEEP                # Deep trace all objects
 #### TRACE_ATTRS
 Trace attribute access to see what data is read during method execution.
 ```gcode
-TRACE_ATTRS OBJECT=box ENABLE=1    # Enable attribute tracing
-TRACE_ATTRS OBJECT=box ENABLE=0    # Disable
-TRACE_ATTRS                         # Show active attribute traces
+TRACE_ATTRS OBJECT=box ENABLE=1              # Enable attribute tracing
+TRACE_ATTRS OBJECT=box ENABLE=1 RECURSIVE=1  # Recursive (traces nested objects)
+TRACE_ATTRS OBJECT=box ENABLE=0              # Disable
+TRACE_ATTRS                                   # Show active attribute traces
 ```
 
 This emits `attr_read` events showing every attribute accessed:
