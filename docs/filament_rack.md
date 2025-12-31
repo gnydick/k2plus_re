@@ -4,16 +4,16 @@ Reverse-engineered from Creality K2 Plus Klipper firmware traces.
 
 ## Provenance
 
-| Field | Value |
-|-------|-------|
-| **Printer** | Creality K2 Plus |
-| **Firmware** | Klipper (Creality fork) |
-| **Source** | Compiled Cython modules (`klippy/extras/*.cpython-39.so`) |
-| **Method** | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
-| **Capture Dates** | 2024-12-30 |
-| **Capture Files** | `captures/filament_rack_*.jsonl`, `captures/serial_485_*.jsonl` |
-| **Primary Modules** | `filament_rack_wrapper.cpython-39.so`, `box_wrapper.cpython-39.so` |
-| **Analysis Tool** | Claude Code (Anthropic) |
+| Field               | Value                                                                |
+|---------------------|----------------------------------------------------------------------|
+| **Printer**         | Creality K2 Plus                                                     |
+| **Firmware**        | Klipper (Creality fork)                                              |
+| **Source**          | Compiled Cython modules (`klippy/extras/*.cpython-39.so`)            |
+| **Method**          | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
+| **Capture Dates**   | 2024-12-30                                                           |
+| **Capture Files**   | `captures/filament_rack_*.jsonl`, `captures/serial_485_*.jsonl`      |
+| **Primary Modules** | `filament_rack_wrapper.cpython-39.so`, `box_wrapper.cpython-39.so`   |
+| **Analysis Tool**   | Claude Code (Anthropic)                                              |
 
 ### Operations Captured
 
@@ -27,8 +27,8 @@ Reverse-engineered from Creality K2 Plus Klipper firmware traces.
 
 The K2 Plus filament rack system consists of:
 
-1. **Filament Rack** - External spool holder with 4 slots per box (up to 4 boxes = 16 slots)
-2. **Filament Feeders** - RS-485 controlled motors at each slot (addresses 1-4)
+1. **Filament Rack** - External spool holder with 2 slots per box (up to 4 boxes = 8 slots)
+2. **Filament Boxes** - RS-485 controlled units at addresses 1-4, each with 2 slots (A/B)
 3. **Buffer System** - Intermediate filament storage between rack and extruder
 4. **Box Controller** - Manages filament routing, cutting, and flushing
 
@@ -37,15 +37,16 @@ The K2 Plus filament rack system consists of:
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        FILAMENT RACK                            │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐            │
-│  │ Slot 1  │  │ Slot 2  │  │ Slot 3  │  │ Slot 4  │   (per box)│
-│  │ Addr=1  │  │ Addr=2  │  │ Addr=3  │  │ Addr=4  │            │
-│  └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘            │
-│       │            │            │            │                  │
-│       └────────────┴─────┬──────┴────────────┘                  │
-│                          │                                      │
-│                    RS-485 Bus (/dev/ttyS5)                      │
-└──────────────────────────┼──────────────────────────────────────┘
+│  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐    │
+│  │  Box 1    │  │  Box 2    │  │  Box 3    │  │  Box 4    │    │
+│  │  Addr=1   │  │  Addr=2   │  │  Addr=3   │  │  Addr=4   │    │
+│  │ [A]  [B]  │  │ [A]  [B]  │  │ [A]  [B]  │  │ [A]  [B]  │    │
+│  └─────┬─────┘  └─────┬─────┘  └─────┬─────┘  └─────┬─────┘    │
+│        │              │              │              │           │
+│        └──────────────┴──────┬───────┴──────────────┘           │
+│                              │                                  │
+│                        RS-485 Bus (/dev/ttyS5)                  │
+└──────────────────────────────┼──────────────────────────────────┘
                            │
                            ▼
 ┌──────────────────────────────────────────────────────────────────┐
@@ -97,13 +98,13 @@ Tn_extrude_velocity: 360    # Extrusion speed (mm/min)
 
 **Methods Observed:**
 
-| Method | Arguments | Returns | Description |
-|--------|-----------|---------|-------------|
-| `get_material_target_speed` | `type=0P1002` | `450.0` | Get feed speed for material type (mm/min) |
-| `get_material_target_temp` | type | float | Get target temperature for material |
-| `send_data` | bytes | - | Send raw data to rack |
-| `enable_get_filament` | - | - | Enable filament dispensing |
-| `_button_handler` | - | - | GPIO interrupt handler |
+| Method                      | Arguments      | Returns  | Description                              |
+|-----------------------------|----------------|----------|------------------------------------------|
+| `get_material_target_speed` | `type=0P1002`  | `450.0`  | Get feed speed for material type (mm/min)|
+| `get_material_target_temp`  | type           | float    | Get target temperature for material      |
+| `send_data`                 | bytes          | -        | Send raw data to rack                    |
+| `enable_get_filament`       | -              | -        | Enable filament dispensing               |
+| `_button_handler`           | -              | -        | GPIO interrupt handler                   |
 
 **Material Type Codes:**
 - `011002` - Standard PLA (360 mm/min)
@@ -117,19 +118,24 @@ Tn_extrude_velocity: 360    # Extrusion speed (mm/min)
 
 **Key Methods:**
 
-| Method | Arguments | Returns | Duration | Description |
-|--------|-----------|---------|----------|-------------|
-| `Tn_action` | `"T2B"` | `true` | ~135 sec | Full filament load sequence |
-| `material_change_flush` | `None, T2B` | `true` | ~23 sec | Flush during material change |
-| `get_flush_len` | `None, T2B` | `81.25` | <1 sec | Get required flush length (mm) |
-| `has_flushing_sign` | - | `false` | <1 ms | Check if flushing required |
-| `error_clear` | - | `null` | <3 ms | Clear error state |
+| Method                  | Arguments    | Returns  | Duration  | Description                    |
+|-------------------------|--------------|----------|-----------|--------------------------------|
+| `Tn_action`             | `"T2B"`      | `true`   | ~135 sec  | Full filament load sequence    |
+| `material_change_flush` | `None, T2B`  | `true`   | ~23 sec   | Flush during material change   |
+| `get_flush_len`         | `None, T2B`  | `81.25`  | <1 sec    | Get required flush length (mm) |
+| `has_flushing_sign`     | -            | `false`  | <1 ms     | Check if flushing required     |
+| `error_clear`           | -            | `null`   | <3 ms     | Clear error state              |
 
 **Slot Naming Convention:**
-- `T1A` = Box 1, Slot A (address 1)
-- `T1B` = Box 1, Slot B (address 2)
-- `T2A` = Box 2, Slot A (address 3)
-- `T2B` = Box 2, Slot B (address 4)
+- `T<box>A` / `T<box>B` = Box number, Slot A or B
+- The number is the box address (1-4), A/B are slots within that box
+- Each box has 2 slots, so 4 boxes = 8 total slots
+
+Examples:
+- `T1A` = Box 1 (address 1), Slot A
+- `T1B` = Box 1 (address 1), Slot B
+- `T2A` = Box 2 (address 2), Slot A
+- `T2B` = Box 2 (address 2), Slot B
 - etc.
 
 ---
@@ -140,14 +146,14 @@ The filament rack communicates via RS-485 serial at 230400 baud.
 
 ### Device Addresses
 
-| Address | Device |
-|---------|--------|
-| 1 | Filament Slot 1 / Box 1 Slot A |
-| 2 | Filament Slot 2 / Box 1 Slot B |
-| 3 | Filament Slot 3 / Box 2 Slot A |
-| 4 | Filament Slot 4 / Box 2 Slot B |
-| 129-132 (0x81-0x84) | Secondary controllers (sensors) |
-| 254 (0xFE) | Broadcast address |
+| Address              | Device                          |
+|----------------------|---------------------------------|
+| 1                    | Box 1 (T1A, T1B)                |
+| 2                    | Box 2 (T2A, T2B)                |
+| 3                    | Box 3 (T3A, T3B)                |
+| 4                    | Box 4 (T4A, T4B)                |
+| 129-132 (0x81-0x84)  | Secondary controllers (sensors) |
+| 254 (0xFE)           | Broadcast address               |
 
 ### Feeder Commands
 
@@ -300,10 +306,10 @@ The sensor command returns 16-bit values that appear to be:
 
 | Slot | Typical Value |
 |------|---------------|
-| 1 | 9240-9241 |
-| 2 | 9751 |
-| 3 | 9495-9751 |
-| 4 | 9751 |
+| 1    | 9240-9241     |
+| 2    | 9751          |
+| 3    | 9495-9751     |
+| 4    | 9751          |
 
 ---
 

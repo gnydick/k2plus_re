@@ -4,16 +4,16 @@ Reverse-engineered from Creality K2 Plus Klipper firmware traces.
 
 ## Provenance
 
-| Field | Value |
-|-------|-------|
-| **Printer** | Creality K2 Plus |
-| **Firmware** | Klipper (Creality fork) |
-| **Source** | Compiled Cython modules (`klippy/extras/*.cpython-39.so`) |
-| **Method** | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
-| **Capture Dates** | 2024-12-30 |
-| **Capture Files** | `captures/prtouch_v3_prtouch_*.jsonl` |
-| **Primary Module** | `prtouch_v3.cpython-39.so` (`PRTouchEndstopWrapper` class) |
-| **Analysis Tool** | Claude Code (Anthropic) |
+| Field              | Value                                                                |
+|--------------------|----------------------------------------------------------------------|
+| **Printer**        | Creality K2 Plus                                                     |
+| **Firmware**       | Klipper (Creality fork)                                              |
+| **Source**         | Compiled Cython modules (`klippy/extras/*.cpython-39.so`)            |
+| **Method**         | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
+| **Capture Dates**  | 2024-12-30                                                           |
+| **Capture Files**  | `captures/prtouch_v3_prtouch_*.jsonl`                                |
+| **Primary Module** | `prtouch_v3.cpython-39.so` (`PRTouchEndstopWrapper` class)           |
+| **Analysis Tool**  | Claude Code (Anthropic)                                              |
 
 ### Trace Method
 
@@ -115,16 +115,16 @@ byte[3:]    = data (variable encoding)
 
 The first value location and size depends on flags and hint:
 
-| Condition | First Value Location | Size |
-|-----------|---------------------|------|
-| hint == 0x00 | data[1] | (data[0] & 3) + 1 bytes |
-| flags == 0x00, hint & 3 == 2 | data[0] | 3 bytes |
-| flags == 0x00, (hint & 0x05) == 0x05 | data[0] | 2 bytes |
-| flags == 0x00, other | data[1] | (data[0] & 3) + 1 bytes |
-| flags & 0x02 | hint:data[0]:data[1] | 3 bytes (hint=low) |
-| (flags & 0x41) == 0x41, hint >= 0x40 | hint:data[0] | 2 bytes (hint=low) |
-| flags & 0x40 | data[0] | (hint & 3) + 1 bytes |
-| default | data[0] | (hint & 3) + 1 bytes |
+| Condition                              | First Value Location  | Size                      |
+|----------------------------------------|-----------------------|---------------------------|
+| hint == 0x00                           | data[1]               | (data[0] & 3) + 1 bytes   |
+| flags == 0x00, hint & 3 == 2           | data[0]               | 3 bytes                   |
+| flags == 0x00, (hint & 0x05) == 0x05   | data[0]               | 2 bytes                   |
+| flags == 0x00, other                   | data[1]               | (data[0] & 3) + 1 bytes   |
+| flags & 0x02                           | hint:data[0]:data[1]  | 3 bytes (hint=low)        |
+| (flags & 0x41) == 0x41, hint >= 0x40   | hint:data[0]          | 2 bytes (hint=low)        |
+| flags & 0x40                           | data[0]               | (hint & 3) + 1 bytes      |
+| default                                | data[0]               | (hint & 3) + 1 bytes      |
 
 ### Delta Encoding (mostly decoded)
 

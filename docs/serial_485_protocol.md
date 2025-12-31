@@ -4,16 +4,16 @@ Reverse-engineered from Creality K2 Plus Klipper firmware traces.
 
 ## Provenance
 
-| Field | Value |
-|-------|-------|
-| **Printer** | Creality K2 Plus |
-| **Firmware** | Klipper (Creality fork) |
-| **Source** | Compiled Cython modules (`klippy/extras/*.cpython-39.so`) |
-| **Method** | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
-| **Capture Dates** | 2024-12-30 |
-| **Capture Files** | `captures/serial_485_serial485_*.jsonl` |
-| **Primary Module** | `serial_485.cpython-39.so` (`Serial_485_Wrapper` class) |
-| **Analysis Tool** | Claude Code (Anthropic) |
+| Field              | Value                                                                |
+|--------------------|----------------------------------------------------------------------|
+| **Printer**        | Creality K2 Plus                                                     |
+| **Firmware**       | Klipper (Creality fork)                                              |
+| **Source**         | Compiled Cython modules (`klippy/extras/*.cpython-39.so`)            |
+| **Method**         | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
+| **Capture Dates**  | 2024-12-30                                                           |
+| **Capture Files**  | `captures/serial_485_serial485_*.jsonl`                              |
+| **Primary Module** | `serial_485.cpython-39.so` (`Serial_485_Wrapper` class)              |
+| **Analysis Tool**  | Claude Code (Anthropic)                                              |
 
 ### Trace Method
 
@@ -56,25 +56,25 @@ byte[-1]  = Checksum
 
 ## Device Addresses
 
-### Filament Feeders (1-4)
-Each address corresponds to a filament slot on the 4-slot AMS-like system.
+### Filament Boxes (1-4)
+Each address corresponds to a filament box with 2 slots (A/B).
 
-| Address | Device |
-|---------|--------|
-| 1 | Filament Slot 1 |
-| 2 | Filament Slot 2 |
-| 3 | Filament Slot 3 |
-| 4 | Filament Slot 4 |
+| Address | Device            |
+|---------|-------------------|
+| 1       | Box 1 (T1A, T1B)  |
+| 2       | Box 2 (T2A, T2B)  |
+| 3       | Box 3 (T3A, T3B)  |
+| 4       | Box 4 (T4A, T4B)  |
 
 ### Secondary Controllers (129-132 / 0x81-0x84)
-Secondary devices on the same slots (possibly filament presence sensors).
+Secondary devices on the same boxes (possibly filament presence sensors).
 
-| Address | Device |
-|---------|--------|
-| 129 (0x81) | Slot 1 Sensor |
-| 130 (0x82) | Slot 2 Sensor |
-| 131 (0x83) | Slot 3 Sensor |
-| 132 (0x84) | Slot 4 Sensor |
+| Address      | Device       |
+|--------------|--------------|
+| 129 (0x81)   | Box 1 Sensor |
+| 130 (0x82)   | Box 2 Sensor |
+| 131 (0x83)   | Box 3 Sensor |
+| 132 (0x84)   | Box 4 Sensor |
 
 ## Commands
 
@@ -296,22 +296,24 @@ RX: f7 02 03 00 11 ca
 - `0x02` = Extended motor control (may return position data)
 
 **Subcommands for variant 0x01:**
-| Subcmd | Param | Purpose |
-|--------|-------|---------|
-| 0x00 | 0x00 | Initialize/reset |
-| 0x04 | 0x00 | Pre-feed preparation |
-| 0x05 | 0x00 | Start feed |
-| 0x06 | 0x00 | Continue feed |
-| 0x07 | 0x00 | Stop/complete |
+
+| Subcmd | Param | Purpose            |
+|--------|-------|--------------------|
+| 0x00   | 0x00  | Initialize/reset   |
+| 0x04   | 0x00  | Pre-feed preparation |
+| 0x05   | 0x00  | Start feed         |
+| 0x06   | 0x00  | Continue feed      |
+| 0x07   | 0x00  | Stop/complete      |
 
 **Subcommands for variant 0x02 (extended):**
-| Subcmd | Param | Purpose | Response |
-|--------|-------|---------|----------|
-| 0x00 | 0x00 | Initialize | Returns 0x0F status |
-| 0x04 | 0x00 | Pre-feed | 6-byte ack |
-| 0x05 | 0x00 | Start feed (with position) | 10-byte with encoder data |
-| 0x06 | 0x00 | Continue feed | 6-byte ack |
-| 0x07 | 0x03 | Stop/complete with flag | 6-byte ack |
+
+| Subcmd | Param | Purpose                    | Response                   |
+|--------|-------|----------------------------|----------------------------|
+| 0x00   | 0x00  | Initialize                 | Returns 0x0F status        |
+| 0x04   | 0x00  | Pre-feed                   | 6-byte ack                 |
+| 0x05   | 0x00  | Start feed (with position) | 10-byte with encoder data  |
+| 0x06   | 0x00  | Continue feed              | 6-byte ack                 |
+| 0x07   | 0x03  | Stop/complete with flag    | 6-byte ack                 |
 
 **Response (variant 0x01):** 6 bytes
 ```
