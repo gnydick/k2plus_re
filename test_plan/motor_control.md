@@ -214,6 +214,62 @@ check_online(0x02)  # Check Box 2
 check_online(0x82)  # Check Box 2's motor controller
 ```
 
+## Slot Selection in Material Commands
+
+**Important:** Slot selection is NOT a separate command. Instead, the slot is embedded as a parameter (byte 5) in each material operation command.
+
+### Slot Encoding
+
+| Slot Letter | Slot Value | Example Tnn |
+|-------------|------------|-------------|
+| A           | 0x00       | T1A, T2A    |
+| B           | 0x01       | T1B, T2B    |
+| C           | 0x02       | T1C, T2C    |
+| D           | 0x03       | T1D, T2D    |
+
+### How Tnn Maps to Address + Slot
+
+```
+T2A → Box Address 0x02, Slot 0
+T2B → Box Address 0x02, Slot 1
+T3C → Box Address 0x03, Slot 2
+T4D → Box Address 0x04, Slot 3
+```
+
+### Material Commands with Slot Parameter
+
+All commands use this format:
+```
+F7 [addr] [len] 00 [cmd] [slot] [extra...] [crc]
+```
+
+| Command | Code | Purpose                    | Example for T2B                      |
+|---------|------|----------------------------|--------------------------------------|
+| RFID    | 0x20 | Read RFID from slot        | `F7 02 05 00 20 01 00 [crc]`         |
+| Length  | 0x21 | Get remaining length       | `F7 02 05 00 21 01 00 [crc]`         |
+| Extrude | 0x40 | Start extrusion from slot  | `F7 02 05 00 40 01 00 [crc]`         |
+| Retract | 0x50 | Retract filament to slot   | `F7 02 05 00 50 01 00 [crc]`         |
+| PreLoad | 0x71 | Enable pre-loading         | `F7 02 06 00 71 01 01 00 [crc]`      |
+| Measure | 0x80 | Measuring wheel position   | `F7 02 05 00 80 01 00 [crc]`         |
+
+### Python Example: Extrude from T2B
+
+```python
+def extrude_slot(box_addr, slot, timeout=10):
+    """Extrude from specific slot."""
+    # Packet: F7 [addr] 05 00 40 [slot] 00 [crc]
+    data = [0xF7, box_addr, 0x05, 0x00, 0x40, slot, 0x00]
+    crc = calc_crc8(data[2:])  # CRC over len, status, cmd, slot, 00
+    data.append(crc)
+    return send_485(data, timeout)
+
+# Extrude from T2B (Box 2, Slot B=1)
+extrude_slot(0x02, 0x01)
+
+# Extrude from T3C (Box 3, Slot C=2)
+extrude_slot(0x03, 0x02)
+```
+
 ## Testing Strategy
 
 ### Phase 1: Verify Communication

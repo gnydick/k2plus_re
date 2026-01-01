@@ -120,6 +120,23 @@ The **filament feeder motors** inside each box are controlled by sending motor c
 | 0x0E | ENCODER_READ      | Read encoder position           |
 | 0x11 | FILAMENT_DETECT   | Filament detection/calibration  |
 
+### Material Operations (0x20-0x80) - Slot Selection
+
+These commands include a **slot parameter** (byte 5) to select which slot (A=0, B=1, C=2, D=3) within the box.
+
+| Code | Name              | Description                     |
+|------|-------------------|---------------------------------|
+| 0x20 | GET_RFID          | Read RFID from slot             |
+| 0x21 | GET_REMAIN_LEN    | Get remaining filament length   |
+| 0x40 | EXTRUDE_PROCESS   | Start extrusion from slot       |
+| 0x41 | EXTRUDE_PARTIAL   | Extrude specific length         |
+| 0x50 | RETRACT_PROCESS   | Retract filament to slot        |
+| 0x60 | MOTOR_ACTION      | Direct motor action control     |
+| 0x70 | SET_BOX_MODE      | Set box operating mode          |
+| 0x71 | SET_PRE_LOADING   | Enable/disable pre-loading      |
+| 0x72 | TIGHTEN_UP        | Tighten filament                |
+| 0x80 | MEASURING_WHEEL   | Read measuring wheel position   |
+
 ## Command Details
 
 ### 0xA2 - Online Check
@@ -194,6 +211,113 @@ F7 [addr] [len] 00 0A [sensor_data...] [crc]
 ```
 
 Sensor data format varies by device.
+
+## Slot-Based Material Commands
+
+These commands target a specific slot within a box. The slot is encoded as byte 5.
+
+### Slot Encoding
+
+| Slot | Value | Tnn Example |
+|------|-------|-------------|
+| A    | 0x00  | T1A, T2A... |
+| B    | 0x01  | T1B, T2B... |
+| C    | 0x02  | T1C, T2C... |
+| D    | 0x03  | T1D, T2D... |
+
+### 0x20 - Get RFID
+
+**Request:**
+```
+F7 [addr] 05 00 20 [slot] 00 [crc]
+```
+
+**Response:**
+```
+F7 [addr] [len] 00 20 [rfid_bytes...] [crc]
+```
+
+RFID is typically bytes 6-17 in hex format.
+
+### 0x21 - Get Remaining Length
+
+**Request:**
+```
+F7 [addr] 05 00 21 [slot] 00 [crc]
+```
+
+**Response:**
+```
+F7 [addr] 0A 00 21 [len_bytes...] [crc]
+```
+
+Length is 4 bytes, divide by 100 to get mm.
+
+### 0x40 - Extrude Process
+
+Start extrusion from a slot.
+
+**Request:**
+```
+F7 [addr] 05 00 40 [slot] 00 [crc]
+```
+
+**Response:**
+```
+F7 [addr] 03 00 40 [status] [crc]
+```
+
+### 0x41 - Extrude Partial
+
+Extrude a specific length.
+
+**Request:**
+```
+F7 [addr] 07 00 41 [slot] [len_hi] [len_lo] 00 [crc]
+```
+
+Where length is in units of 0.01mm (multiply mm by 100).
+
+### 0x50 - Retract Process
+
+Retract filament back to slot.
+
+**Request:**
+```
+F7 [addr] 05 00 50 [slot] 00 [crc]
+```
+
+**Response:**
+```
+F7 [addr] 03 00 50 [status] [crc]
+```
+
+### 0x71 - Set Pre-Loading
+
+Enable or disable pre-loading for a slot.
+
+**Request:**
+```
+F7 [addr] 06 00 71 [slot] [enable] 00 [crc]
+```
+
+Where enable: 0x00=disable, 0x01=enable
+
+### 0x80 - Measuring Wheel
+
+Get measuring wheel position for a slot.
+
+**Request:**
+```
+F7 [addr] 05 00 80 [slot] 00 [crc]
+```
+
+**Response:**
+```
+F7 [addr] 08 00 80 [pos_hi] [pos_lo] ... [crc]
+```
+
+Position is in 0.01mm units.
 
 ## CRC-8 Calculation
 
