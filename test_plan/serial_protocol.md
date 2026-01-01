@@ -156,11 +156,26 @@ Where:
 - mode: 0=app, 1=bootloader
 - uniid: unique device ID (up to 12 bytes)
 
+**Captured Traces:**
+```
+# Box 1 online check
+TX: 01 03 00 a2
+RX: f7 01 11 00 a2 01 00 69 06 30 02 18 53 33 11 52 35 38 32 44
+
+# Box 2 online check
+TX: 02 03 00 a2
+RX: f7 02 11 00 a2 01 00 a4 55 30 02 18 53 33 10 52 35 38 32 82
+
+# Box 3 online check
+TX: 03 03 00 a2
+RX: f7 03 11 00 a2 01 00 4b 9b 30 02 18 53 33 10 52 35 38 32 cc
+```
+
 ### 0x08 - Motor Enable
 
 **Request:**
 ```
-[addr] 04 00 08 [enable]
+[addr] 04 FF 08 [enable]
 ```
 
 Where enable: 0x00=disable, 0x01=enable
@@ -172,18 +187,41 @@ F7 [addr] 04 00 08 [state] [crc]
 
 Where state: 0x00=stopped, 0x0F=active
 
+**Captured Traces:**
+```
+# Enable motor on Box 1
+TX: 01 04 ff 08 01
+RX: f7 01 04 00 08 00 f0
+     │  │  │  │  │  │  └─ CRC
+     │  │  │  │  │  └──── state=0x00 (was stopped)
+     │  │  │  │  └─────── cmd=0x08
+     │  │  │  └────────── status=0x00 (OK)
+     │  │  └───────────── len=0x04
+     │  └──────────────── addr=0x01
+     └─────────────────── header=0xF7
+
+# Disable motor on Box 1 (was active)
+TX: 01 04 ff 08 00
+RX: f7 01 04 00 08 0f dd
+                    └──── state=0x0F (was active, now stopped)
+
+# Enable motor on Box 2
+TX: 02 04 ff 08 01
+RX: f7 02 04 00 08 00 e3
+```
+
 ### 0x10 - Motor Control
 
 **Request:**
 ```
-[addr] 06 00 10 [variant] [subcmd] [param]
+[addr] 06 FF 10 [variant] [subcmd] [param]
 ```
 
 **Variants:**
 - 0x01 = Basic motor control
 - 0x02 = Extended motor control with position feedback
 
-**Subcommands (variant 0x01):**
+**Subcommands (variant 0x02):**
 
 | Subcmd | Param | Purpose              |
 |--------|-------|----------------------|
@@ -193,16 +231,40 @@ Where state: 0x00=stopped, 0x0F=active
 | 0x06   | 0x00  | Continue feed        |
 | 0x07   | 0x00  | Stop/complete        |
 
-**Response (variant 0x01):**
+**Response:**
 ```
-F7 [addr] 03 00 10 [status] [crc]
+F7 [addr] [len] 00 10 [status/data...] [crc]
+```
+
+**Captured Traces:**
+```
+# Initialize motor on Box 2 (variant=0x02, subcmd=0x00)
+TX: 02 06 ff 10 02 00 00
+RX: f7 02 04 00 10 00 0f
+     │  │  │  │  │  │  └─ CRC
+     │  │  │  │  │  └──── status=0x00
+     │  │  │  │  └─────── cmd=0x10
+     │  │  │  └────────── status=0x00 (OK)
+     │  │  └───────────── len=0x04
+     │  └──────────────── addr=0x02
+     └─────────────────── header=0xF7
+
+# Pre-feed on Box 2 (variant=0x02, subcmd=0x04)
+TX: 02 06 ff 10 02 04 00
+RX: f7 02 03 00 10 cd
+              └──────── short response, status only
+
+# Start feed on Box 2 (variant=0x02, subcmd=0x05)
+TX: 02 06 ff 10 02 05 00
+RX: f7 02 0a 00 10 44 8b c4 8b 04 c5
+              └──────── extended response with encoder position
 ```
 
 ### 0x0A - Sensor Read
 
 **Request:**
 ```
-[addr] 03 00 0A
+[addr] 03 FF 0A
 ```
 
 **Response:**
@@ -211,6 +273,31 @@ F7 [addr] [len] 00 0A [sensor_data...] [crc]
 ```
 
 Sensor data format varies by device.
+
+**Captured Traces:**
+```
+# Sensor read Box 1
+TX: 01 03 ff 0a
+RX: f7 01 07 00 0a 19 24 00 00 e7
+     │  │  │  │  │  └──────────── sensor data (4 bytes) + CRC
+     │  │  │  │  └─────────────── cmd=0x0A
+     │  │  │  └────────────────── status=0x00
+     │  │  └───────────────────── len=0x07
+     │  └──────────────────────── addr=0x01
+     └─────────────────────────── header=0xF7
+
+# Sensor read Box 2
+TX: 02 03 ff 0a
+RX: f7 02 07 00 0a 17 26 00 00 f5
+
+# Sensor read Box 3
+TX: 03 03 ff 0a
+RX: f7 03 07 00 0a 17 26 00 00 f5
+
+# Sensor read Box 4
+TX: 04 03 ff 0a
+RX: f7 04 07 00 0a 17 26 00 00 f5
+```
 
 ## Slot-Based Material Commands
 
@@ -254,107 +341,124 @@ slot_index = ord(slot_letter) - ord('A')  # A=0, B=1, C=2, D=3
 
 ### Packet Structure for Slot Commands
 
-All slot-based commands follow this format:
+All slot-based commands follow this format (TX without header/CRC, RX with):
 ```
-[0xF7] [addr] [len] [0x00] [cmd] [slot] [extra...] [crc]
-   0      1      2     3      4     5       6+       last
-                                    ↑
-                              slot goes here
+TX: [addr] [len] FF [cmd] [slot] [extra...]
+RX: F7 [addr] [len] 00 [cmd] [data...] [crc]
+                          ↑
+                    slot in data for some responses
 ```
 
-### 0x20 - Get RFID
+### 0xFF04 - Load Trigger / Slot Select
+
+Trigger filament load from a specific slot.
 
 **Request:**
 ```
-F7 [addr] 05 00 20 [slot] 00 [crc]
+[addr] 05 FF 04 [slot] [param]
 ```
 
-**Response:**
+**Captured Traces:**
 ```
-F7 [addr] [len] 00 20 [rfid_bytes...] [crc]
+# Load trigger Box 2, Slot A (slot=0x00), param=0x01
+TX: 02 05 ff 04 00 01
+RX: f7 02 03 00 04 a1
+
+# Load trigger Box 2, Slot C (slot=0x02), param=0x00
+TX: 02 05 ff 04 02 00
+RX: f7 02 03 00 04 a3
 ```
 
-RFID is typically bytes 6-17 in hex format.
+### 0xFF05 - Filament Status
 
-### 0x21 - Get Remaining Length
+Check if filament is present.
 
 **Request:**
 ```
-F7 [addr] 05 00 21 [slot] 00 [crc]
+[addr] 03 FF 05
 ```
 
-**Response:**
+**Captured Traces:**
 ```
-F7 [addr] 0A 00 21 [len_bytes...] [crc]
+# Filament status Box 2
+TX: 02 03 ff 05
+RX: f7 02 04 00 05 01 1e
+     │  │  │  │  │  │  └─ CRC
+     │  │  │  │  │  └──── status=0x01 (filament present)
+     │  │  │  │  └─────── cmd=0x05
+     │  │  │  └────────── status=0x00 (OK)
+     │  │  └───────────── len=0x04
+     │  └──────────────── addr=0x02
+     └─────────────────── header=0xF7
+
+# Filament status when no filament
+TX: 02 03 ff 05
+RX: f7 02 04 00 05 00 1f
+                    └──── status=0x00 (no filament)
 ```
 
-Length is 4 bytes, divide by 100 to get mm.
+### 0xFF0F - Slot Status Query
 
-### 0x40 - Extrude Process
-
-Start extrusion from a slot.
+Query status of all slots in a box.
 
 **Request:**
 ```
-F7 [addr] 05 00 40 [slot] 00 [crc]
+[addr] 04 FF 0F [query_type]
 ```
 
-**Response:**
+**Captured Traces:**
 ```
-F7 [addr] 03 00 40 [status] [crc]
+# Query slot status Box 1
+TX: 01 04 ff 0f 01
+RX: f7 01 04 00 0f 90 5c
+
+# Query slot status Box 2
+TX: 02 04 ff 0f 01
+RX: f7 02 04 00 0f 90 4f
+
+# Query slot status Box 3
+TX: 03 04 ff 0f 01
+RX: f7 03 04 00 0f 90 7a
+
+# Query slot status Box 4
+TX: 04 04 ff 0f 01
+RX: f7 04 04 00 0f 90 6d
 ```
 
-### 0x41 - Extrude Partial
+### 0xFF11 - Filament Detection/Calibration
 
-Extrude a specific length.
+Filament detection control for a slot.
 
 **Request:**
 ```
-F7 [addr] 07 00 41 [slot] [len_hi] [len_lo] 00 [crc]
+[addr] 05 FF 11 [mode] [param]
 ```
 
-Where length is in units of 0.01mm (multiply mm by 100).
-
-### 0x50 - Retract Process
-
-Retract filament back to slot.
-
-**Request:**
+**Captured Traces:**
 ```
-F7 [addr] 05 00 50 [slot] 00 [crc]
-```
+# Query detection Box 2 (mode=0x00, param=0x00)
+TX: 02 05 ff 11 00 00
+RX: f7 02 03 00 11 d2
 
-**Response:**
-```
-F7 [addr] 03 00 50 [status] [crc]
+# Set detection Box 2 (mode=0x01, param=0x01)
+TX: 02 05 ff 11 01 01
+RX: f7 02 03 00 11 d2
 ```
 
-### 0x71 - Set Pre-Loading
+### Legacy Command Codes (from box_wrapper.py reconstruction)
 
-Enable or disable pre-loading for a slot.
+These command codes were inferred from the reconstructed code but may use different packet formats:
 
-**Request:**
-```
-F7 [addr] 06 00 71 [slot] [enable] 00 [crc]
-```
+| Code | Name              | Notes                                    |
+|------|-------------------|------------------------------------------|
+| 0x20 | GET_RFID          | May require slot parameter               |
+| 0x21 | GET_REMAIN_LEN    | May require slot parameter               |
+| 0x40 | EXTRUDE_PROCESS   | May require slot parameter               |
+| 0x50 | RETRACT_PROCESS   | May require slot parameter               |
+| 0x71 | SET_PRE_LOADING   | Slot + enable parameter                  |
+| 0x80 | MEASURING_WHEEL   | Slot parameter                           |
 
-Where enable: 0x00=disable, 0x01=enable
-
-### 0x80 - Measuring Wheel
-
-Get measuring wheel position for a slot.
-
-**Request:**
-```
-F7 [addr] 05 00 80 [slot] 00 [crc]
-```
-
-**Response:**
-```
-F7 [addr] 08 00 80 [pos_hi] [pos_lo] ... [crc]
-```
-
-Position is in 0.01mm units.
+*Note: These command codes from the reconstructed wrapper use the standard protocol. The actual firmware uses 0xFF-prefixed commands (0xFF04, 0xFF05, 0xFF0F, 0xFF10, 0xFF11) as shown in the captured traces above.*
 
 ## CRC-8 Calculation
 
