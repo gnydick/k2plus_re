@@ -10,7 +10,7 @@ Reverse-engineered from Creality K2 Plus Klipper firmware traces.
 | **Firmware**       | Klipper (Creality fork)                                              |
 | **Source**         | Compiled Cython modules (`klippy/extras/*.cpython-39.so`)            |
 | **Method**         | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
-| **Capture Dates**  | 2024-12-30                                                           |
+| **Capture Dates**  | 2024-12-30, 2026-01-01                                               |
 | **Capture Files**  | `../../tracing/captures/serial_485_serial485_*.jsonl`                |
 | **Primary Module** | `serial_485.cpython-39.so` (`Serial_485_Wrapper` class)              |
 | **Analysis Tool**  | Claude Code (Anthropic)                                              |
@@ -29,6 +29,7 @@ Traces captured by:
 - Filament load (slot 2) - 2024-12-30
 - Filament load with buffer feed (box 2, slot B) - 2024-12-30
 - 500mm extrusion at 5mm/sec - 2024-12-30
+- **T2A complete load/unload cycle** - 2026-01-01 (verified FF10=load, FF11=unload)
 
 ---
 
@@ -267,29 +268,43 @@ TX: 02 05 ff 04 01 00       (unload command)
 RX: f7 02 03 00 04 01 fc
 ```
 
-### Command 0xFF11 - Filament Detection/Calibration
-**Request:** `[addr] 05 ff 11 [mode] [param]`
+### Command 0xFF11 - Filament UNLOAD (Retract)
+**Request:** `[addr] 05 ff 11 [phase] [param]`
+
+**Purpose:** Triggers filament retraction/unload from the slot. This is a **separate command** from FF10 (load) - direction is NOT controlled by a parameter byte on FF10.
 
 **Parameters:**
-- `mode`: 0x00 = query, 0x01 = set
-- `param`: 0x00 or 0x01
+- `phase`: 0x01 = unload phase
+- `param`: 0x00 = continue unload, 0x01 = complete unload
 
 **Response:** 6 bytes
 ```
-f7 [addr] 03 00 11 [checksum]
+f7 [addr] 03 00 11 [status] [checksum]
 ```
 
-**Example:**
+**Fields:**
+- `status`: 0xCA observed (meaning: acknowledged)
+
+**Unload Sequence (verified 2026-01-01):**
 ```
-TX: 02 05 ff 11 00 00       (query mode)
+TX: 02 05 ff 11 01 00       (unload - continue, ~250-620ms)
 RX: f7 02 03 00 11 ca
 
-TX: 02 05 ff 11 01 01       (set mode)
+TX: 02 05 ff 11 01 00       (unload - continue, repeats 3-4x)
+RX: f7 02 03 00 11 ca
+
+TX: 02 05 ff 11 01 01       (unload - complete, ~12.5 sec)
 RX: f7 02 03 00 11 ca
 ```
 
-### Command 0xFF10 - Motor Control with Parameters
+**Key Finding:** The unload operation uses FF11 with multiple calls:
+1. Several `0100` calls to retract in phases
+2. Final `0101` call to complete the retraction (longest duration)
+
+### Command 0xFF10 - Filament LOAD (Feed)
 **Request:** `[addr] 06 ff 10 [variant] [subcmd] [param]`
+
+**Purpose:** Controls filament feeding/loading into the slot. This is a **multi-step command** with different subcmds for each phase. Unload uses the separate FF11 command.
 
 **Variants:**
 - `0x01` = Basic motor control (6-byte response)
@@ -384,6 +399,105 @@ Removes command from queue after processing.
 
 ---
 
+## Verified Command Sequences
+
+### T2A Load/Unload Cycle (2026-01-01)
+
+Complete sequence captured from T2A (Box 2, Slot A) load followed by unload.
+
+**Source:** `tracing/captures/captures/serial_485_serial485_20260101_105436.jsonl`
+
+#### Phase 1: Initialization (all slots)
+```
+TX: 01 04 ff 08 01    (slot 1: motor enable check)
+TX: 01 04 ff 08 00    (slot 1: motor disable)
+TX: 02 04 ff 08 01    (slot 2: motor enable check)
+TX: 02 04 ff 08 00    (slot 2: motor disable)
+TX: 03 04 ff 08 01    (slot 3: motor enable check)
+TX: 03 04 ff 08 00    (slot 3: motor disable)
+TX: 04 04 ff 08 01    (slot 4: motor enable check)
+TX: 04 04 ff 08 00    (slot 4: motor disable)
+```
+
+#### Phase 2: Slot Selection
+```
+TX: 02 05 ff 04 00 01    (select slot 2 for operation)
+RX: f7 02 03 00 04 a1
+```
+
+#### Phase 3: Motor Status Query (all slots)
+```
+TX: 01 04 ff 0f 01    (slot 1 motor status)
+TX: 02 04 ff 0f 01    (slot 2 motor status)
+TX: 03 04 ff 0f 01    (slot 3 motor status)
+TX: 04 04 ff 0f 01    (slot 4 motor status)
+```
+
+#### Phase 4: LOAD via FF10 (~35 seconds)
+```
+TX: 02 06 ff 10 01 00 00    (init, ~4.5 sec)
+RX: f7 02 04 00 10 00 0f
+
+TX: 02 06 ff 10 01 04 00    (pre-feed)
+RX: f7 02 03 00 10 cd
+
+TX: 02 06 ff 10 01 05 00    (start feed - repeats ~5x with encoder data)
+RX: f7 02 07 00 10 c4 12 ce 55 30    (encoder position)
+
+TX: 02 06 ff 10 01 06 00    (continue feed)
+RX: f7 02 03 00 10 cd
+
+TX: 02 06 ff 10 01 07 03    (complete with flag 0x03)
+RX: f7 02 03 00 10 cd
+```
+
+#### Phase 5: Load Finalization
+```
+TX: 02 03 ff 05             (filament status check)
+RX: f7 02 04 00 05 00 19    (status=0x19)
+
+TX: 02 05 ff 04 01 00       (confirm load complete)
+RX: f7 02 03 00 04 a1
+
+TX: 01-04 04 ff 0f 00       (motor status query all slots)
+
+TX: 02 04 ff 0e 01          (encoder/position read)
+RX: f7 02 07 00 0e c4 ...   (position data)
+```
+
+#### Phase 6: UNLOAD via FF11 (~22 seconds)
+```
+TX: 02 05 ff 04 00 01       (select slot 2)
+RX: f7 02 03 00 04 a1
+
+TX: 02 04 ff 08 00          (motor enable)
+RX: f7 02 04 00 08 01 f7
+
+TX: 02 05 ff 11 01 00       (unload phase 1, ~618ms)
+RX: f7 02 03 00 11 ca
+
+TX: 02 05 ff 11 01 00       (unload phase 2, ~465ms)
+RX: f7 02 03 00 11 ca
+
+TX: 02 05 ff 11 01 00       (unload phase 3, ~257ms)
+RX: f7 02 03 00 11 ca
+
+TX: 02 05 ff 11 01 00       (unload phase 4, ~253ms)
+RX: f7 02 03 00 11 ca
+
+TX: 02 05 ff 11 01 01       (unload complete, ~12.5 sec)
+RX: f7 02 03 00 11 ca
+```
+
+**Key Findings:**
+1. **FF10** = LOAD command (multi-phase with subcmds 0x00→0x04→0x05→0x06→0x07)
+2. **FF11** = UNLOAD command (phase 0x01, param 0x00=continue, 0x01=complete)
+3. Motor direction is controlled by using different commands, NOT by a parameter byte
+4. FF08 with param 0x00 enables motor for unload (counterintuitive naming)
+5. Unload consists of 4 short retract pulses followed by 1 long final retract
+
+---
+
 ## Unverified Hypotheses - To Test
 
 **Session: 2025-12-31**
@@ -396,17 +510,17 @@ The following observations need verification in a future session:
 - `param=0x00` = FEED (forward)
 - `param=0xFF` = RETRACT (reverse)
 
-**Evidence:**
-- Observed `0206ff100105ff` in trace when user sent unload command
-- Compared to feed command `0206ff10010500`
+**Status:** ❌ **DISPROVEN** (2026-01-01)
 
-**Status:** UNVERIFIED - When attempted, motor did not move (box may have been in error state)
+**Finding:** Motor direction is NOT controlled by a parameter byte on FF10. Instead:
+- **FF10** = LOAD/FEED command (forward direction only)
+- **FF11** = UNLOAD/RETRACT command (separate command entirely)
 
-**To Test:**
-1. Ensure box is not in error state before testing
-2. Send feed command with `param=0x00`, observe direction
-3. Send feed command with `param=0xFF`, observe direction
-4. Confirm motor actually moves in opposite directions
+**Evidence from T2A load/unload trace:**
+- Load sequence used only FF10 commands with various subcmds (0x00, 0x04, 0x05, 0x06, 0x07)
+- Unload sequence used FF11 commands (`0205ff110100`, `0205ff110101`)
+- FF10 was NOT used during unload at all
+- The `0x05ff` pattern previously observed was misinterpreted - it was likely FF05 (status) not FF10 with 0xFF param
 
 ### 2. Motor Speed
 

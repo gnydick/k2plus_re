@@ -1,2 +1,0 @@
-{"type": "call", "id": 813, "time": 1767251009.4072292, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "error_clear", "args": ""}
-{"type": "return", "id": 813, "time": 1767251009.4100466, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "error_clear", "result": null, "duration_ms": 2.802133560180664}

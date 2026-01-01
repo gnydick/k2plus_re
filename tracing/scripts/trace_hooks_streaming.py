@@ -55,9 +55,20 @@ class TraceHooks:
             'test_error',              # Error test polling
             'box_connect_state_check', # Box connection status
             'connect_state_check',     # Generic connection check
+            'add_send_data',           # Internal serial bookkeeping
+            'remove_send_data',        # Internal serial bookkeeping
         }
         # Objects where quiet methods ARE traced (override)
         self.verbose_objects = set()
+
+        # Quiet serial byte patterns - filtered to reduce noise
+        # These are constant polling commands that flood the trace
+        self.quiet_serial_patterns = {
+            '00a2',    # Online check (cmd 0xA2) - any address
+            'ff0a',    # Sensor read (cmd 0xFF0A) - constant polling
+        }
+        # Set to True to trace ALL serial commands including polling
+        self.trace_serial_polling = False
 
         # Register commands
         self.gcode.register_command('TRACE_ENABLE', self.cmd_TRACE_ENABLE,
@@ -92,6 +103,8 @@ class TraceHooks:
             desc="Trace ALL methods including private (_) methods")
         self.gcode.register_command('TRACE_ATTRS', self.cmd_TRACE_ATTRS,
             desc="Trace attribute access on an object")
+        self.gcode.register_command('TRACE_SERIAL_POLLING', self.cmd_TRACE_SERIAL_POLLING,
+            desc="Toggle tracing of serial polling commands (A2, FF0A)")
 
         # Running flag
         self.running = False
@@ -323,6 +336,17 @@ class TraceHooks:
             # Check if this is a quiet method that should be filtered
             if method_name in trace_hooks.quiet_methods and object_name not in trace_hooks.verbose_objects:
                 return original_method(*args, **kwargs)
+
+            # Filter noisy serial polling commands unless explicitly enabled
+            if not trace_hooks.trace_serial_polling and 'serial_485' in object_name:
+                # Check first positional arg (after self) for _bytes
+                if len(args) > 1:
+                    first_arg = args[1]
+                    if hasattr(first_arg, '_bytes'):
+                        bytes_hex = first_arg._bytes.hex().lower()
+                        for pattern in trace_hooks.quiet_serial_patterns:
+                            if pattern in bytes_hex:
+                                return original_method(*args, **kwargs)
 
             trace_hooks.call_counter += 1
             call_id = trace_hooks.call_counter
@@ -592,16 +616,14 @@ class TraceHooks:
 
     def cmd_TRACE_STREAM_STATUS(self, gcmd):
         if self.server_socket:
-            with self.stream_lock:
-                client_count = len(self.stream_clients)
+            client_count = len(self.stream_clients)
             gcmd.respond_info(f"Streaming on port {self.stream_port}, {client_count} clients connected")
         else:
             gcmd.respond_info("Stream server not running")
 
     def cmd_TRACE_STATUS(self, gcmd):
         """Show overall trace status."""
-        with self.stream_lock:
-            client_count = len(self.stream_clients)
+        client_count = len(self.stream_clients)
         gcmd.respond_info(
             f"Objects: {len(self.target_objects)}, "
             f"Active traces: {len(self.active_traces)}, "
@@ -686,6 +708,17 @@ class TraceHooks:
             gcmd.respond_info(f"Removed '{remove_method}' from quiet methods")
         else:
             gcmd.respond_info(f"Quiet methods (filtered by default): {list(self.quiet_methods)}")
+
+    def cmd_TRACE_SERIAL_POLLING(self, gcmd):
+        """Toggle tracing of serial polling commands: TRACE_SERIAL_POLLING [ENABLE=1/0]"""
+        enable = gcmd.get_int('ENABLE', None)
+
+        if enable is not None:
+            self.trace_serial_polling = bool(enable)
+
+        status = "ENABLED" if self.trace_serial_polling else "DISABLED (filtering A2, FF0A)"
+        gcmd.respond_info(f"Serial polling trace: {status}")
+        gcmd.respond_info(f"Filtered patterns: {list(self.quiet_serial_patterns)}")
 
     def cmd_TRACE_MACRO(self, gcmd):
         """Trace a specific GCode macro: TRACE_MACRO NAME=BOX_CHECK_MATERIAL"""

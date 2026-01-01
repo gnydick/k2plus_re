@@ -1,5 +1,0 @@
-{"type": "call", "id": 32989, "time": 1767130225.51735, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tn_action", "args": "T2A"}
-{"type": "call", "id": 33942, "time": 1767130293.2545757, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "material_change_flush", "args": "None, T2A"}
-{"type": "call", "id": 33943, "time": 1767130293.2614856, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "get_flush_len", "args": "None, T2A"}
-{"type": "return", "id": 33943, "time": 1767130293.2704074, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "get_flush_len", "result": 105.83333333333334, "duration_ms": 8.905172348022461}
-{"type": "return", "id": 33942, "time": 1767130335.4549975, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "material_change_flush", "result": true, "duration_ms": 42200.40273666382}

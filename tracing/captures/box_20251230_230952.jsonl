@@ -1,6 +1,0 @@
-{"type": "call", "id": 860, "time": 1767132683.9458632, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tn_action", "args": "T2B"}
-{"type": "call", "id": 1874, "time": 1767132782.2462022, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "material_change_flush", "args": "None, T2B"}
-{"type": "call", "id": 1875, "time": 1767132782.2557685, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "get_flush_len", "args": "None, T2B"}
-{"type": "return", "id": 1875, "time": 1767132782.2745361, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "get_flush_len", "result": 81.25, "duration_ms": 18.656253814697266}
-{"type": "return", "id": 1874, "time": 1767132805.6779664, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "material_change_flush", "result": true, "duration_ms": 23431.680917739868}
-{"type": "return", "id": 860, "time": 1767132818.634985, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tn_action", "result": true, "duration_ms": 134689.04304504395}
