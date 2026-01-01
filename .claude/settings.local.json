@@ -6,7 +6,7 @@
       "Bash(~/ghidra_11.2_PUBLIC/support/analyzeHeadless:*)",
       "Bash(~/ghidra_12.0_PUBLIC/support/analyzeHeadless:*)",
       "Bash(sort:*)",
-      "Bash(for so in /home/gnydick/src/K2_Series_Klipper/klippy/extras/*.cpython-39.so)",
+      "Bash(for so in /home/gnydick/IdeaProjects/k2plus/re/K2_Series_Klipper/klippy/extras/*.cpython-39.so)",
       "Bash(do)",
       "Bash(done)",
       "Bash(wc:*)",
@@ -41,7 +41,8 @@
       "Bash(scp:*)",
       "Bash(printf:*)",
       "Bash(nc:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(ping:*)"
     ]
   }
 }

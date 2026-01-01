@@ -381,3 +381,90 @@ Adds command to send queue.
 
 ### `remove_send_data(params)`
 Removes command from queue after processing.
+
+---
+
+## Unverified Hypotheses - To Test
+
+**Session: 2025-12-31**
+
+The following observations need verification in a future session:
+
+### 1. Motor Direction Control (FF10 subcmd 0x05)
+
+**Hypothesis:** The last byte (param) of subcmd 0x05 controls feed direction:
+- `param=0x00` = FEED (forward)
+- `param=0xFF` = RETRACT (reverse)
+
+**Evidence:**
+- Observed `0206ff100105ff` in trace when user sent unload command
+- Compared to feed command `0206ff10010500`
+
+**Status:** UNVERIFIED - When attempted, motor did not move (box may have been in error state)
+
+**To Test:**
+1. Ensure box is not in error state before testing
+2. Send feed command with `param=0x00`, observe direction
+3. Send feed command with `param=0xFF`, observe direction
+4. Confirm motor actually moves in opposite directions
+
+### 2. Motor Speed
+
+**Hypothesis:** Feeder motor speed is approximately 62mm/s (not 6mm/s)
+
+**Evidence:**
+- Sent motor run for 8 seconds, expected 50mm at 6mm/s
+- User reported ~500mm of movement
+- Calculated: 500mm / 8s ≈ 62mm/s
+
+**Status:** UNVERIFIED - Single observation, needs multiple measurements
+
+**To Test:**
+1. Run motor for known time
+2. Measure actual filament movement
+3. Calculate speed from multiple trials
+
+### 3. Sensor Read Error Status
+
+**Hypothesis:** Sensor read (FF0A) status byte `0x0b` indicates error state
+
+**Evidence:**
+- Normal response: `f7 02 07 00 0a ...` (status=0x00)
+- Observed: `f7 02 07 0b 0a ...` (status=0x0b)
+- Box was not responding to motor commands when this status was observed
+
+**Status:** UNVERIFIED - Correlation observed but causation not confirmed
+
+**To Test:**
+1. Query sensor status when box is working normally (expect 0x00)
+2. Induce error condition, query again (expect non-zero?)
+3. Clear error, verify status returns to 0x00
+
+### 4. FF10 Variant Byte = Slot Selection
+
+**Hypothesis:** The "variant" byte in FF10 commands selects the slot:
+- `variant=0x01` = Slot A
+- `variant=0x02` = Slot B
+- `variant=0x03` = Slot C
+- `variant=0x04` = Slot D
+
+**Evidence:**
+- Sent `variant=0x02` expecting motor control variant, activated Slot B instead
+- User feedback: "that test activated slot B"
+
+**Status:** PARTIALLY VERIFIED - Observed variant=0x02 activating slot B
+
+**To Test:**
+1. Send FF10 with variant=0x01, confirm slot A activates
+2. Send FF10 with variant=0x03, confirm slot C activates
+3. Send FF10 with variant=0x04, confirm slot D activates
+
+### 5. Filament Status 0x02 = Empty Slot
+
+**Status:** VERIFIED - Added to `verified/test_plan/serial_protocol.md`
+
+| Value | Meaning |
+|-------|---------|
+| 0x00  | Filament cleared/ejected |
+| 0x01  | Filament present |
+| 0x02  | No filament (empty slot) |

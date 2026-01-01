@@ -1,0 +1,12 @@
+{"type": "call", "id": 5723, "time": 1767251361.9286115, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "error_clear", "args": ""}
+{"type": "return", "id": 5723, "time": 1767251361.9328203, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "error_clear", "result": null, "duration_ms": 4.192590713500977}
+{"type": "call", "id": 13692, "time": 1767251940.393065, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "args": ""}
+{"type": "return", "id": 13692, "time": 1767251940.3938375, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "result": false, "duration_ms": 0.7572174072265625}
+{"type": "call", "id": 13753, "time": 1767251944.4918013, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "args": ""}
+{"type": "return", "id": 13753, "time": 1767251944.4926968, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "has_flushing_sign", "result": false, "duration_ms": 0.8792877197265625}
+{"type": "call", "id": 14519, "time": 1767252001.250064, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tn_action", "args": "T2A"}
+{"type": "return", "id": 14519, "time": 1767252015.9610703, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tn_action", "result": false, "duration_ms": 14710.99328994751}
+{"type": "call", "id": 14826, "time": 1767252027.0284073, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "error_clear", "args": ""}
+{"type": "return", "id": 14826, "time": 1767252027.0314896, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "error_clear", "result": null, "duration_ms": 3.0667781829833984}
+{"type": "call", "id": 15133, "time": 1767252049.2596095, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tn_action", "args": "T3A"}
+{"type": "return", "id": 15133, "time": 1767252063.7701533, "object": "box", "class": "MultiColorMeterialBoxWrapper", "method": "Tn_action", "result": false, "duration_ms": 14510.52975654602}
