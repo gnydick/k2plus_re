@@ -1,6 +1,6 @@
 # Trace Capture Analysis - K2 Plus Firmware
 
-## Session: 2024-12-30
+## Session: 2025-12-30
 
 ### Serial_485_Wrapper Protocol
 
@@ -87,6 +87,32 @@ data_pack(addr=129, cmd=12, data=[11]) -> bytes("f78104000c0b95")
 - `run_script_from_command(gcode)` - Execute gcode
 - `check_reise(bool, check_type, error_info)` - Error checking
 - `disturb_ctl(enable)` - Disturbance control
+
+### Axis Twist Compensation
+
+Uses PRTouchEndstopWrapper methods during bed mesh calibration. Captured as separate object due to Klipper's axis_twist_compensation module.
+
+**Top Methods Called:**
+| Method | Count | Purpose |
+|--------|-------|---------|
+| `unzip_data` | 600 | Decompress pressure sensor data |
+| `get_z_now_comp` | 434 | Get current Z compensation value |
+| `print_msg` | 228 | Debug logging |
+| `delay_s` | 82 | Timing delays |
+| `get_steppers` | 36 | Get stepper motor objects |
+| `run_script_from_command` | 24 | Execute gcode (e.g., BED_MESH_CLEAR) |
+| `probe_prepare/finish` | 12 each | Setup/teardown for probing |
+| `home_start/wait` | 12 each | Homing operations |
+| `multi_probe_begin/end` | 6 each | Multi-point probe sequences |
+
+**Workflow:**
+1. `BED_MESH_CLEAR` via `run_script_from_command`
+2. `multi_probe_begin()` - start calibration
+3. Loop: `probe_prepare` → `home_start` → `home_wait` → `probe_finish`
+4. `unzip_data` called repeatedly for pressure readings
+5. `multi_probe_end()` - complete calibration
+
+---
 
 ### Discovered Constants
 
