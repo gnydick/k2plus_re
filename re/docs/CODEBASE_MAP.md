@@ -2,7 +2,18 @@
 
 ## Overview
 
-This document maps the Creality K2 Series Klipper firmware codebase. The source is located at `../K2_Series_Klipper/`. The firmware extends standard Klipper with proprietary modules for multi-material printing, closed-loop motor control, and pressure-based Z probing.
+This document maps the Creality K2 Series Klipper firmware codebase. The firmware extends standard Klipper with proprietary modules for multi-material printing, closed-loop motor control, and pressure-based Z probing.
+
+## Setup
+
+Clone the Creality K2 Series Klipper repository into the `re/` directory:
+
+```bash
+cd re/
+git clone https://github.com/CrealityOfficial/K2_Series_Klipper.git
+```
+
+This places the source at `re/K2_Series_Klipper/`. The compiled Cython modules (`.cpython-39.so`) are located in `K2_Series_Klipper/klippy/extras/`.
 
 ### Related Documents
 - **[ALGORITHMS.md](ALGORITHMS.md)** - Reverse engineered algorithm details
