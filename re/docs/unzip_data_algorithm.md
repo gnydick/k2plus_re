@@ -11,7 +11,7 @@ Reverse-engineered from Creality K2 Plus Klipper firmware traces.
 | **Source**         | Compiled Cython modules (`klippy/extras/*.cpython-39.so`)            |
 | **Method**         | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
 | **Capture Dates**  | 2024-12-30                                                           |
-| **Capture Files**  | `captures/prtouch_v3_prtouch_*.jsonl`                                |
+| **Capture Files**  | `../../tracing/captures/prtouch_v3_prtouch_*.jsonl`                  |
 | **Primary Module** | `prtouch_v3.cpython-39.so` (`PRTouchEndstopWrapper` class)           |
 | **Analysis Tool**  | Claude Code (Anthropic)                                              |
 
@@ -26,7 +26,7 @@ Traces captured by:
 
 ### Analysis Scripts
 
-- `scripts/analyze_unzip.py` - Decoder implementation and validation
+- `../tools/analyze_unzip.py` - Decoder implementation and validation
 
 ---
 

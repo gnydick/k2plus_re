@@ -5,10 +5,10 @@
 This document maps the Creality K2 Series Klipper firmware codebase. Set the `KLIPPER_SOURCE` environment variable to point to your local copy (e.g., `export KLIPPER_SOURCE=~/src/K2_Series_Klipper`). The firmware extends standard Klipper with proprietary modules for multi-material printing, closed-loop motor control, and pressure-based Z probing.
 
 ### Related Documents
-- **[ALGORITHMS.md](analysis/ALGORITHMS.md)** - Reverse engineered algorithm details
-- **[SYMBOL_MAP.md](analysis/SYMBOL_MAP.md)** - Function symbol mappings
-- **[decompiled/](decompiled/)** - Ghidra decompiled C code
-- **[reconstructed/](reconstructed/)** - Reconstructed Python source from Cython binaries
+- **[ALGORITHMS.md](ALGORITHMS.md)** - Reverse engineered algorithm details
+- **[SYMBOL_MAP.md](SYMBOL_MAP.md)** - Function symbol mappings
+- **[../decompiled/](../decompiled/)** - Ghidra decompiled C code
+- **[../reconstructed/](../reconstructed/)** - Reconstructed Python source from Cython binaries
 
 ---
 
@@ -378,13 +378,13 @@ All decompiled files include **provenance headers** documenting the source of di
 
 ## Ghidra Project
 
-**Location**: `/home/gnydick/IdeaProjects/k2plus/ghidra_projects/k2plus_re`
+**Location**: `../ghidra/projects/k2plus_re`
 
 **Imported Files** (14 total):
 - 8 Cython .so files (ARM 32-bit LE v7)
 - 6 .o object files
 
-**Export Script**: `/home/gnydick/IdeaProjects/k2plus/ghidra_scripts/ExportDecompiled.java`
+**Export Script**: `../ghidra/scripts/ExportDecompiled.java`
 
 ---
 
@@ -396,9 +396,9 @@ Runtime method tracing system for capturing live behavior from compiled modules.
 
 | File | Purpose |
 |------|---------|
-| `scripts/trace_hooks_streaming.py` | Klipper extra that wraps methods and streams traces over TCP |
-| `scripts/trace_capture.py` | Client that captures streaming traces to per-object JSONL files |
-| `scripts/flush_data_collector.py` | Automation for systematic tool change data collection |
+| `../../tracing/scripts/trace_hooks_streaming.py` | Klipper extra that wraps methods and streams traces over TCP |
+| `../../tracing/scripts/trace_capture.py` | Client that captures streaming traces to per-object JSONL files |
+| `../../tracing/scripts/flush_data_collector.py` | Automation for systematic tool change data collection |
 
 ### Tracing Commands
 
@@ -413,12 +413,12 @@ Runtime method tracing system for capturing live behavior from compiled modules.
 ### Deployment
 
 ```bash
-scp scripts/trace_hooks_streaming.py root@<printer>:/usr/share/klipper/klippy/extras/trace_hooks.py
+scp ../../tracing/scripts/trace_hooks_streaming.py root@<printer>:/usr/share/klipper/klippy/extras/trace_hooks.py
 # Add [trace_hooks] to printer.cfg, restart Klipper
-python3 scripts/trace_capture.py <printer-ip>
+python3 ../../tracing/scripts/trace_capture.py <printer-ip>
 ```
 
-### Captured Data (in `captures/`)
+### Captured Data (in `../../tracing/captures/`)
 
 - Per-object JSONL files: `box_<timestamp>.jsonl`, `prtouch_v3_<timestamp>.jsonl`
 - Event types: `call`, `return`, `error`, `attr_read`
@@ -426,20 +426,20 @@ python3 scripts/trace_capture.py <printer-ip>
 
 ---
 
-## Stubs vs Reconstructed vs Merged
+## RE Directory Structure
 
 | Directory | Purpose | Confidence |
 |-----------|---------|------------|
-| `stubs/` | Accurate signatures from live introspection, stub implementations | Signatures: HIGH, Impl: NONE |
-| `reconstructed/` | Full implementations from Ghidra + trace analysis | Varies by method |
-| `merged/` | Combined: accurate signatures + inferred implementations | Signatures: HIGH, Impl: MEDIUM |
+| `../introspection/` | Pure runtime inspection (method lists, module dumps) | HIGH - facts from `dir()` |
+| `../reconstructed/` | Full implementations from Ghidra + trace analysis | Varies by method |
+| `../decompiled/` | C code exported from Ghidra | LOW - machine output |
+| `../from_printer/` | Original binaries pulled from printer | Source material |
 
-### Key Files Updated (2024-12-30)
+### Key Reconstructed Files
 
-- `stubs/serial_485_wrapper.py` - Full RS-485 protocol implementation from traces
-- `stubs/filament_rack_wrapper.py` - Material speed mappings from traces
-- `stubs/prtouch_v3_wrapper.py` - `unzip_data()` decompression algorithm
-- `reconstructed/motor_control_impl.py` - Protocol packet format verified
+- `../reconstructed/serial_485_wrapper.py` - RS-485 protocol implementation from traces
+- `../reconstructed/filament_rack_wrapper.py` - Material speed mappings from traces
+- `../reconstructed/prtouch_v3_wrapper.py` - `unzip_data()` decompression algorithm
 
 ---
 

@@ -11,7 +11,7 @@ Reverse-engineered from Creality K2 Plus Klipper firmware traces.
 | **Source**         | Compiled Cython modules (`klippy/extras/*.cpython-39.so`)            |
 | **Method**         | Runtime tracing via `trace_hooks_streaming.py` injected into Klipper |
 | **Capture Dates**  | 2024-12-30                                                           |
-| **Capture Files**  | `captures/serial_485_serial485_*.jsonl`                              |
+| **Capture Files**  | `../../tracing/captures/serial_485_serial485_*.jsonl`                |
 | **Primary Module** | `serial_485.cpython-39.so` (`Serial_485_Wrapper` class)              |
 | **Analysis Tool**  | Claude Code (Anthropic)                                              |
 
