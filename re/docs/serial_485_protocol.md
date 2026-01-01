@@ -316,9 +316,31 @@ RX: f7 02 03 00 11 ca
 |--------|-------|--------------------|
 | 0x00   | 0x00  | Initialize/reset   |
 | 0x04   | 0x00  | Pre-feed preparation |
-| 0x05   | 0x00  | Start feed         |
-| 0x06   | 0x00  | Continue feed      |
-| 0x07   | 0x00  | Stop/complete      |
+| 0x05   | 0x00  | Short calibration pulse (returns encoder data) |
+| 0x06   | 0x00  | Start continuous feed |
+| 0x07   | 0x03  | Stop motor / complete |
+
+**Motor Timing Control (TO BE VERIFIED):**
+
+Based on T2A load trace analysis (2026-01-01):
+
+| Subcmd | Behavior | Duration Control |
+|--------|----------|------------------|
+| 0x05   | **Self-limiting pulse** - short stutter movement, returns encoder position | Built-in, ~24-135ms observed |
+| 0x06   | **Starts continuous feed** - motor runs until explicitly stopped | None - runs indefinitely |
+| 0x07   | **Stop command** - halts motor | Immediate stop |
+
+The load sequence uses 5x subcmd 0x05 calls (audible as short stutter steps) for calibration/engagement,
+then subcmd 0x06 to start the long continuous feed, and finally subcmd 0x07 to stop.
+
+**Hypothesis:** To run motor for controlled duration:
+```
+TX: 02 06 ff 10 01 06 00    (start continuous feed)
+... wait desired time ...
+TX: 02 06 ff 10 01 07 03    (stop motor)
+```
+
+Previous attempts that ran without stopping likely omitted the 0x07 stop command.
 
 **Subcommands for variant 0x02 (extended):**
 
@@ -522,7 +544,28 @@ The following observations need verification in a future session:
 - FF10 was NOT used during unload at all
 - The `0x05ff` pattern previously observed was misinterpreted - it was likely FF05 (status) not FF10 with 0xFF param
 
-### 2. Motor Speed
+### 2. FF10 Motor Timing Control (Subcmd 0x06/0x07)
+
+**Hypothesis:** Subcmd 0x06 starts continuous motor feed, subcmd 0x07 stops it.
+
+**Evidence:**
+- T2A load trace shows 0x06 followed by ~4.3s gap, then 0x07
+- Subcmd 0x05 calls are very short (24-135ms) and return encoder data - self-limiting
+- Previous motor tests ran indefinitely - likely missing the 0x07 stop command
+- User reported audible "stutter steps" matching the 5x short 0x05 pulses
+
+**Status:** UNVERIFIED - needs controlled test
+
+**To Test:**
+1. Send `02 06 ff 10 01 06 00` (start feed)
+2. Wait 2 seconds
+3. Send `02 06 ff 10 01 07 03` (stop)
+4. Verify motor runs only during the 2-second window
+5. Compare to sending 0x06 without 0x07 (expect indefinite run)
+
+---
+
+### 3. Motor Speed
 
 **Hypothesis:** Feeder motor speed is approximately 62mm/s (not 6mm/s)
 
@@ -538,7 +581,7 @@ The following observations need verification in a future session:
 2. Measure actual filament movement
 3. Calculate speed from multiple trials
 
-### 3. Sensor Read Error Status
+### 4. Sensor Read Error Status
 
 **Hypothesis:** Sensor read (FF0A) status byte `0x0b` indicates error state
 
@@ -554,7 +597,7 @@ The following observations need verification in a future session:
 2. Induce error condition, query again (expect non-zero?)
 3. Clear error, verify status returns to 0x00
 
-### 4. FF10 Variant Byte = Slot Selection
+### 5. FF10 Variant Byte = Slot Selection
 
 **Hypothesis:** The "variant" byte in FF10 commands selects the slot:
 - `variant=0x01` = Slot A
@@ -573,7 +616,7 @@ The following observations need verification in a future session:
 2. Send FF10 with variant=0x03, confirm slot C activates
 3. Send FF10 with variant=0x04, confirm slot D activates
 
-### 5. Filament Status 0x02 = Empty Slot
+### 6. Filament Status 0x02 = Empty Slot
 
 **Status:** VERIFIED - Added to `verified/test_plan/serial_protocol.md`
 
