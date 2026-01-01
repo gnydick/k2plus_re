@@ -1,0 +1,11 @@
+# Klipper source (local copy from Creality)
+re/K2_Series_Klipper/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# IDE
+.idea/
+*.iml
