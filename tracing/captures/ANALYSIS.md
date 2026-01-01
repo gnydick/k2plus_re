@@ -116,9 +116,31 @@ Uses PRTouchEndstopWrapper methods during bed mesh calibration. Captured as sepa
 
 ### Discovered Constants
 
-**Motor Addresses:**
-- 0x80-0x88: Motor addresses 0-8
-- 0xFF: Broadcast address
+**Device Addresses:**
+
+| Type | Range | Description |
+|------|-------|-------------|
+| Material Boxes (MB) | 0x01-0x04 | Filament feeder boxes (DEV_TYPE=1) |
+| Closed-Loop Motors (CLM) | 0x81-0x84 | XY axis motors for input shaping (DEV_TYPE=2) |
+| Belt Tension Motors (BTM) | 0x91-0x92 | Belt tensioning system (DEV_TYPE=3) |
+| Filament Rack | 0x11 | Filament rack sensor |
+| Broadcast (boxes) | 0xFE | All material boxes |
+| Broadcast (CLM) | 0xFD | All closed-loop motors |
+| Broadcast (BTM) | 0xFC | All belt tension motors |
+| General Broadcast | 0xFF | All devices |
+
+**Important:** Filament feeder motors are controlled via box addresses (0x01-0x04), NOT 0x81-0x84.
+
+**Slot Encoding (within boxes):**
+
+| Slot | Value | Tnn Examples |
+|------|-------|--------------|
+| A | 0x00 | T1A, T2A, T3A, T4A |
+| B | 0x01 | T1B, T2B, T3B, T4B |
+| C | 0x02 | T1C, T2C, T3C, T4C |
+| D | 0x03 | T1D, T2D, T3D, T4D |
+
+**Tnn Parsing:** `T<box><slot>` → box digit becomes address 0x01-0x04, slot letter becomes index 0-3
 
 **Motor Commands:**
 - 0x01: reboot
@@ -169,12 +191,28 @@ Each line in JSONL files:
 
 ---
 
-## Known Limitations
+## Verified Algorithms
 
-### Checksum Algorithm
-The exact checksum algorithm is not yet verified. Observed:
-- `data_pack(129, 12, [11])` -> checksum 0x95
-- Simple sum and XOR don't match
+### CRC-8 Checksum
+Polynomial: 0x07. CRC calculated over: LEN + STATUS + FUNC + DATA
+
+```python
+def crc8_cal(data, length):
+    crc = 0
+    for i in range(length):
+        crc ^= data[i]
+        for j in range(8):
+            if crc & 0x80:
+                crc = (crc << 1) ^ 0x07
+            else:
+                crc <<= 1
+            crc &= 0xFF
+    return crc
+```
+
+---
+
+## Known Limitations
 
 ### unzip_data Compression
 Two compression types identified:
