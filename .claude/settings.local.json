@@ -35,7 +35,13 @@
       "Bash(rsync:*)",
       "Bash(mv:*)",
       "Bash(curl:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(scp:*)",
+      "Bash(printf:*)",
+      "Bash(nc:*)",
+      "Bash(git add:*)"
     ]
   }
 }
