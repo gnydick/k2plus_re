@@ -1,25 +1,17 @@
-# Reverse Engineering - Stage 2: Theorized
+# Reverse Engineering
 
-Analysis, interpretation, and reconstruction of firmware behavior. This is the **theory** stage - data here represents our best understanding but is not yet verified.
+Analysis and reconstruction of K2 Plus firmware.
 
-## Confidence Level: MEDIUM
-- Interpretations based on evidence
-- May contain errors or misunderstandings
-- Useful for guiding verification efforts
-- Should be tested before trusting
+## Structure
 
-## Contents
-
-| Directory | Purpose | Source |
-|-----------|---------|--------|
-| `K2_Series_Klipper/` | Creality source repo (clone it here) | GitHub |
-| `from_printer/` | Binaries pulled from device | Device |
-| `decompiled/` | Ghidra C output | Ghidra |
-| `reconstructed/` | Our Python reconstructions | Analysis |
-| `introspection/` | Runtime `dir()` output, method lists | Live inspection |
-| `ghidra/` | Ghidra projects and scripts | RE tools |
-| `tools/` | Analysis scripts | Our work |
-| `docs/` | RE documentation and analysis | Our work |
+| Type | Location | Description |
+|------|----------|-------------|
+| **Discovery** | `from_printer/` | Binaries pulled from device |
+| **Discovery** | `decompiled/` | Ghidra C output |
+| **Discovery** | `introspection/` | Runtime dir() results |
+| **Analysis** | `docs/` | Best theories about firmware behavior |
+| **Analysis** | `reconstructed/` | Reconstructed Python code |
+| **Tools** | `ghidra/`, `tools/` | RE tools and scripts |
 
 ## Setup
 
@@ -27,34 +19,15 @@ Analysis, interpretation, and reconstruction of firmware behavior. This is the *
 git clone https://github.com/CrealityOfficial/K2_Series_Klipper.git
 ```
 
-## Inputs (from `tracing/`)
+## Workflow
 
-- Raw JSONL trace captures
-- Protocol packet captures
-- Method call sequences
+1. Pull binaries, run Ghidra, inspect runtime → discovery directories
+2. Analyze and theorize → document in `docs/`, code in `reconstructed/`
+3. When verified through testing → promote to `../verified/`
 
-## Outputs (to `verified/`)
+## Promotion to verified/
 
-When a theory is confirmed through testing, document it in `verified/`:
-- Protocol specifications → `verified/test_plan/`
-- Working implementations → `verified/src/`
-- Confirmed behavior → `verified/docs/`
-
-## Promotion to `verified/` (Fact)
-
-Move information to `verified/` when:
+Move to `verified/` when:
 - [ ] Hypothesis tested against live system
-- [ ] Behavior reproduced with controlled inputs
-- [ ] At least 3 captured traces confirm the behavior
-- [ ] Edge cases documented
-- [ ] No contradicting evidence found
-
-## Key Documents
-
-| Document | Purpose |
-|----------|---------|
-| `docs/CODEBASE_MAP.md` | Overview of firmware structure |
-| `docs/serial_485_protocol.md` | RS-485 protocol analysis |
-| `docs/ALGORITHMS.md` | Reverse-engineered algorithms |
-| `docs/SYMBOL_MAP.md` | Function symbol mappings |
-| `introspection/*.txt` | Method lists from live inspection |
+- [ ] Behavior matches prediction
+- [ ] Evidence from traces supports conclusion
