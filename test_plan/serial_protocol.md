@@ -94,48 +94,35 @@ The **filament feeder motors** inside each box are controlled by sending motor c
 
 ## Function Codes
 
-### Device Status (0xA0-0xA3)
+### Device Status
 
-| Code | Name              | Description                     |
-|------|-------------------|---------------------------------|
-| 0xA0 | SET_SLAVE_ADDR    | Set device address              |
-| 0xA1 | GET_SLAVE_INFO    | Get device info (broadcast)     |
-| 0xA2 | ONLINE_CHECK      | Check if device is online       |
-| 0xA3 | GET_ADDR_TABLE    | Get address table               |
+| Code | Name              | Description                     | Verified |
+|------|-------------------|---------------------------------|----------|
+| 0xA2 | ONLINE_CHECK      | Check if device is online       | ✓        |
 
-### Motor Control (0x08, 0x10)
+### Motor Control
 
-| Code | Name           | Description                     |
-|------|----------------|---------------------------------|
-| 0x08 | MOTOR_ENABLE   | Enable/disable motor            |
-| 0x10 | MOTOR_CONTROL  | Motor control commands          |
+| Code   | Name           | Description                     | Verified |
+|--------|----------------|---------------------------------|----------|
+| 0xFF08 | MOTOR_ENABLE   | Enable/disable motor            | ✓        |
+| 0xFF10 | MOTOR_CONTROL  | Motor control commands          | ✓        |
 
-### Sensor/Status (0x0A, 0x0B, 0x0D, 0x0E, 0x11)
+### Sensor/Status
 
-| Code | Name              | Description                     |
-|------|-------------------|---------------------------------|
-| 0x0A | SENSOR_READ       | Read sensor values              |
-| 0x0B | LOADER_TO_APP     | Switch from bootloader to app   |
-| 0x0D | SET_PRE_LOADING   | Pre-loading command             |
-| 0x0E | ENCODER_READ      | Read encoder position           |
-| 0x11 | FILAMENT_DETECT   | Filament detection/calibration  |
+| Code   | Name              | Description                     | Verified |
+|--------|-------------------|---------------------------------|----------|
+| 0xFF0A | SENSOR_READ       | Read sensor values              | ✓        |
 
-### Material Operations (0x20-0x80) - Slot Selection
+### Material/Slot Operations (0xFF-prefixed)
 
-These commands include a **slot parameter** (byte 5) to select which slot (A=0, B=1, C=2, D=3) within the box.
+These commands use `0xFF` as a prefix byte and include slot parameters.
 
-| Code | Name              | Description                     |
-|------|-------------------|---------------------------------|
-| 0x20 | GET_RFID          | Read RFID from slot             |
-| 0x21 | GET_REMAIN_LEN    | Get remaining filament length   |
-| 0x40 | EXTRUDE_PROCESS   | Start extrusion from slot       |
-| 0x41 | EXTRUDE_PARTIAL   | Extrude specific length         |
-| 0x50 | RETRACT_PROCESS   | Retract filament to slot        |
-| 0x60 | MOTOR_ACTION      | Direct motor action control     |
-| 0x70 | SET_BOX_MODE      | Set box operating mode          |
-| 0x71 | SET_PRE_LOADING   | Enable/disable pre-loading      |
-| 0x72 | TIGHTEN_UP        | Tighten filament                |
-| 0x80 | MEASURING_WHEEL   | Read measuring wheel position   |
+| Code   | Name              | Description                     | Verified |
+|--------|-------------------|---------------------------------|----------|
+| 0xFF04 | LOAD_TRIGGER      | Trigger load from slot          | ✓        |
+| 0xFF05 | FILAMENT_STATUS   | Check filament presence         | ✓        |
+| 0xFF0F | SLOT_STATUS       | Query status of all slots       | ✓        |
+| 0xFF11 | FILAMENT_DETECT   | Filament detection/calibration  | ✓        |
 
 ## Command Details
 
@@ -320,14 +307,11 @@ Tnn String    →    Box Address    +    Slot Index
    T4D        →       0x04              3 (D)
 ```
 
-**Parsing logic:**
-```python
-# Pseudo-code for Tnn parsing (from box_wrapper.py)
-tnn_string = "T2A"
-box_num = int(tnn_string[1])      # "2" → 2
-slot_letter = tnn_string[2]        # "A"
-box_addr = box_num                 # 0x01, 0x02, 0x03, or 0x04
-slot_index = ord(slot_letter) - ord('A')  # A=0, B=1, C=2, D=3
+**Parsing logic (observed from traces):**
+```
+Tnn format: T<box><slot>
+  - box  = digit 1-4 → becomes RS-485 address 0x01-0x04
+  - slot = letter A-D → becomes slot index 0-3
 ```
 
 ### Slot Encoding
@@ -444,21 +428,6 @@ RX: f7 02 03 00 11 d2
 TX: 02 05 ff 11 01 01
 RX: f7 02 03 00 11 d2
 ```
-
-### Legacy Command Codes (from box_wrapper.py reconstruction)
-
-These command codes were inferred from the reconstructed code but may use different packet formats:
-
-| Code | Name              | Notes                                    |
-|------|-------------------|------------------------------------------|
-| 0x20 | GET_RFID          | May require slot parameter               |
-| 0x21 | GET_REMAIN_LEN    | May require slot parameter               |
-| 0x40 | EXTRUDE_PROCESS   | May require slot parameter               |
-| 0x50 | RETRACT_PROCESS   | May require slot parameter               |
-| 0x71 | SET_PRE_LOADING   | Slot + enable parameter                  |
-| 0x80 | MEASURING_WHEEL   | Slot parameter                           |
-
-*Note: These command codes from the reconstructed wrapper use the standard protocol. The actual firmware uses 0xFF-prefixed commands (0xFF04, 0xFF05, 0xFF0F, 0xFF10, 0xFF11) as shown in the captured traces above.*
 
 ## CRC-8 Calculation
 
