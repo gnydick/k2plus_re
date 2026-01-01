@@ -27,38 +27,38 @@ Reverse-engineered from Creality K2 Plus Klipper firmware traces.
 
 The K2 Plus filament rack system consists of:
 
-1. **Filament Rack** - External spool holder with 2 slots per box (up to 4 boxes = 8 slots)
-2. **Filament Boxes** - RS-485 controlled units at addresses 1-4, each with 2 slots (A/B)
+1. **Filament Rack** - External spool holder with 4 slots per box (up to 4 boxes = 16 slots)
+2. **Filament Boxes** - RS-485 controlled units at addresses 1-4, each with 4 slots (A/B/C/D)
 3. **Buffer System** - Intermediate filament storage between rack and extruder
 4. **Box Controller** - Manages filament routing, cutting, and flushing
 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        FILAMENT RACK                            │
-│  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌───────────┐    │
-│  │  Box 1    │  │  Box 2    │  │  Box 3    │  │  Box 4    │    │
-│  │  Addr=1   │  │  Addr=2   │  │  Addr=3   │  │  Addr=4   │    │
-│  │ [A]  [B]  │  │ [A]  [B]  │  │ [A]  [B]  │  │ [A]  [B]  │    │
-│  └─────┬─────┘  └─────┬─────┘  └─────┬─────┘  └─────┬─────┘    │
-│        │              │              │              │           │
-│        └──────────────┴──────┬───────┴──────────────┘           │
-│                              │                                  │
-│                        RS-485 Bus (/dev/ttyS5)                  │
-└──────────────────────────────┼──────────────────────────────────┘
-                           │
-                           ▼
-┌──────────────────────────────────────────────────────────────────┐
-│                      BUFFER SYSTEM                               │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐       │
-│  │ Feeder Motor │───▶│   Buffer     │───▶│   Extruder   │       │
-│  │ (RS-485)     │    │ (30mm len)   │    │              │       │
-│  └──────────────┘    └──────────────┘    └──────────────┘       │
-│                             │                                    │
-│                      GPIO PA5 (not_pin)                          │
-│                      Buffer state signal                         │
-└──────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────┐
+│                           FILAMENT RACK                                   │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌───────────────┐
+│  │     Box 1       │  │     Box 2       │  │     Box 3       │  │     Box 4     │
+│  │    Addr=0x01    │  │    Addr=0x02    │  │    Addr=0x03    │  │   Addr=0x04   │
+│  │ [A] [B] [C] [D] │  │ [A] [B] [C] [D] │  │ [A] [B] [C] [D] │  │ [A][B][C][D]  │
+│  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘  └───────┬───────┘
+│           │                    │                    │                   │        │
+│           └────────────────────┴──────────┬─────────┴───────────────────┘        │
+│                                           │                                       │
+│                                 RS-485 Bus (/dev/ttyS5)                           │
+└───────────────────────────────────────────┼───────────────────────────────────────┘
+                                            │
+                                            ▼
+┌───────────────────────────────────────────────────────────────────────────┐
+│                           BUFFER SYSTEM                                    │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐                 │
+│  │ Feeder Motor │───▶│   Buffer     │───▶│   Extruder   │                 │
+│  │ (RS-485)     │    │ (30mm len)   │    │              │                 │
+│  └──────────────┘    └──────────────┘    └──────────────┘                 │
+│                             │                                              │
+│                      GPIO PA5 (not_pin)                                    │
+│                      Buffer state signal                                   │
+└───────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -127,16 +127,18 @@ Tn_extrude_velocity: 360    # Extrusion speed (mm/min)
 | `error_clear`           | -            | `null`   | <3 ms     | Clear error state              |
 
 **Slot Naming Convention:**
-- `T<box>A` / `T<box>B` = Box number, Slot A or B
-- The number is the box address (1-4), A/B are slots within that box
-- Each box has 2 slots, so 4 boxes = 8 total slots
+- `T<box><slot>` = Box number + Slot letter (A, B, C, or D)
+- The number is the box address (1-4), A/B/C/D are slots within that box
+- Each box has 4 slots, so 4 boxes = 16 total slots
 
 Examples:
-- `T1A` = Box 1 (address 1), Slot A
-- `T1B` = Box 1 (address 1), Slot B
-- `T2A` = Box 2 (address 2), Slot A
-- `T2B` = Box 2 (address 2), Slot B
-- etc.
+- `T1A` = Box 1 (address 0x01), Slot A
+- `T1B` = Box 1 (address 0x01), Slot B
+- `T1C` = Box 1 (address 0x01), Slot C
+- `T1D` = Box 1 (address 0x01), Slot D
+- `T2A` = Box 2 (address 0x02), Slot A
+- `T2B` = Box 2 (address 0x02), Slot B
+- ...etc through T4D
 
 ---
 
@@ -146,14 +148,20 @@ The filament rack communicates via RS-485 serial at 230400 baud.
 
 ### Device Addresses
 
-| Address              | Device                          |
-|----------------------|---------------------------------|
-| 1                    | Box 1 (T1A, T1B)                |
-| 2                    | Box 2 (T2A, T2B)                |
-| 3                    | Box 3 (T3A, T3B)                |
-| 4                    | Box 4 (T4A, T4B)                |
-| 129-132 (0x81-0x84)  | Secondary controllers (sensors) |
-| 254 (0xFE)           | Broadcast address               |
+| Address              | Device                                                  |
+|----------------------|---------------------------------------------------------|
+| 1 (0x01)             | Box 1 (T1A, T1B, T1C, T1D) - Filament feeder motors     |
+| 2 (0x02)             | Box 2 (T2A, T2B, T2C, T2D) - Filament feeder motors     |
+| 3 (0x03)             | Box 3 (T3A, T3B, T3C, T3D) - Filament feeder motors     |
+| 4 (0x04)             | Box 4 (T4A, T4B, T4C, T4D) - Filament feeder motors     |
+| 17 (0x11)            | Filament Rack controller                                |
+| 129-132 (0x81-0x84)  | Closed-Loop Motors (CLM) - Printer XY axis steppers     |
+| 145-146 (0x91-0x92)  | Belt Tension Motors (BTM) - Belt tensioning system      |
+| 253 (0xFD)           | Broadcast - all closed-loop motors                      |
+| 254 (0xFE)           | Broadcast - all material boxes                          |
+| 255 (0xFF)           | General broadcast                                       |
+
+**Important:** The filament feeder motors inside each box are controlled by sending motor commands (0x08, 0x10) to the box addresses (0x01-0x04). The CLM addresses (0x81-0x84) are for the printer's XY axis stepper motors used for input shaping, NOT the filament system.
 
 ### Feeder Commands
 
