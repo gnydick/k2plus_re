@@ -2,8 +2,19 @@
 """
 Mark invented methods that don't exist in live modules.
 
+Usage:
+    python3 mark_invented_methods.py [reconstructed_dir]
+
 Adds # [INVENTED] comments to methods that exist in reconstructed
 but not in live modules.
+
+Default directory: re/reconstructed/
+
+Project structure:
+    k2plus/
+    └── re/
+        ├── reconstructed/   <- Files to mark (default)
+        └── tools/           <- This script
 """
 
 import re
@@ -87,7 +98,11 @@ def mark_invented_methods(filepath, class_methods):
 
 
 def main():
-    merged_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('/home/gnydick/IdeaProjects/k2plus/merged')
+    # Default to re/reconstructed relative to this script's location
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent.parent  # re/tools -> re -> k2plus
+    default_dir = project_root / 're' / 'reconstructed'
+    merged_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else default_dir
 
     for filename, class_methods in INVENTED_METHODS.items():
         filepath = merged_dir / filename

@@ -3,9 +3,17 @@
 Generate accurate Python stub files from introspection data.
 
 Usage:
-    python3 generate_stubs.py module_dump.json output_dir/
+    python3 generate_stubs.py re/introspection/module_dump.json re/decompiled/
 
 This creates stub files with correct signatures from live module introspection.
+
+Project structure:
+    k2plus/
+    ├── re/
+    │   ├── introspection/   <- JSON from introspect_modules.py
+    │   ├── decompiled/      <- Generated stubs go here
+    │   └── tools/           <- This script
+    └── ...
 """
 
 import json

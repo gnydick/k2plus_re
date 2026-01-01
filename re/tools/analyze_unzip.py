@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
-"""Analyze unzip_data compression algorithm from traces."""
+"""
+Analyze unzip_data compression algorithm from traces.
+
+Usage:
+    python3 analyze_unzip.py
+
+Reads prtouch_v3 trace captures from tracing/captures/ and analyzes
+the compression algorithm used in unzip_data calls.
+
+Project structure:
+    k2plus/
+    ├── tracing/
+    │   └── captures/        <- JSONL trace files
+    └── re/
+        └── tools/           <- This script
+"""
 
 import struct
 import json
@@ -306,8 +321,14 @@ def test_auto_decoder():
 
 def main():
     import glob
+    from pathlib import Path
+
     # Find the most recent capture file
-    files = sorted(glob.glob("captures/prtouch_v3_*.jsonl"))
+    # Look in tracing/captures relative to project root
+    script_dir = Path(__file__).parent
+    project_root = script_dir.parent.parent  # re/tools -> re -> k2plus
+    captures_dir = project_root / 'tracing' / 'captures'
+    files = sorted(glob.glob(str(captures_dir / "prtouch_v3_*.jsonl")))
     if not files:
         print("No capture files found!")
         return

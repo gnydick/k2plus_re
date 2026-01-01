@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Debug why introspection misses prtouch classes."""
+"""
+Debug why introspection misses prtouch classes.
+
+Run ON THE PRINTER:
+    scp debug_prtouch2.py root@k2plus:/tmp/
+    ssh root@k2plus python3 /tmp/debug_prtouch2.py
+"""
 
 import sys
 import os

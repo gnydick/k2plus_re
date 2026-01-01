@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Debug prtouch module loading issues."""
+"""
+Debug prtouch module loading issues.
+
+Run ON THE PRINTER:
+    scp debug_prtouch.py root@k2plus:/tmp/
+    ssh root@k2plus python3 /tmp/debug_prtouch.py
+"""
 
 import sys
 import os

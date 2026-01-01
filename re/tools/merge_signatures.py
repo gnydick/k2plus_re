@@ -2,11 +2,22 @@
 """
 Merge accurate signatures from stubs into reconstructed files.
 
+Usage:
+    python3 merge_signatures.py re/decompiled/ re/reconstructed/ re/merged/
+
 This script:
 1. Reads the stub file (accurate signatures)
 2. Reads the reconstructed file (inferred implementations)
 3. Creates a merged file with correct signatures and implementations
 4. Generates a mapping of parameter name changes for manual review
+
+Project structure:
+    k2plus/
+    ├── re/
+    │   ├── decompiled/      <- Stub files with accurate signatures
+    │   ├── reconstructed/   <- Files with inferred implementations
+    │   └── tools/           <- This script
+    └── ...
 """
 
 import ast

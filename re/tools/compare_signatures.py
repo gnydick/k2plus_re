@@ -3,10 +3,18 @@
 Compare introspected module signatures against reconstructed Python files.
 
 Usage:
-    python3 compare_signatures.py module_dump.json reconstructed/
+    python3 compare_signatures.py re/introspection/module_dump.json re/reconstructed/
 
 This compares the actual method signatures from the live printer
 against what we have in the reconstructed Python files.
+
+Project structure:
+    k2plus/
+    ├── re/
+    │   ├── introspection/   <- JSON from introspect_modules.py
+    │   ├── reconstructed/   <- Reconstructed Python files
+    │   └── tools/           <- This script
+    └── ...
 """
 
 import sys

@@ -3,7 +3,8 @@
 Diagnostic script to find Klipper module locations on K2 printer.
 
 Run ON THE PRINTER:
-    python3 /tmp/find_klipper_paths.py
+    scp find_klipper_paths.py root@k2plus:/tmp/
+    ssh root@k2plus python3 /tmp/find_klipper_paths.py
 """
 
 import os

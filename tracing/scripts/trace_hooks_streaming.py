@@ -7,6 +7,7 @@
 # Add to printer.cfg: [trace_hooks]
 #
 # Created: 2024-12-30
+# Updated: 2025-01-01 - Rewritten to use Klipper reactor (no threads)
 # Project: Creality K2 Plus Klipper Firmware Reconstruction
 #
 # Commands:
@@ -21,7 +22,6 @@ import functools
 import time
 import json
 import socket
-import threading
 import traceback
 import sys
 
@@ -33,10 +33,10 @@ class TraceHooks:
 
         # Streaming config
         self.stream_port = config.getint('stream_port', 9876)
-        self.stream_clients = []
-        self.stream_lock = threading.Lock()
+        self.stream_clients = {}  # fd -> socket
+        self.client_buffers = {}  # fd -> partial read buffer
         self.server_socket = None
-        self.server_thread = None
+        self.server_fd = None
 
         # Storage for traces
         self.active_traces = {}
@@ -102,29 +102,32 @@ class TraceHooks:
 
     def _handle_ready(self):
         self._discover_objects()
-        self._start_stream_server()
-        self._log_msg(f"TraceHooks ready. Streaming on port {self.stream_port}")
+        # Don't auto-start server - use TRACE_STREAM_START to enable when needed
+        self._log_msg(f"TraceHooks ready. Use TRACE_STREAM_START to begin streaming on port {self.stream_port}")
         self._log_msg(f"Found {len(self.target_objects)} traceable objects")
 
     def _handle_disconnect(self):
         self._stop_stream_server()
 
     def _start_stream_server(self):
-        """Start TCP server for streaming traces."""
+        """Start TCP server for streaming traces using reactor."""
         # Clean up first
         self._stop_stream_server()
 
         try:
             self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+            try:
+                self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
+            except:
+                pass
+            self.server_socket.setblocking(False)
             self.server_socket.bind(('0.0.0.0', self.stream_port))
             self.server_socket.listen(5)
-            self.server_socket.settimeout(1.0)
-            self.running = True
 
-            self.server_thread = threading.Thread(target=self._accept_clients, daemon=True)
-            self.server_thread.start()
+            self.server_fd = self.server_socket.fileno()
+            self.reactor.register_fd(self.server_fd, self._handle_server_read)
+            self.running = True
 
             self._log_msg(f"Stream server started on port {self.stream_port}")
         except Exception as e:
@@ -133,6 +136,28 @@ class TraceHooks:
     def _stop_stream_server(self):
         """Stop TCP server."""
         self.running = False
+
+        # Unregister and close all client sockets
+        for fd, client_sock in list(self.stream_clients.items()):
+            try:
+                self.reactor.unregister_fd(fd)
+            except:
+                pass
+            try:
+                client_sock.close()
+            except:
+                pass
+        self.stream_clients.clear()
+        self.client_buffers.clear()
+
+        # Unregister and close server socket
+        if self.server_fd is not None:
+            try:
+                self.reactor.unregister_fd(self.server_fd)
+            except:
+                pass
+            self.server_fd = None
+
         if self.server_socket:
             try:
                 self.server_socket.close()
@@ -140,63 +165,87 @@ class TraceHooks:
                 pass
             self.server_socket = None
 
-        with self.stream_lock:
-            for client in self.stream_clients:
-                try:
-                    client.close()
-                except:
-                    pass
-            self.stream_clients = []
+    def _handle_server_read(self, eventtime):
+        """Handle incoming connection on server socket (reactor callback)."""
+        try:
+            client_sock, addr = self.server_socket.accept()
+            client_sock.setblocking(False)
+            client_fd = client_sock.fileno()
 
-    def _accept_clients(self):
-        """Accept incoming client connections."""
-        while self.running and self.server_socket:
+            self.stream_clients[client_fd] = client_sock
+            self.client_buffers[client_fd] = b""
+
+            # Register client for read events (to detect disconnect)
+            self.reactor.register_fd(client_fd, self._handle_client_read, client_fd)
+
+            self._log_msg(f"Client connected from {addr}")
+            self._send_to_client(client_sock, {
+                'type': 'connected',
+                'time': time.time(),
+                'message': 'TraceHooks streaming connected',
+                'active_traces': [list(k) for k in self.active_traces.keys()],
+                'available_objects': list(self.target_objects.keys())
+            })
+        except BlockingIOError:
+            pass  # No pending connections
+        except Exception as e:
+            self._log_msg(f"Accept error: {e}")
+
+    def _handle_client_read(self, eventtime, client_fd):
+        """Handle data from client (mainly to detect disconnect)."""
+        if client_fd not in self.stream_clients:
+            return
+        client_sock = self.stream_clients[client_fd]
+        try:
+            data = client_sock.recv(1024)
+            if not data:
+                # Client disconnected
+                self._disconnect_client(client_fd)
+        except BlockingIOError:
+            pass  # No data available
+        except:
+            self._disconnect_client(client_fd)
+
+    def _disconnect_client(self, client_fd):
+        """Clean up a disconnected client."""
+        if client_fd in self.stream_clients:
+            client_sock = self.stream_clients.pop(client_fd)
+            self.client_buffers.pop(client_fd, None)
             try:
-                client, addr = self.server_socket.accept()
-                with self.stream_lock:
-                    self.stream_clients.append(client)
-                self._log_msg(f"Client connected from {addr}")
-                self._send_to_client(client, {
-                    'type': 'connected',
-                    'time': time.time(),
-                    'message': 'TraceHooks streaming connected',
-                    'active_traces': [list(k) for k in self.active_traces.keys()],
-                    'available_objects': list(self.target_objects.keys())
-                })
-            except socket.timeout:
-                continue
-            except Exception as e:
-                if self.server_socket:
-                    pass
-                break
+                self.reactor.unregister_fd(client_fd)
+            except:
+                pass
+            try:
+                client_sock.close()
+            except:
+                pass
+            self._log_msg(f"Client disconnected (fd={client_fd})")
 
-    def _send_to_client(self, client, event):
+    def _send_to_client(self, client_sock, event):
         """Send event to a specific client."""
         try:
             event_json = json.dumps(event, default=str) + '\n'
-            client.sendall(event_json.encode('utf-8'))
+            client_sock.sendall(event_json.encode('utf-8'))
         except:
             pass
 
     def _stream_event(self, event):
         """Send event to all connected clients."""
+        if not self.stream_clients:
+            return
+
         event_json = json.dumps(event, default=str) + '\n'
         event_bytes = event_json.encode('utf-8')
 
-        with self.stream_lock:
-            dead_clients = []
-            for client in self.stream_clients:
-                try:
-                    client.sendall(event_bytes)
-                except:
-                    dead_clients.append(client)
+        dead_clients = []
+        for client_fd, client_sock in self.stream_clients.items():
+            try:
+                client_sock.sendall(event_bytes)
+            except:
+                dead_clients.append(client_fd)
 
-            for client in dead_clients:
-                self.stream_clients.remove(client)
-                try:
-                    client.close()
-                except:
-                    pass
+        for client_fd in dead_clients:
+            self._disconnect_client(client_fd)
 
     def _discover_objects(self):
         """Find all loaded Klipper objects we can trace."""

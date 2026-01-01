@@ -3,11 +3,16 @@
 Introspect Creality K2 Klipper modules from live printer.
 
 Run this script ON THE PRINTER via SSH:
-    scp introspect_modules.py root@<printer-ip>:/tmp/
-    ssh root@<printer-ip> python3 /tmp/introspect_modules.py > module_dump.json
+    scp introspect_modules.py root@k2plus:/tmp/
+    ssh root@k2plus python3 /tmp/introspect_modules.py > module_dump.json
+
+For local development with copied .so files:
+    KLIPPER_SOURCE=/path/to/K2_Series_Klipper python3 introspect_modules.py
 
 This extracts accurate method signatures, docstrings, and class structure
 from the compiled Cython modules.
+
+Output JSON is saved to: re/introspection/
 """
 
 import sys
@@ -15,10 +20,17 @@ import os
 import json
 import inspect
 from types import FunctionType, MethodType
+from pathlib import Path
 
 # Add Klipper paths - K2 printer uses /usr/share/klipper/
 # For local development, set KLIPPER_SOURCE environment variable
+# or place .so files in re/from_printer/
 KLIPPER_SOURCE = os.environ.get('KLIPPER_SOURCE', '')
+
+# Detect project root for local development
+SCRIPT_DIR = Path(__file__).parent
+PROJECT_ROOT = SCRIPT_DIR.parent.parent  # re/tools -> re -> k2plus
+LOCAL_FROM_PRINTER = PROJECT_ROOT / 're' / 'from_printer'
 
 KLIPPER_PATHS = [
     '/usr/share/klipper/klippy',
@@ -26,12 +38,14 @@ KLIPPER_PATHS = [
     '/usr/share/klipper/klippy/mymodule',
 ]
 
-# Add fallback paths for local development if KLIPPER_SOURCE is set
+# Add fallback paths for local development
 if KLIPPER_SOURCE:
     KLIPPER_PATHS.extend([
         os.path.join(KLIPPER_SOURCE, 'klippy'),
         os.path.join(KLIPPER_SOURCE, 'klippy/extras'),
     ])
+elif LOCAL_FROM_PRINTER.exists():
+    KLIPPER_PATHS.append(str(LOCAL_FROM_PRINTER))
 
 for path in KLIPPER_PATHS:
     if os.path.exists(path) and path not in sys.path:
@@ -42,6 +56,9 @@ for path in KLIPPER_PATHS:
 if KLIPPER_SOURCE:
     EXTRAS_DIR = os.path.join(KLIPPER_SOURCE, 'klippy/extras')
     MYMODULE_DIR = os.path.join(KLIPPER_SOURCE, 'klippy/mymodule')
+elif LOCAL_FROM_PRINTER.exists():
+    EXTRAS_DIR = str(LOCAL_FROM_PRINTER)
+    MYMODULE_DIR = str(LOCAL_FROM_PRINTER)
 else:
     EXTRAS_DIR = '/usr/share/klipper/klippy/extras'
     MYMODULE_DIR = '/usr/share/klipper/klippy/mymodule'
