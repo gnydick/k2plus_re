@@ -362,23 +362,34 @@ Check if filament is present.
 [addr] 03 FF 05
 ```
 
+**Response:**
+```
+F7 [addr] 04 00 05 [status] [crc]
+```
+
+**Status Values:**
+| Value | Meaning |
+|-------|---------|
+| 0x00  | Filament cleared/ejected |
+| 0x01  | Filament present |
+| 0x02  | No filament (empty slot) |
+
 **Captured Traces:**
 ```
-# Filament status Box 2
+# Filament present
 TX: 02 03 ff 05
 RX: f7 02 04 00 05 01 1e
-     │  │  │  │  │  │  └─ CRC
-     │  │  │  │  │  └──── status=0x01 (filament present)
-     │  │  │  │  └─────── cmd=0x05
-     │  │  │  └────────── status=0x00 (OK)
-     │  │  └───────────── len=0x04
-     │  └──────────────── addr=0x02
-     └─────────────────── header=0xF7
+                    └──── status=0x01 (filament present)
 
-# Filament status when no filament
+# Filament cleared
 TX: 02 03 ff 05
 RX: f7 02 04 00 05 00 1f
-                    └──── status=0x00 (no filament)
+                    └──── status=0x00 (cleared)
+
+# No filament (empty slot)
+TX: 01 03 ff 05
+RX: f7 01 04 00 05 02 17
+                    └──── status=0x02 (no filament)
 ```
 
 ### 0xFF0F - Slot Status Query

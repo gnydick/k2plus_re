@@ -80,6 +80,11 @@ STATE_POS = 3
 MATERIAL_NUM_POS = 4
 BOX_NUM_POS = 5
 
+# Filament status codes (FF05 response) [EXTRACTED from traces]
+FILAMENT_STATUS_CLEARED = 0x00   # Filament ejected/cleared
+FILAMENT_STATUS_PRESENT = 0x01   # Filament present in slot
+FILAMENT_STATUS_EMPTY = 0x02     # No filament (empty slot)
+
 
 class ParseData:
     """Protocol data parsing utilities."""
