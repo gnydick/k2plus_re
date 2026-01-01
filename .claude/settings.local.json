@@ -42,7 +42,8 @@
       "Bash(printf:*)",
       "Bash(nc:*)",
       "Bash(git add:*)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(git revert:*)"
     ]
   }
 }
