@@ -214,7 +214,34 @@ Sensor data format varies by device.
 
 ## Slot-Based Material Commands
 
-These commands target a specific slot within a box. The slot is encoded as byte 5.
+These commands target a specific slot within a box. There is **NO separate "select slot" command**. Instead, the slot is embedded as a parameter in each material operation command.
+
+### How Tnn String is Parsed
+
+The Tnn string (e.g., "T2A") is parsed at the Klipper Python level to extract two values:
+
+```
+Tnn String    →    Box Address    +    Slot Index
+─────────────────────────────────────────────────
+   T1A        →       0x01              0 (A)
+   T1B        →       0x01              1 (B)
+   T1C        →       0x01              2 (C)
+   T1D        →       0x01              3 (D)
+   T2A        →       0x02              0 (A)
+   T2B        →       0x02              1 (B)
+   T3C        →       0x03              2 (C)
+   T4D        →       0x04              3 (D)
+```
+
+**Parsing logic:**
+```python
+# Pseudo-code for Tnn parsing (from box_wrapper.py)
+tnn_string = "T2A"
+box_num = int(tnn_string[1])      # "2" → 2
+slot_letter = tnn_string[2]        # "A"
+box_addr = box_num                 # 0x01, 0x02, 0x03, or 0x04
+slot_index = ord(slot_letter) - ord('A')  # A=0, B=1, C=2, D=3
+```
 
 ### Slot Encoding
 
@@ -224,6 +251,16 @@ These commands target a specific slot within a box. The slot is encoded as byte 
 | B    | 0x01  | T1B, T2B... |
 | C    | 0x02  | T1C, T2C... |
 | D    | 0x03  | T1D, T2D... |
+
+### Packet Structure for Slot Commands
+
+All slot-based commands follow this format:
+```
+[0xF7] [addr] [len] [0x00] [cmd] [slot] [extra...] [crc]
+   0      1      2     3      4     5       6+       last
+                                    ↑
+                              slot goes here
+```
 
 ### 0x20 - Get RFID
 
