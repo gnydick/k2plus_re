@@ -1,0 +1,25 @@
+# Session: T2A Load/Unload Test
+# Date: 2026-01-01 10:54:36
+# Duration: ~6 minutes
+
+## Purpose
+Capture clean T2A filament load and unload sequence for protocol analysis.
+
+## Actions Performed
+1. T2A LOAD - 10:58:39
+2. T2A UNLOAD - 11:00:07
+
+## Captured Files
+- box_20260101_105436.jsonl - Box wrapper method calls
+- filament_rack_20260101_105436.jsonl - Filament rack events
+- serial_485_serial485_20260101_105436.jsonl - RS-485 serial traffic
+- _system_20260101_105436.jsonl - System/reactor events
+
+## Key Findings
+- FF10 = LOAD command (multi-phase: 0x00→0x04→0x05→0x06→0x07)
+- FF11 = UNLOAD command (separate command, not param-based)
+- 5x short 0x05 "stutter" pulses before continuous 0x06 feed
+- ~2s gaps between 0x05 calls remain unexplained
+
+## Related Test Plans
+- tests/motor_timing_control.md - Investigation of timing gaps
