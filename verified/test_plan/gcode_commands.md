@@ -31,7 +31,7 @@ Also available: `T0` through `T15` (alternate numbering)
 
 | Command                       | Parameters          | Description                     |
 |-------------------------------|---------------------|---------------------------------|
-| `CTRL_CONNECTION_MOTOR_ACTION`| `Tnn=T2A ACTION=?`  | Direct motor control            |
+| `BOX_CTRL_CONNECTION_MOTOR_ACTION`| `ADDR=2 ACTION=?`  | Direct motor control (cmd 0x60) |
 | `BOX_EXTRUDE_MATERIAL`        | (unknown)           | Extrude material from box       |
 | `BOX_RETRUDE_MATERIAL`        | (unknown)           | Retract material to box         |
 | `EXTRUDE_PROCESS`             | (unknown)           | Extrusion process               |

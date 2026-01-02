@@ -230,6 +230,43 @@ Subcmd    Duration   Notes
 - [ ] Test 3C: Explain what happens during ~2s gaps (filtered commands? firmware delays?)
 - [ ] Test 3D: Measure actual filament distance and timing dependency
 
+## Alternative: Command 0x60 (BOX_CTRL_CONNECTION_MOTOR_ACTION)
+
+A separate motor control command exists that may provide simpler control:
+
+**Gcode:** `BOX_CTRL_CONNECTION_MOTOR_ACTION ADDR=2 ACTION=<n>`
+
+**Serial format:** `F7 [addr] 05 00 60 [action] 00 [crc]`
+
+| Byte | Field | Description |
+|------|-------|-------------|
+| 0 | header | 0xF7 |
+| 1 | addr | Box address (0x01-0x04) |
+| 2 | len | 0x05 |
+| 3 | status | 0x00 |
+| 4 | cmd | 0x60 |
+| 5 | action | Action parameter (values unknown) |
+| 6 | padding | 0x00 |
+| 7 | crc | CRC8 |
+
+**Example for Box 2:**
+```
+F7 02 05 00 60 01 00 [crc]   (action=1)
+F7 02 05 00 60 00 00 [crc]   (action=0)
+```
+
+**Test procedure:**
+1. Send `BOX_CTRL_CONNECTION_MOTOR_ACTION ADDR=2 ACTION=1`
+2. Observe motor behavior
+3. Send `BOX_CTRL_CONNECTION_MOTOR_ACTION ADDR=2 ACTION=0`
+4. Document what each ACTION value does
+
+**Questions:**
+- What ACTION values are valid? (0, 1, 2, ...?)
+- Does ACTION=1 start motor and ACTION=0 stop it?
+- How does this relate to FF10 commands?
+- Is this used during T2A load sequence? (check trace)
+
 ## Source Trace
 
 `tracing/captures/captures/serial_485_serial485_20260101_105436.jsonl`
