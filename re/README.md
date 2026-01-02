@@ -4,14 +4,16 @@ Analysis and reconstruction of K2 Plus firmware.
 
 ## Structure
 
-| Type | Location | Description |
-|------|----------|-------------|
-| **Discovery** | `from_printer/` | Binaries pulled from device |
-| **Discovery** | `decompiled/` | Ghidra C output |
-| **Discovery** | `introspection/` | Runtime dir() results |
-| **Analysis** | `docs/` | Best theories about firmware behavior |
-| **Analysis** | `reconstructed/` | Reconstructed Python code |
-| **Tools** | `ghidra/`, `tools/` | RE tools and scripts |
+| Directory | Description |
+|-----------|-------------|
+| `from_printer/` | Binaries pulled from device |
+| `decompiled/` | Ghidra C output |
+| `introspection/` | Runtime dir() results |
+| `observations/` | Per-module observations and theories |
+| `reconstructed/` | Reconstructed Python code |
+| `ghidra/` | Ghidra projects |
+| `tools/` | RE scripts |
+| `howto/` | Tool usage documentation |
 
 ## Setup
 
@@ -22,12 +24,10 @@ git clone https://github.com/CrealityOfficial/K2_Series_Klipper.git
 ## Workflow
 
 1. Pull binaries, run Ghidra, inspect runtime → discovery directories
-2. Analyze and theorize → document in `docs/`, code in `reconstructed/`
-3. When verified through testing → promote to `../verified/`
+2. Analyze and theorize → `observations/`, code in `reconstructed/`
+3. Create test plan → `../tests/`
+4. When verified → promote to `../verified/`
 
-## Promotion to verified/
+## How To
 
-Move to `verified/` when:
-- [ ] Hypothesis tested against live system
-- [ ] Behavior matches prediction
-- [ ] Evidence from traces supports conclusion
+- [howto/tools.md](howto/tools.md) - RE tools and scripts usage

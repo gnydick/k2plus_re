@@ -11,27 +11,6 @@ Test plans and procedures for verifying K2 Plus firmware behavior. Observations 
 - [gcode_commands.md](gcode_commands.md) - Available gcode commands for box/filament control
 - [test_scripts.py](test_scripts.py) - Python code for REPL testing
 
-## Connecting to the REPL
+## How To
 
-```bash
-# Best option - with history and line editing
-socat readline tcp:k2plus:9877
-
-# Alternative
-rlwrap nc k2plus 9877
-
-# Basic (no history)
-nc k2plus 9877
-```
-
-## Quick Start
-
-Once connected, paste the helper code from `test_scripts.py` using:
-
-```python
-exec('''
-<paste code here>
-''')
-```
-
-Then use the helper functions like `rs.send()`, `run_gcode()`, etc.
+- [howto/repl.md](howto/repl.md) - Connecting to and using the Klipper REPL
