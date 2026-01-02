@@ -49,7 +49,25 @@
       "Bash(git -C /home/gnydick/IdeaProjects/k2plus diff)",
       "Bash(git -C /home/gnydick/IdeaProjects/k2plus log --oneline -5)",
       "Bash(git -C /home/gnydick/IdeaProjects/k2plus add CLAUDE.md .claude/settings.local.json)",
-      "Bash(git -C /home/gnydick/IdeaProjects/k2plus commit -m \"$\\(cat <<''EOF''\nFix printer.cfg path and add critical config rules\n\nCorrected the printer config path from /usr/data/ to /mnt/UDISK/ and\ndocumented the critical rule about never placing config sections below\nthe #*# auto-generated section. Also added active Klipper module ports.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus commit -m \"$\\(cat <<''EOF''\nFix printer.cfg path and add critical config rules\n\nCorrected the printer config path from /usr/data/ to /mnt/UDISK/ and\ndocumented the critical rule about never placing config sections below\nthe #*# auto-generated section. Also added active Klipper module ports.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus push)",
+      "Bash({ echo \"1+1\")",
+      "Bash(})",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus log --oneline --all -- \"**/*repl*\")",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus show b62587a:tracing/scripts/klipper_repl.py)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus show 326aa71:tracing/scripts/klipper_repl.py)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus add tracing/captures/20260101_202225_filament_ops/)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus commit -m \"$\\(cat <<''EOF''\nAdd filament ops trace session with RS-485 protocol docs\n\nCaptured T1A load and box_quit_material unload sequences.\nDocuments FF10 \\(load\\) and FF11 \\(unload\\) commands, status codes,\nand complete protocol sequences.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus add:*)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus commit -m \"$\\(cat <<''EOF''\nFix REPL hybrid threading and trace disconnect handling\n\nklipper_repl.py:\n- Rewritten with hybrid approach: threading for socket I/O,\n  reactor callbacks for thread-safe Klipper interaction\n- Uses InteractiveConsole for proper multi-line input\n- Added run_gcode\\(\\) helper and rs\\(\\) shortcut for serial_485\n\ntrace_hooks_streaming.py:\n- Fixed disconnect handling to prevent printer crashes\n- Added robust exception handling in client read/disconnect\n- Filter both bytes and _bytes objects for serial polling\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus commit -m \"$\\(cat <<''EOF''\nRemove unused trace_hooks.py \\(replaced by streaming version\\)\n\nThe streaming version \\(trace_hooks_streaming.py\\) is deployed to the\nprinter as trace_hooks.py. This old non-streaming version was unused.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus checkout -- tracing/captures/20260101_202225_filament_ops/session.log)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus commit -m \"$\\(cat <<''EOF''\nAdd PlantUML sequence diagrams for filament operations\n\nDiagrams included:\n- T1A_Load_Sequence: Full load with all 5 phases\n- Unload_Sequence: box_quit_material with PRE/MAIN_RETRACT\n- Layer_Architecture: GCode -> box/rack -> serial_485 -> hardware\n- Wire_Protocol: RS-485 request/response frame format\n- FF10_Subcmds: Load command state machine\n- FF11_Subcmds: Unload command state machine\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(until curl -s \"http://k2plus:7125/printer/info\")",
+      "Bash(do :)",
+      "Bash(java -jar /home/gnydick/.local/share/JetBrains/IntelliJIdea2025.3/plantuml4idea/lib/plantuml-mit-1.2025.4.jar:*)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus status --short tracing/20260101_221648_filament_sensors/diagrams/)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus commit -m \"$\\(cat <<''EOF''\nAdd filament load/unload PlantUML diagrams with SVG/PNG exports\n\n11 PlantUML diagrams documenting FF10 load and FF11 unload protocols:\n- State machines, sequence diagrams, activity diagrams\n- Wire protocol formats, timing diagrams, component architecture\n- Generated SVG and PNG in separate subdirectories\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }

@@ -48,28 +48,6 @@ class TraceHooks:
         # Attribute tracing: (object_name, class_name) -> original __getattribute__
         self.attr_traces = {}
 
-        # Quiet methods - filtered out by default (noisy polling)
-        self.quiet_methods = {
-            'get_status',              # Status polling (~4x/sec)
-            'get_connect_state',       # Connection status check
-            'test_error',              # Error test polling
-            'box_connect_state_check', # Box connection status
-            'connect_state_check',     # Generic connection check
-            'add_send_data',           # Internal serial bookkeeping
-            'remove_send_data',        # Internal serial bookkeeping
-        }
-        # Objects where quiet methods ARE traced (override)
-        self.verbose_objects = set()
-
-        # Quiet serial byte patterns - filtered to reduce noise
-        # These are constant polling commands that flood the trace
-        self.quiet_serial_patterns = {
-            '00a2',    # Online check (cmd 0xA2) - any address
-            'ff0a',    # Sensor read (cmd 0xFF0A) - constant polling
-        }
-        # Set to True to trace ALL serial commands including polling
-        self.trace_serial_polling = False
-
         # Register commands
         self.gcode.register_command('TRACE_ENABLE', self.cmd_TRACE_ENABLE,
             desc="Enable tracing for a method")
@@ -93,18 +71,12 @@ class TraceHooks:
             desc="Show trace status")
         self.gcode.register_command('TRACE_EVERYTHING', self.cmd_TRACE_EVERYTHING,
             desc="Trace all methods on all discovered objects")
-        self.gcode.register_command('TRACE_VERBOSE', self.cmd_TRACE_VERBOSE,
-            desc="Enable/disable verbose mode (get_status) for an object")
-        self.gcode.register_command('TRACE_QUIET', self.cmd_TRACE_QUIET,
-            desc="Show/modify quiet methods list")
         self.gcode.register_command('TRACE_MACRO', self.cmd_TRACE_MACRO,
             desc="Trace a specific GCode macro")
         self.gcode.register_command('TRACE_DEEP', self.cmd_TRACE_DEEP,
             desc="Trace ALL methods including private (_) methods")
         self.gcode.register_command('TRACE_ATTRS', self.cmd_TRACE_ATTRS,
             desc="Trace attribute access on an object")
-        self.gcode.register_command('TRACE_SERIAL_POLLING', self.cmd_TRACE_SERIAL_POLLING,
-            desc="Toggle tracing of serial polling commands (A2, FF0A)")
 
         # Running flag
         self.running = False
@@ -368,25 +340,6 @@ class TraceHooks:
 
         @functools.wraps(original_method)
         def wrapper(*args, **kwargs):
-            # Check if this is a quiet method that should be filtered
-            if method_name in trace_hooks.quiet_methods and object_name not in trace_hooks.verbose_objects:
-                return original_method(*args, **kwargs)
-
-            # Filter noisy serial polling commands unless explicitly enabled
-            if not trace_hooks.trace_serial_polling and 'serial_485' in object_name:
-                # Check first positional arg (after self) for bytes data
-                if len(args) > 1:
-                    first_arg = args[1]
-                    bytes_hex = None
-                    if isinstance(first_arg, bytes):
-                        bytes_hex = first_arg.hex().lower()
-                    elif hasattr(first_arg, '_bytes'):
-                        bytes_hex = first_arg._bytes.hex().lower()
-                    if bytes_hex:
-                        for pattern in trace_hooks.quiet_serial_patterns:
-                            if pattern in bytes_hex:
-                                return original_method(*args, **kwargs)
-
             trace_hooks.call_counter += 1
             call_id = trace_hooks.call_counter
             start_time = time.time()
@@ -705,59 +658,6 @@ class TraceHooks:
             'total': total_enabled,
             'objects': objects_traced
         })
-
-    def cmd_TRACE_VERBOSE(self, gcmd):
-        """Enable/disable verbose mode for an object: TRACE_VERBOSE OBJECT=box [ENABLE=1/0]"""
-        obj_name = gcmd.get('OBJECT', None)
-        enable = gcmd.get_int('ENABLE', -1)
-
-        if obj_name is None:
-            # Show current verbose objects
-            if self.verbose_objects:
-                gcmd.respond_info(f"Verbose objects (get_status traced): {list(self.verbose_objects)}")
-            else:
-                gcmd.respond_info("No objects in verbose mode. get_status is filtered for all.")
-            return
-
-        if enable == -1:
-            # Toggle
-            if obj_name in self.verbose_objects:
-                self.verbose_objects.remove(obj_name)
-                gcmd.respond_info(f"Verbose OFF for {obj_name} - get_status will be filtered")
-            else:
-                self.verbose_objects.add(obj_name)
-                gcmd.respond_info(f"Verbose ON for {obj_name} - get_status will be traced")
-        elif enable:
-            self.verbose_objects.add(obj_name)
-            gcmd.respond_info(f"Verbose ON for {obj_name}")
-        else:
-            self.verbose_objects.discard(obj_name)
-            gcmd.respond_info(f"Verbose OFF for {obj_name}")
-
-    def cmd_TRACE_QUIET(self, gcmd):
-        """Show/modify quiet methods: TRACE_QUIET [ADD=method] [REMOVE=method]"""
-        add_method = gcmd.get('ADD', None)
-        remove_method = gcmd.get('REMOVE', None)
-
-        if add_method:
-            self.quiet_methods.add(add_method)
-            gcmd.respond_info(f"Added '{add_method}' to quiet methods")
-        elif remove_method:
-            self.quiet_methods.discard(remove_method)
-            gcmd.respond_info(f"Removed '{remove_method}' from quiet methods")
-        else:
-            gcmd.respond_info(f"Quiet methods (filtered by default): {list(self.quiet_methods)}")
-
-    def cmd_TRACE_SERIAL_POLLING(self, gcmd):
-        """Toggle tracing of serial polling commands: TRACE_SERIAL_POLLING [ENABLE=1/0]"""
-        enable = gcmd.get_int('ENABLE', None)
-
-        if enable is not None:
-            self.trace_serial_polling = bool(enable)
-
-        status = "ENABLED" if self.trace_serial_polling else "DISABLED (filtering A2, FF0A)"
-        gcmd.respond_info(f"Serial polling trace: {status}")
-        gcmd.respond_info(f"Filtered patterns: {list(self.quiet_serial_patterns)}")
 
     def cmd_TRACE_MACRO(self, gcmd):
         """Trace a specific GCode macro: TRACE_MACRO NAME=BOX_CHECK_MATERIAL"""

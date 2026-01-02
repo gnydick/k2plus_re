@@ -39,3 +39,67 @@
 ### Active Klipper Modules
 - `[trace_hooks]` - Stream port 9876 for protocol tracing
 - `[klipper_repl]` - REPL port 9877 for interactive Python access
+
+---
+
+## Trace Session Rules
+
+### Directory Structure
+Each session lives in `tracing/YYYYMMDD_HHMMSS_<description>/`:
+```
+tracing/20260101_202225_filament_ops/
+├── session.log                    # Human-readable session documentation
+├── sequence_diagrams.puml         # PlantUML diagrams for all flows
+└── captures/                      # Raw trace data (auto-generated)
+    ├── serial_485_serial485_*.jsonl
+    ├── box_*.jsonl
+    ├── filament_rack_*.jsonl
+    └── _system_*.jsonl
+```
+
+### session.log Format
+Use plain text with fixed-width ASCII tables (no markdown tables). Sections:
+
+1. **Header** - Date, status, objectives
+2. **Setup and Givens** - Capture files, REPL setup, helper functions, reference info
+3. **Test Plan** - Commands to execute (manual REPL and GCode)
+4. **Request/Response Pairs** - Actual test outputs with physical observations
+5. **Observations** - Key discoveries, command reference tables, status codes, sequences
+
+### Table Format (ASCII, not markdown)
+```
+  Column1     Column2       Column3
+  ----------  ------------  -----------------------------------------
+  value1      value2        description here
+  value1      value2        description here
+```
+
+### PlantUML Diagrams (sequence_diagrams.puml)
+Create diagrams for:
+- Sequence diagrams showing layer interactions (GCode -> wrapper -> serial -> hardware)
+- State machines for command subcodes
+- Wire protocol format
+- Architecture/component diagrams
+
+### Starting a New Session
+```bash
+# Create session directory
+SESSION=tracing/$(date +%Y%m%d_%H%M%S)_<description>
+mkdir -p $SESSION
+
+# Start trace capture FROM SESSION DIRECTORY (creates captures/ subdir)
+cd $SESSION && python3 ../scripts/trace_capture.py k2plus 9876
+
+# Connect to REPL
+socat readline tcp:k2plus:9877
+```
+
+### Session Workflow
+1. Create session directory and session.log with objectives
+2. Start trace capture
+3. Document test plan in session.log
+4. Execute tests (manual REPL and/or GCode)
+5. Record request/response pairs with physical observations
+6. Analyze traces and document observations
+7. Create PlantUML diagrams for discovered flows
+8. Commit session files

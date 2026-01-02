@@ -1,0 +1,299 @@
+# Trace Session: Filament Operations
+Date: 2026-01-01 20:22:25
+Status: COMPLETE
+
+---
+
+# 1. Setup and Givens
+
+## Objectives
+- Capture filament load/unload sequences
+- Document material box protocol exchanges
+- Trace T1A and related slot commands
+
+## Capture Files
+```
+captures/serial_485_serial485_20260101_211540.jsonl  (31KB) - All RS-485 commands
+captures/box_20260101_211540.jsonl                   (2KB)  - Box wrapper calls
+captures/filament_rack_20260101_211540.jsonl         (395B) - Filament rack calls
+captures/_system_20260101_211540.jsonl               (12KB) - System/trace events
+```
+
+## REPL Setup
+```python
+s = lookup('serial_485 serial485')
+# or
+s = rs()
+```
+
+## Decode Helper
+```python
+def decode(resp):
+    if resp is None:
+        return "No response"
+    b = bytes(resp) if not isinstance(resp, bytes) else resp
+    h = b.hex()
+    if len(b) < 4:
+        return f"Too short: {h}"
+    prefix = b[0]
+    addr = b[1]
+    length = b[2]
+    status = b[3]
+    status_map = {0x00: "OK", 0x01: "ERROR", 0x02: "BUSY"}
+    status_str = status_map.get(status, f"0x{status:02x}")
+    if len(b) > 4:
+        cmd = b[4]
+        data = b[5:-1] if len(b) > 6 else b""
+        crc = b[-1]
+        cmd_map = {
+            0x0a: "BOX_STATE", 0x08: "MOTOR_ENABLE", 0x10: "MOTOR_CMD",
+            0x04: "SET_MODE", 0x0f: "SENSOR", 0xa2: "ONLINE_CHECK",
+            0x0d: "RFID_DATA", 0x14: "GET_VERSION", 0x15: "HW_STATUS"
+        }
+        cmd_str = cmd_map.get(cmd, f"0x{cmd:02x}")
+        print(f"Raw: {h}")
+        print(f"Addr: 0x{addr:02x} | Len: {length} | Status: {status_str} | Cmd: {cmd_str}")
+        if data:
+            print(f"Data: {data.hex()} ({list(data)})")
+        return {"addr": addr, "status": status, "cmd": cmd, "data": data}
+    else:
+        print(f"Raw: {h}")
+        print(f"Addr: 0x{addr:02x} | Len: {length} | Status: {status_str}")
+        return {"addr": addr, "status": status}
+```
+
+## LED Status Reference
+Source: https://wiki.creality.com/en/cfs/status-indicator-explaination
+
+- **Slow white blink** = Printing state (filament loaded successfully)
+- **Double red blink** = Filament failed to load (status 0x0c)
+- **Solid colors** = Material type identification
+
+---
+
+# 2. Test Plan
+
+## Manual Tests (Box 1, addr=0x01)
+
+### Setup Commands
+```python
+# Check box state
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 03 ff 0a"), 2, False))
+
+# Enable motor
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 04 ff 08 01"), 2, False))
+```
+
+### FF10 Load Commands
+```python
+# subcmd=00: HANDOFF
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 00 00"), 5, False))
+
+# subcmd=04: PRE-FEED
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 04 00"), 5, False))
+
+# subcmd=05: START FEED
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 05 00"), 5, False))
+
+# subcmd=07: STOP
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 07 00"), 5, False))
+```
+
+### FF11 Unload Commands
+```python
+# subcmd=00: PRE-RETRACT
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 11 01 00 00"), 5, False))
+
+# subcmd=01: MAIN RETRACT
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 11 01 01 00"), 5, False))
+```
+
+### Cleanup
+```python
+# Disable motor
+decode(s.cmd_send_data_with_response(bytes.fromhex("01 04 ff 08 00"), 2, False))
+```
+
+## GCode Trace Tests
+- T1A load via `Tn_action(T1A)`
+- Unload via `box_quit_material`
+
+---
+
+# 3. Request/Response Pairs
+
+## Manual Test Results (2026-01-01 21:15+)
+
+**Box State Query:**
+```
+>>> decode(s.cmd_send_data_with_response(bytes.fromhex("01 03 ff 0a"), 2, False))
+Raw: f70107000a1a2900004c
+Addr: 0x01 | Len: 7 | Status: OK | Cmd: BOX_STATE
+Data: 1a290000 ([26, 41, 0, 0])
+```
+
+**Motor Enable:**
+```
+>>> decode(s.cmd_send_data_with_response(bytes.fromhex("01 04 ff 08 01"), 2, False))
+Raw: f70104000800f0
+Addr: 0x01 | Len: 4 | Status: OK | Cmd: MOTOR_ENABLE
+```
+
+**FF10 subcmd=00 HANDOFF:**
+```
+>>> decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 00 00"), 5, False))
+Raw: f701040010000f
+Addr: 0x01 | Len: 4 | Status: OK | Cmd: MOTOR_CMD
+Physical: Feeds filament from box helper motor to hub/buffer motor
+```
+
+**FF10 subcmd=04 PRE-FEED:**
+```
+>>> decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 04 00"), 5, False))
+Raw: f701030010cd
+Addr: 0x01 | Len: 3 | Status: OK | Cmd: MOTOR_CMD
+Physical: LED blinking red 2x on repeat
+```
+
+**FF10 subcmd=05 START FEED (without extrusion):**
+```
+>>> decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 05 00"), 5, False))
+Raw: f701070c10c50c42fe51
+Addr: 0x01 | Len: 7 | Status: 0x0c | Cmd: MOTOR_CMD
+Data: c50c42fe ([197, 12, 66, 254])
+Physical: Status 0x0c = LOAD FAILED, LED double blink
+```
+
+**FF10 subcmd=05 START FEED (WITH extrusion active):**
+```
+>>> decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 05 00"), 5, False))
+Raw: f701070010c50c4d7aec
+Addr: 0x01 | Len: 7 | Status: OK | Cmd: MOTOR_CMD
+Data: c50c4d7a ([197, 12, 77, 122])
+Physical: OK when filament is actively moving
+```
+
+**FF10 subcmd=07 STOP:**
+```
+>>> decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 10 01 07 00"), 5, False))
+Raw: f701030010cd
+Addr: 0x01 | Len: 3 | Status: OK | Cmd: MOTOR_CMD
+Physical: Clears error state (double blink), returns to normal
+```
+
+**FF11 subcmd=00 UNLOAD (manual attempt):**
+```
+>>> decode(s.cmd_send_data_with_response(bytes.fromhex("01 06 ff 11 01 00 00"), 5, False))
+Raw: f701030111df
+Addr: 0x01 | Len: 3 | Status: ERROR | Cmd: 0x11
+Physical: ERROR - printer doesn't believe any slot is loaded
+```
+
+---
+
+# 4. Observations
+
+## Key Discoveries
+- FF10 = Load commands (subcmds 00, 04, 05, 06, 07)
+- FF11 = Unload commands (subcmds 00, 01)
+- Status 0x0c = LOAD_FAILED
+- Subcmd=07 uses value 03 in actual firmware sequence, not 00
+- ff05 = status polling during stop loop
+- ff0e = encoder/position query during flush
+
+## Command Reference
+
+  Command        Name           Description
+  -------------  -------------  -----------------------------------------------
+  ff04 XX YY     SET_MODE       XX=slot, YY=mode (00=normal, 01=loading)
+  ff05           STATUS_QUERY   Returns 01=busy, 00=complete
+  ff08 XX        MOTOR_ENABLE   XX=00 disable, 01 enable
+  ff0a           BOX_STATE      Query box status
+  ff0e XX        ENCODER_QUERY  XX=slot, returns position data
+  ff0f XX        SENSOR_QUERY   XX=mode? Returns sensor status
+  ff10 VV SS DD  LOAD_CMD       VV=variant, SS=subcmd, DD=data
+  ff11 VV SS DD  UNLOAD_CMD     VV=variant, SS=subcmd, DD=data
+
+## Status Codes
+
+  Code  Meaning
+  ----  -----------
+  0x00  OK
+  0x01  ERROR
+  0x02  BUSY
+  0x0c  LOAD_FAILED
+
+## FF10 Subcmd Reference (Load)
+
+  Subcmd  Name        Notes
+  ------  ----------  -----------------------------------------------
+  00      HANDOFF     Box motor to hub motor (~4.5s) - CONFIRMED
+  04      PRE_FEED    Prepare for feed - CONFIRMED
+  05      START_FEED  Wait for sensor, 0x0c on timeout - CONFIRMED
+  06      CONTINUE    Called after 05 (observed in trace)
+  07      STOP        Value=03 used in firmware sequence - CONFIRMED
+
+## FF11 Subcmd Reference (Unload)
+
+  Subcmd  Name          Notes
+  ------  ------------  -----------------------------------------------
+  00      PRE_RETRACT   Called 4x, ~250-500ms each (observed in trace)
+  01      MAIN_RETRACT  Main retract ~18s (observed in trace)
+
+**Note:** FF11 observed in trace but not manually confirmed. Requires slot to be in "loaded" state.
+
+## Complete T1A Load Sequence (from trace)
+
+**Timing:** Tn_action(T1A) = ~107 seconds total, flush = ~45 seconds
+
+### Phase 1: Pre-load Setup
+```
+ff08 01      -> Motor enable (all 4 boxes)
+ff08 00      -> Motor disable
+ff04 00 01   -> SET_MODE = loading
+ff0f 01      -> Sensor query
+```
+
+### Phase 2: Load Sequence
+```
+ff10 01 00 00  -> HANDOFF (~4.5s)
+ff10 01 04 00  -> PRE_FEED
+ff10 01 05 00  -> START_FEED (0x0c if timeout)
+ff10 01 06 00  -> CONTINUE
+ff10 01 07 03  -> STOP (value=03)
+```
+
+### Phase 3: Stop Loop
+```
+ff05           -> Query status (01=busy, 00=complete)
+ff10 01 07 03  -> Stop (repeated until ff05 returns 00)
+```
+
+### Phase 4: Post-load
+```
+ff04 01 00  -> SET_MODE = normal
+ff0f 00     -> Sensor query
+```
+
+### Phase 5: Flushing
+```
+material_change_flush(None, T1A)
+get_flush_len() -> 180.0mm
+ff0e 01         -> Encoder query (polled during flush)
+get_material_target_speed(type=000001) -> 350mm/s
+```
+
+## Complete Unload Sequence (box_quit_material, from trace)
+
+**Timing:** ~20 seconds total
+
+```
+ff04 00 01   -> SET_MODE = loading
+ff08 00      -> Motor disable
+ff11 01 00   -> PRE_RETRACT (x4, ~250-500ms each)
+ff11 01 01   -> MAIN_RETRACT (~18s)
+```
+
+**Notes:**
+- FF11 subcmd=00 requires slot to be in "loaded" state
+- FF11 subcmd=01 is the main retract operation

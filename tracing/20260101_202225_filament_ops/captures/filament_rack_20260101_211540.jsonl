@@ -1,0 +1,2 @@
+{"type": "call", "id": 71, "time": 1767332319.8007152, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "get_material_target_speed", "args": "type=000001"}
+{"type": "return", "id": 71, "time": 1767332319.8495352, "object": "filament_rack", "class": "FilamentRackWrapper", "method": "get_material_target_speed", "result": 350.00000000000006, "duration_ms": 48.80118370056152}

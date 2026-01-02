@@ -1,0 +1,225 @@
+# Trace Session: Filament Sensors
+Date: 2026-01-01 22:16:48
+Status: COMPLETE
+
+---
+
+# 1. Setup and Givens
+
+## Objectives
+- Identify all sensors involved in filament load/unload operations
+- Map sensor queries (ff0f) to physical sensor locations
+- Capture sensor state changes during load/unload cycles
+- Document sensor-related commands and their responses
+- Build on previous session findings (ff10/ff11 load/unload commands)
+
+## Known from Previous Session
+- ff0f XX = SENSOR_QUERY (XX=mode?)
+- ff0e XX = ENCODER_QUERY (XX=slot, returns position data)
+- Sensors are queried during pre-load setup and post-load
+- Encoder is polled during flush phase
+
+## Capture Files
+```
+Session: 20260101_235813
+Total events: 2,363,223
+Parameter samples: 5,646
+
+Files:
+  serial_485_serial485_*.jsonl     - RS-485 wire protocol
+  box_*.jsonl                      - Material box wrapper
+  filament_rack_*.jsonl            - Filament rack wrapper
+  motor_control_*.jsonl            - Motor control
+  gcode_macro_BOX_*_*.jsonl        - GCode macro traces
+```
+
+## REPL Setup
+```python
+s = rs()  # shortcut for serial_485
+
+def decode(resp):
+    if resp is None:
+        return "No response"
+    b = bytes(resp) if not isinstance(resp, bytes) else resp
+    h = b.hex()
+    if len(b) < 4:
+        return f"Too short: {h}"
+    prefix = b[0]
+    addr = b[1]
+    length = b[2]
+    status = b[3]
+    status_map = {0x00: "OK", 0x01: "ERROR", 0x02: "BUSY"}
+    status_str = status_map.get(status, f"0x{status:02x}")
+    if len(b) > 4:
+        cmd = b[4]
+        data = b[5:-1] if len(b) > 6 else b""
+        crc = b[-1]
+        cmd_map = {
+            0x0a: "BOX_STATE", 0x08: "MOTOR_ENABLE", 0x10: "LOAD_CMD",
+            0x11: "UNLOAD_CMD", 0x04: "SET_MODE", 0x0f: "SENSOR",
+            0x05: "STATUS_QUERY", 0x0e: "ENCODER", 0xa2: "ONLINE_CHECK",
+            0x0d: "RFID_DATA", 0x14: "GET_VERSION", 0x15: "HW_STATUS"
+        }
+        cmd_str = cmd_map.get(cmd, f"0x{cmd:02x}")
+        print(f"Raw: {h}")
+        print(f"Addr: 0x{addr:02x} | Len: {length} | Status: {status_str} | Cmd: {cmd_str}")
+        if data:
+            print(f"Data: {data.hex()} ({list(data)})")
+        return {"addr": addr, "status": status, "cmd": cmd, "data": data}
+    else:
+        print(f"Raw: {h}")
+        print(f"Addr: 0x{addr:02x} | Len: {length} | Status: {status_str}")
+        return {"addr": addr, "status": status}
+```
+
+## Suspected Sensors
+- Filament presence sensor (in material box)
+- Filament flow sensor / encoder (tracks movement)
+- Hub/buffer sensor (detects filament at hub)
+- Toolhead filament sensor (at extruder)
+
+---
+
+# 2. Test Plan
+
+## Full Slot Load/Unload Cycle (All 8 Slots)
+
+For each slot, execute load then unload while capturing traces:
+
+  Slot  Box   Command Sequence
+  ----  ----  ------------------------------------------
+  T1A   1     T1A -> wait ready -> box_quit_material
+  T1B   1     T1B -> wait ready -> box_quit_material
+  T2A   2     T2A -> wait ready -> box_quit_material
+  T2B   2     T2B -> wait ready -> box_quit_material
+  T3A   3     T3A -> wait ready -> box_quit_material
+  T3B   3     T3B -> wait ready -> box_quit_material
+  T4A   4     T4A -> wait ready -> box_quit_material
+  T4B   4     T4B -> wait ready -> box_quit_material
+
+## Traced Objects
+- box (MultiColorMeterialBoxWrapper)
+- filament_rack (FilamentRackWrapper)
+- serial_485 (RS-485 transport)
+- filament_switch_sensor filament_sensor
+
+## Data to Capture
+- ff0f SENSOR_QUERY calls and responses
+- ff0e ENCODER_QUERY during flush
+- filament_switch_sensor state changes
+- Timing of sensor queries relative to physical operations
+
+---
+
+# 3. Request/Response Pairs
+
+## FF10 Load Command Phases
+
+  Subcmd  Name               Description
+  ------  -----------------  ------------------------------------------
+  0x00    INIT               Initialize load for slot
+  0x04    SENSOR_DETECTED    Filament detected at box sensor
+  0x05    FEED_TO_EXTRUDER   Pushing filament toward extruder
+  0x06    FLUSH              Final flush/purge operation
+  0x07    COMPLETE           Load complete (param=0x03 = success)
+
+Example sequence (T1A load):
+```
++0ms      0106ff10010000  INIT slot=1
++580ms    0106ff10010400  SENSOR_DETECTED
++4770ms   0106ff10010500  FEED_TO_EXTRUDER
++14010ms  0106ff10010600  FLUSH
++20609ms  0106ff10010703  COMPLETE (success)
+```
+
+## FF11 Unload Command Phases
+
+  Subcmd  Name          Description
+  ------  ------------  ------------------------------------------
+  0x00    POLLING       Wait/poll during retract (~5-7s intervals)
+  0x01    COMPLETE      Unload finished
+
+Wire format: ADDR 05 FF 11 SLOT SUBCMD
+  - ADDR: Box address (01=Box1, 03=Box3, etc)
+  - SLOT: Slot within box (01=A, 02=B)
+
+## Unload Durations
+
+  Slot  Box  Duration  Polls
+  ----  ---  --------  -----
+  T1A   1    10.7s     4
+  T1B   1    23.1s     4
+  T3A   3    20.4s     4
+  T3B   3    19.0s     4
+
+---
+
+# 4. Observations
+
+## Load Workflow Analysis
+
+  Metric              Value       Notes
+  ------------------  ----------  ------------------------------------------
+  Load duration       20-32s      Varies by slot/material
+  SENSOR_DETECTED     ~580ms      Consistent across slots
+  FEED_TO_EXTRUDER    ~5000ms     Multiple retries possible
+  FLUSH phase         ~14000ms    Purge before complete
+  First COMPLETE      ~20-30s     Signals success
+
+## Environmental Parameters
+
+  Parameter     Range     Notes
+  ------------  --------  ------------------------------------------
+  Temperature   26-27C    All 4 boxes consistent
+  Humidity      43-47%    Dry box levels
+  Velocity      350-450   Feed rate varies by material
+
+## Key Findings
+
+1. Load operations use FF10 command with 5 distinct phases
+2. Unload operations use FF11 with simpler 2-phase protocol
+3. Temperature/humidity remain stable during operations
+4. Velocity varies by slot (350 for some, 450 for others)
+5. Multiple COMPLETE phase polls indicate async completion
+6. FEED_TO_EXTRUDER may run multiple times (retries)
+7. Box address in command indicates which material box (01-04)
+
+## Unload Workflow Analysis
+
+  Metric              Value       Notes
+  ------------------  ----------  ------------------------------------------
+  Unload duration     10-23s      Faster than load
+  Polling interval    ~5-7s       Repeated until complete
+  Protocol            Simpler     Just POLLING -> COMPLETE
+
+## Slots Tested
+
+  Slot  Load    Unload  Purge   Velocity  Color Transition
+  ----  ------  ------  ------  --------  ------------------------------------------
+  T1A   20.6s   10.7s   4.7s    450       #ffffff (white) -> #26eeee (cyan)
+  T1B   29.0s   23.1s   6.6s    350       #26eeee (cyan)  -> #ffffff (white)
+  T3A   32.5s   20.4s   9.3s    450       #ffffff (white) -> #ff1e1e (red)
+  T3B   28.6s   19.0s   6.6s    450       #ff1e1e (red)   -> #000000 (black)
+  T4A   26.8s   -       6.6s    450       #000000 (black) -> #72a530 (green) [interrupted]
+
+Velocity unit: mm/min from filament_rack.remain_material_velocity
+
+## Encoder Data (FF0E)
+
+Encoder queries (ff0e) occur after FLUSH phase (+17-100s) for verification.
+
+  Box  Queries  Total Ticks   Est. Distance
+  ---  -------  ------------  -------------
+  1    6        1,578,813     ~1580mm
+  3    5        529,909       ~530mm
+  4    2        589,771       ~590mm
+
+Note: Encoder tick-to-mm conversion uncertain. Queries are sparse and
+occur post-operation, likely for position verification rather than control.
+
+## Load vs Unload Comparison
+
+  Operation  Duration    Phases  Complexity
+  ---------  ----------  ------  ------------------------------------------
+  Load       20-32s      5       INIT->SENSOR->FEED->FLUSH->COMPLETE
+  Unload     10-23s      2       POLLING->COMPLETE
