@@ -1,0 +1,27 @@
+@startuml Timing_Unload
+title Unload Timing Diagram
+skinparam backgroundColor #FEFEFE
+
+robust "Motor" as Motor
+robust "Filament" as Filament
+concise "Phase" as Phase
+
+@0
+Phase is POLLING
+Motor is Reverse
+Filament is InExtruder
+
+@5000
+Phase is POLLING
+Filament is Retracting
+
+@10000
+Phase is POLLING
+Filament is Retracting
+
+@15000
+Phase is COMPLETE
+Motor is Idle
+Filament is InBox
+
+@enduml

@@ -1,0 +1,64 @@
+@startuml Load_Sequence
+title Filament Load Sequence (FF10)
+skinparam backgroundColor #FEFEFE
+
+participant "GCode\nMacro" as GCode
+participant "box\n(MaterialBox)" as Box
+participant "serial_485" as Serial
+participant "Material\nBox HW" as HW
+participant "filament_rack" as Rack
+
+== Initialization (0s to ~4.4s) ==
+GCode -> Box: T1A (load slot 1)
+Box -> Serial: cmd_send(FF10 01 00) INIT
+Serial -> HW: RS-485 frame
+note right of HW #LightYellow
+  **BLOCKING**: Motor runs for ~4.4s
+  Feeds filament until sensor triggered
+end note
+HW --> Serial: status=OK (after ~4.4s)
+Serial --> Box: response
+
+== Sensor Detection (~4.4s, instant) ==
+Box -> Serial: cmd_send(FF10 01 04) SENSOR_DETECTED
+Serial -> HW: RS-485 frame
+HW --> Serial: ACK (~68ms)
+note right of HW: Confirmation only\n(not a waiting state)
+
+== Feed to Extruder (~4.5s to ~15.9s) ==
+loop Poll until filament at extruder
+    Box -> Serial: cmd_send(FF10 01 05) FEED_TO_EXTRUDER
+    Serial -> HW: RS-485 frame
+    alt In Progress
+        HW --> Serial: status=0x0C (in progress)
+        note right of HW: Motor pushing\nfilament forward
+    else Done
+        HW --> Serial: status=OK
+    end
+end
+
+== Flush/Purge Phase (~15.9s to ~20.6s, duration ~4.7s) ==
+Box -> Serial: cmd_send(FF10 01 06) FLUSH
+Serial -> HW: RS-485 frame
+HW --> Serial: status=OK
+note right of HW: Purge old color\nfrom nozzle
+Rack -> Rack: velocity=450mm/min
+
+== Completion (~20.6s, total load time) ==
+note over Box, HW
+  **NOTE**: Despite being called "COMPLETE", this is NOT
+  a polling loop. Status is always OK immediately.
+  The 4x repetition appears to be for confirmation/reliability,
+  not waiting for completion. Actual polling occurs during
+  FEED_TO_EXTRUDER phase (status=0x0C until done).
+end note
+
+loop Confirm completion (4x)
+    Box -> Serial: cmd_send(FF10 01 07 03) COMPLETE
+    Serial -> HW: RS-485 frame
+    HW --> Serial: status=OK (always)
+end
+
+Box --> GCode: Load complete
+
+@enduml

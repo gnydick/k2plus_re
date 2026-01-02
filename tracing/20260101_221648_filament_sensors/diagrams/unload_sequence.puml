@@ -1,0 +1,33 @@
+@startuml Unload_Sequence
+title Filament Unload Sequence (FF11)
+skinparam backgroundColor #FEFEFE
+
+participant "GCode\nMacro" as GCode
+participant "box\n(MaterialBox)" as Box
+participant "serial_485" as Serial
+participant "Material\nBox HW" as HW
+
+== Initialization ==
+GCode -> Box: box_quit_material
+Box -> Serial: cmd_send(FF11 01 00) POLLING
+Serial -> HW: RS-485 frame
+HW --> Serial: ACK (status=BUSY)
+note right of HW: Start retract motor
+
+== Retract Polling (~5-7s intervals) ==
+loop Every 5-7 seconds
+    Box -> Serial: cmd_send(FF11 01 00) POLLING
+    Serial -> HW: RS-485 frame
+    HW --> Serial: status=BUSY
+    note right of HW: Motor still\nretracting
+end
+
+== Completion (10-23s total) ==
+Box -> Serial: cmd_send(FF11 01 01) COMPLETE
+Serial -> HW: RS-485 frame
+HW --> Serial: status=OK
+note right of HW: Filament fully\nretracted to box
+
+Box --> GCode: Unload complete
+
+@enduml

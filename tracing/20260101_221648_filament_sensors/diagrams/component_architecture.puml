@@ -1,0 +1,43 @@
+@startuml Component_Architecture
+title Material Box System Architecture
+skinparam backgroundColor #FEFEFE
+
+package "Klipper Host" {
+    [GCode Macros] as Macros
+    [box\n(MaterialBoxWrapper)] as BoxWrapper
+    [filament_rack\n(FilamentRackWrapper)] as RackWrapper
+    [serial_485\n(Serial_485_Wrapper)] as SerialWrapper
+}
+
+package "RS-485 Bus" {
+    interface "Serial Port" as SerialPort
+}
+
+package "Material Box Hardware" {
+    [Box 1\n(addr=0x01)] as Box1
+    [Box 2\n(addr=0x02)] as Box2
+    [Box 3\n(addr=0x03)] as Box3
+    [Box 4\n(addr=0x04)] as Box4
+
+    [Motor Controller] as Motor
+    [Filament Sensor] as Sensor
+    [Encoder] as Encoder
+    [RFID Reader] as RFID
+}
+
+Macros --> BoxWrapper : T1A, box_quit_material
+BoxWrapper --> SerialWrapper : cmd_send()
+BoxWrapper --> RackWrapper : get velocity
+SerialWrapper --> SerialPort : RS-485 frames
+
+SerialPort --> Box1
+SerialPort --> Box2
+SerialPort --> Box3
+SerialPort --> Box4
+
+Box1 --> Motor
+Box1 --> Sensor
+Box1 --> Encoder
+Box1 --> RFID
+
+@enduml

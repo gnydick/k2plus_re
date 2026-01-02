@@ -1,0 +1,41 @@
+@startuml Load_State_Machine
+title Load State Machine (FF10 Subcmds)
+skinparam backgroundColor #FEFEFE
+
+note as N1
+  **Idiosyncrasies:**
+  - INIT is blocking (~4.4s) - feeds filament to box sensor
+  - SENSOR_DETECTED is instant confirmation, not a waiting state
+  - FEED_TO_EXTRUDER is the actual polling phase (status=0x0C until OK)
+  - COMPLETE always returns OK immediately; 4x repetition is for confirmation
+  - Subcmd values skip 01-03 (0x00, 0x04, 0x05, 0x06, 0x07)
+end note
+
+[*] --> INIT : FF10 xx 00
+
+INIT --> SENSOR_DETECTED : FF10 xx 04\n(@~4.4s)
+INIT : Entry: Initialize slot
+INIT : Motor: Running
+INIT : Duration: ~4.4s (blocking)
+
+SENSOR_DETECTED --> FEED_TO_EXTRUDER : FF10 xx 05\n(@~4.5s)
+SENSOR_DETECTED : Filament at box sensor
+SENSOR_DETECTED : Motor: Starting
+
+FEED_TO_EXTRUDER --> FEED_TO_EXTRUDER : status=0x0C\n(in progress)
+FEED_TO_EXTRUDER --> FLUSH : status=OK\nFF10 xx 06\n(@~15.9s)
+FEED_TO_EXTRUDER : Pushing to extruder
+FEED_TO_EXTRUDER : Motor: Running
+FEED_TO_EXTRUDER : Velocity: 350-450mm/min
+
+FLUSH --> COMPLETE : FF10 xx 07\n(@~20.6s)
+FLUSH : Purging old material
+FLUSH : Motor: Running
+FLUSH : Duration: ~4.7s
+
+COMPLETE --> COMPLETE : Confirm (4x)
+COMPLETE --> [*] : All confirmed
+COMPLETE : status=OK always
+COMPLETE : Motor: Stopped
+
+@enduml

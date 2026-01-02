@@ -1,0 +1,25 @@
+@startuml Unload_Activity
+title Unload Activity Diagram
+skinparam backgroundColor #FEFEFE
+
+start
+
+:Receive box_quit_material;
+:Initialize unload (POLLING);
+
+:Reverse motor direction;
+
+repeat
+  :Retract filament;
+  :Wait 5-7 seconds;
+  :Send POLLING status;
+repeat while (Filament in box?) is (no)
+-> yes;
+
+:Signal COMPLETE;
+:Stop motor;
+
+:Unload finished;
+stop
+
+@enduml

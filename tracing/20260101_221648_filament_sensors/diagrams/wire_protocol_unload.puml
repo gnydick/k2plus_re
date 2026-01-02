@@ -1,0 +1,41 @@
+@startuml Wire_Protocol_Unload
+title FF11 Unload Command Wire Format
+skinparam backgroundColor #FEFEFE
+
+rectangle "Request Frame" {
+    rectangle "ADDR\n(1 byte)" as R1 #LightBlue
+    rectangle "LEN\n0x05" as R2 #LightGreen
+    rectangle "CMD\nFF 11" as R3 #LightYellow
+    rectangle "SLOT\n(1 byte)" as R4 #LightPink
+    rectangle "SUBCMD\n(1 byte)" as R5 #LightCoral
+}
+
+rectangle "Response Frame" {
+    rectangle "PREFIX\n0xF7" as S1 #LightBlue
+    rectangle "ADDR\n(1 byte)" as S2 #LightGreen
+    rectangle "LEN\n(1 byte)" as S3 #LightYellow
+    rectangle "STATUS\n(1 byte)" as S4 #LightPink
+    rectangle "CMD\n0x11" as S5 #LightCoral
+    rectangle "DATA\n(variable)" as S6 #LightGray
+    rectangle "CRC\n(1 byte)" as S7 #Wheat
+}
+
+note bottom of R4
+  SLOT values:
+  01 = Slot A
+  02 = Slot B
+end note
+
+note bottom of R5
+  SUBCMD values:
+  00 = POLLING (wait)
+  01 = COMPLETE
+end note
+
+note bottom of S4
+  STATUS during unload:
+  00 = OK (done)
+  02 = BUSY (retracting)
+end note
+
+@enduml

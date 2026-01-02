@@ -1,0 +1,25 @@
+@startuml Unload_State_Machine
+title Unload State Machine (FF11 Subcmds)
+skinparam backgroundColor #FEFEFE
+
+note as N1
+  **Idiosyncrasies:**
+  - COMPLETE is blocking (~17s) - main retract happens here
+  - Small "micro-movements" audible before main retract
+    are likely firmware-internal (not exposed in protocol)
+  - Only evidence would be encoder readings (FF0E)
+  - POLLING phases have quick responses (~500ms)
+end note
+
+[*] --> POLLING : FF11 xx 00
+
+POLLING --> POLLING : Every 5-7s\nstatus=BUSY
+POLLING --> COMPLETE : FF11 xx 01\n(10-23s total)
+POLLING : Retracting filament
+POLLING : Motor: Reverse
+
+COMPLETE --> [*] : status=OK
+COMPLETE : Filament in box
+COMPLETE : Motor: Stopped
+
+@enduml

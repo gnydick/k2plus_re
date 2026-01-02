@@ -1,0 +1,46 @@
+@startuml Load_Activity
+title Load Activity Diagram
+skinparam backgroundColor #FEFEFE
+
+start
+
+:Receive TnX command;
+
+partition "INIT Phase (~4.4s blocking)" #LightYellow {
+  :Send INIT command (FF10 xx 00);
+  :Motor feeds filament to box sensor;
+  note right
+    Hardware blocks until sensor triggered
+  end note
+  :Wait for INIT response (~4.4s);
+}
+
+:SENSOR_DETECTED (instant confirmation);
+
+:Begin FEED_TO_EXTRUDER;
+
+repeat
+  :Send FEED_TO_EXTRUDER cmd;
+  :Check status;
+repeat while (status=0x0C?) is (yes)
+-> no (status=OK);
+
+:Begin FLUSH phase;
+:Purge old color (4-9s);
+note right
+  Purge time varies by
+  color transition:
+  - Similar colors: ~4.7s
+  - Different colors: ~9.3s
+end note
+
+:Send COMPLETE (4x for confirmation);
+note right
+  COMPLETE always returns OK
+  Multiple sends for reliability
+end note
+
+:Load finished;
+stop
+
+@enduml

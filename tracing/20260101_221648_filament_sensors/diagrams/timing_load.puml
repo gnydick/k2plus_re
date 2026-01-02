@@ -1,0 +1,58 @@
+@startuml Timing_Load
+title Load Timing Diagram (T1A actual data)
+skinparam backgroundColor #FEFEFE
+
+robust "Motor" as Motor
+robust "Sensor" as Sensor
+robust "Status" as Status
+concise "Phase" as Phase
+
+@0
+Phase is INIT
+Motor is "Running (short push)"
+Sensor is Empty
+Status is "Blocking (4.4s)"
+
+@4444
+Phase is SENSOR_DETECTED
+Motor is "Transitioning"
+Sensor is Detected
+Status is OK
+
+@4519
+Phase is FEED_TO_EXTRUDER
+Motor is Running
+Status is "0x0C (polling)"
+
+@15861
+Phase is FLUSH
+Motor is Running
+Status is OK
+
+@20583
+Phase is COMPLETE
+Motor is Idle
+Status is "OK (4x confirm)"
+
+@20600
+Phase is Done
+
+note bottom of Phase
+  Total load time: ~20.6s
+  FLUSH duration: ~4.7s
+  Times are offsets from INIT, not phase durations
+end note
+
+note bottom of Status
+  INIT: blocking call (~4.4s) - motor runs during this time
+  FEED_TO_EXTRUDER: actual polling phase (status=0x0C)
+  COMPLETE: always returns OK immediately
+end note
+
+note bottom of Motor
+  Two motor phases:
+  1. INIT: feed to box sensor (~4.4s)
+  2. FEED_TO_EXTRUDER: long push to extruder (~11s)
+end note
+
+@enduml
