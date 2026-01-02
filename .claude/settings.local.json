@@ -43,7 +43,8 @@
       "Bash(nc:*)",
       "Bash(git add:*)",
       "Bash(ping:*)",
-      "Bash(git revert:*)"
+      "Bash(git revert:*)",
+      "Bash(git mv:*)"
     ]
   }
 }
