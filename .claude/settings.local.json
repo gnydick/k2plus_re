@@ -44,7 +44,12 @@
       "Bash(git add:*)",
       "Bash(ping:*)",
       "Bash(git revert:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus status)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus diff)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus log --oneline -5)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus add CLAUDE.md .claude/settings.local.json)",
+      "Bash(git -C /home/gnydick/IdeaProjects/k2plus commit -m \"$\\(cat <<''EOF''\nFix printer.cfg path and add critical config rules\n\nCorrected the printer config path from /usr/data/ to /mnt/UDISK/ and\ndocumented the critical rule about never placing config sections below\nthe #*# auto-generated section. Also added active Klipper module ports.\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }
