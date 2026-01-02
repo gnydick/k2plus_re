@@ -14,6 +14,6 @@ Each session directory contains:
 - `session.log` - Session documentation (purpose, actions, findings)
 - `*.jsonl` - Captured trace files per object/component
 
-## Top-Level Files
+## Related
 
-- `ANALYSIS.md` - Cumulative analysis across all sessions
+- `../observations/ANALYSIS.md` - Cumulative analysis across all sessions
