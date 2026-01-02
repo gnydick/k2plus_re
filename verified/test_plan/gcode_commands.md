@@ -36,9 +36,9 @@ Also available: `T0` through `T15` (alternate numbering)
 | `BOX_RETRUDE_MATERIAL`        | (unknown)           | Retract material to box         |
 | `EXTRUDE_PROCESS`             | (unknown)           | Extrusion process               |
 | `RETRUDE_PROCESS`             | (unknown)           | Retraction process              |
-| `SET_PRE_LOADING`             | `Tnn=T2A`           | Pre-loading setup               |
-| `MEASURING_WHEEL`             | (unknown)           | Measuring wheel control         |
-| `Tn_EXTRUDE`                  | (unknown)           | Slot extrusion                  |
+| `BOX_SET_PRE_LOADING`         | `ADDR=2 SLOT=0 ENABLE=1` | Pre-loading setup          |
+| `BOX_MEASURING_WHEEL`         | `ADDR=2 SLOT=0`     | Get measuring wheel position    |
+| `BOX_TN_EXTRUDE`              | `SLOT=0 LENGTH=50.0`| Extrude from slot               |
 | `EXTRUDER_EXTRUDE`            | (unknown)           | Extruder extrusion              |
 
 ### Cutting/Cleaning
