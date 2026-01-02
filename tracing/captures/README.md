@@ -11,7 +11,7 @@ Each subdirectory is a capture session. Sessions are named: `YYYYMMDD_HHMMSS_<de
 ## Session Structure
 
 Each session directory contains:
-- `_checkpoint.log` - Session documentation (purpose, actions, findings)
+- `session.log` - Session documentation (purpose, actions, findings)
 - `*.jsonl` - Captured trace files per object/component
 
 ## Top-Level Files
