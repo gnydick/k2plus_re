@@ -1,0 +1,361 @@
+@startuml T1A_Load_Sequence
+title T1A Filament Load Sequence (Tn_action)
+skinparam responseMessageBelowArrow true
+
+participant "GCode" as gcode
+participant "box\n(MultiColorMeterialBoxWrapper)" as box
+participant "filament_rack\n(FilamentRackWrapper)" as rack
+participant "serial_485\n(RS-485 Transport)" as serial
+participant "Material Box\n(Hardware)" as hw
+
+== Phase 1: Pre-load Setup ==
+
+gcode -> box: Tn_action("T1A")
+activate box
+
+box -> serial: 0104ff0801 (MOTOR_ENABLE box1)
+serial -> hw: RS-485
+hw --> serial: f70104000800f0 (OK)
+
+box -> serial: 0204ff0801 (MOTOR_ENABLE box2)
+serial -> hw: RS-485
+hw --> serial: f70204000800f0 (OK)
+
+box -> serial: 0304ff0801 (MOTOR_ENABLE box3)
+serial -> hw: RS-485
+hw --> serial: f70304000800f0 (OK)
+
+box -> serial: 0404ff0801 (MOTOR_ENABLE box4)
+serial -> hw: RS-485
+hw --> serial: f70404000800f0 (OK)
+
+box -> serial: 01..ff0800 (MOTOR_DISABLE all)
+serial -> hw: RS-485
+hw --> serial: OK
+
+box -> serial: 0105ff040001 (SET_MODE slot0=loading)
+serial -> hw: RS-485
+hw --> serial: f701030004a1 (OK)
+
+loop for each box 1-4
+    box -> serial: XX04ff0f01 (SENSOR_QUERY)
+    serial -> hw: RS-485
+    hw --> serial: f7XX03000f90 (OK)
+end
+
+box -> serial: 0104ff0800 (MOTOR_DISABLE)
+serial -> hw: RS-485
+hw --> serial: OK
+
+== Phase 2: Load Sequence ==
+
+box -> serial: 0106ff10010000 (FF10 HANDOFF)
+serial -> hw: RS-485
+note right: ~4.5s\nFilament moves from\nbox motor to hub motor
+hw --> serial: f701040010000f (OK)
+
+box -> serial: 0106ff10010400 (FF10 PRE_FEED)
+serial -> hw: RS-485
+hw --> serial: f701030010cd (OK)
+
+box -> serial: 0106ff10010500 (FF10 START_FEED)
+serial -> hw: RS-485
+note right: Waits for filament sensor\nReturns 0x0c if timeout
+hw --> serial: f701070010... (OK + encoder data)
+
+box -> serial: 0106ff10010600 (FF10 CONTINUE)
+serial -> hw: RS-485
+hw --> serial: f701030010cd (OK)
+
+box -> serial: 0106ff10010703 (FF10 STOP val=03)
+serial -> hw: RS-485
+hw --> serial: f701030010cd (OK)
+
+== Phase 3: Stop Loop ==
+
+loop until STATUS returns 00 (COMPLETE)
+    box -> serial: 0103ff05 (STATUS_QUERY)
+    serial -> hw: RS-485
+    hw --> serial: f7010400050X (01=BUSY, 00=COMPLETE)
+
+    alt status == BUSY
+        box -> serial: 0106ff10010703 (FF10 STOP)
+        serial -> hw: RS-485
+        hw --> serial: OK
+    end
+end
+
+== Phase 4: Post-load ==
+
+box -> serial: 0105ff040100 (SET_MODE slot1=normal)
+serial -> hw: RS-485
+hw --> serial: f701030004a1 (OK)
+
+loop for each box 1-4
+    box -> serial: XX04ff0f00 (SENSOR_QUERY mode=0)
+    serial -> hw: RS-485
+    hw --> serial: OK
+end
+
+== Phase 5: Flushing ==
+
+box -> box: material_change_flush(None, T1A)
+activate box #LightBlue
+
+box -> box: get_flush_len() = 180.0mm
+
+loop during extrusion (~45s)
+    box -> serial: 0104ff0e01 (ENCODER_QUERY slot1)
+    serial -> hw: RS-485
+    hw --> serial: f70107000e... (encoder position)
+end
+
+box -> rack: get_material_target_speed(type=000001)
+activate rack
+rack --> box: 350.0 mm/s
+deactivate rack
+
+deactivate box
+note right: Flush complete\n180mm @ 350mm/s
+
+deactivate box
+box --> gcode: true (success)
+note right: Total time: ~107s
+
+@enduml
+
+@startuml Unload_Sequence
+title Filament Unload Sequence (box_quit_material)
+skinparam responseMessageBelowArrow true
+
+participant "GCode" as gcode
+participant "box\n(MultiColorMeterialBoxWrapper)" as box
+participant "serial_485\n(RS-485 Transport)" as serial
+participant "Material Box\n(Hardware)" as hw
+
+gcode -> box: box_quit_material
+activate box
+
+box -> serial: 0105ff040001 (SET_MODE slot0=loading)
+serial -> hw: RS-485
+hw --> serial: f701030004a1 (OK)
+
+box -> serial: 0104ff0800 (MOTOR_DISABLE)
+serial -> hw: RS-485
+hw --> serial: OK
+
+== PRE_RETRACT Loop (4x) ==
+
+loop 4 times (~250-500ms each)
+    box -> serial: 0105ff110100 (FF11 PRE_RETRACT)
+    serial -> hw: RS-485
+    note right: Short retract pulses
+    hw --> serial: f701030011ca (OK)
+end
+
+== MAIN_RETRACT ==
+
+box -> serial: 0105ff110101 (FF11 MAIN_RETRACT)
+serial -> hw: RS-485
+note right: ~18s\nFilament fully retracts\nback into material box
+hw --> serial: f701030011ca (OK)
+
+deactivate box
+box --> gcode: complete
+note right: Total time: ~20s
+
+@enduml
+
+@startuml Layer_Architecture
+title K2 Plus Filament System - Layer Architecture
+
+skinparam component {
+    BackgroundColor<<L0>> LightYellow
+    BackgroundColor<<L1>> LightGreen
+    BackgroundColor<<L2>> LightBlue
+    BackgroundColor<<HW>> LightGray
+}
+
+package "Layer 0: GCode Commands" <<L0>> {
+    [Tn_action] as tn
+    [box_quit_material] as quit
+    [T0/T1/T2/T3] as tchange
+}
+
+package "Layer 1: Python Wrappers" <<L1>> {
+    [box\n(MultiColorMeterialBoxWrapper)] as box
+    [filament_rack\n(FilamentRackWrapper)] as rack
+
+    note right of box
+        Methods:
+        - Tn_action(slot)
+        - material_change_flush()
+        - get_flush_len()
+    end note
+
+    note right of rack
+        Methods:
+        - get_material_target_speed()
+    end note
+}
+
+package "Layer 2: RS-485 Transport" <<L2>> {
+    [serial_485\n(Serial_485_Wrapper)] as serial
+
+    note right of serial
+        Method:
+        cmd_send_data_with_response(
+            bytes, timeout, retries_en
+        )
+    end note
+}
+
+package "Hardware" <<HW>> {
+    [Material Box 1\naddr=0x01] as box1
+    [Material Box 2\naddr=0x02] as box2
+    [Material Box 3\naddr=0x03] as box3
+    [Material Box 4\naddr=0x04] as box4
+    [Hub Motors\naddr=0x81-0x84] as hub
+}
+
+tn --> box
+quit --> box
+tchange --> box
+box --> rack : material speed
+box --> serial
+rack --> serial
+serial --> box1 : RS-485 bus
+serial --> box2
+serial --> box3
+serial --> box4
+serial --> hub
+
+@enduml
+
+@startuml Wire_Protocol
+title RS-485 Wire Protocol Format
+
+skinparam note {
+    BackgroundColor LightYellow
+}
+
+rectangle "Request Frame" {
+    rectangle "ADDR\n1 byte" as req_addr #LightBlue
+    rectangle "LEN\n1 byte" as req_len #LightGreen
+    rectangle "ff\nmarker" as req_ff #LightGray
+    rectangle "CMD\n1 byte" as req_cmd #LightCoral
+    rectangle "DATA\n0-N bytes" as req_data #LightYellow
+}
+
+rectangle "Response Frame" {
+    rectangle "f7\nmarker" as resp_f7 #LightGray
+    rectangle "ADDR\n1 byte" as resp_addr #LightBlue
+    rectangle "LEN\n1 byte" as resp_len #LightGreen
+    rectangle "STATUS\n1 byte" as resp_status #Pink
+    rectangle "CMD\n1 byte" as resp_cmd #LightCoral
+    rectangle "DATA\n0-N bytes" as resp_data #LightYellow
+    rectangle "CRC\n1 byte" as resp_crc #Orange
+}
+
+note bottom of req_addr
+    Box addresses:
+    0x01-0x04 = Material boxes
+    0x81-0x84 = Hub motors
+    0xfe = Broadcast
+end note
+
+note bottom of resp_status
+    Status codes:
+    0x00 = OK
+    0x01 = ERROR
+    0x02 = BUSY
+    0x0c = LOAD_FAILED
+end note
+
+note bottom of req_cmd
+    Commands:
+    0x04 = SET_MODE
+    0x05 = STATUS_QUERY
+    0x08 = MOTOR_ENABLE
+    0x0a = BOX_STATE
+    0x0e = ENCODER_QUERY
+    0x0f = SENSOR_QUERY
+    0x10 = LOAD_CMD (FF10)
+    0x11 = UNLOAD_CMD (FF11)
+end note
+
+@enduml
+
+@startuml FF10_Subcmds
+title FF10 Load Command Subcodes
+
+skinparam state {
+    BackgroundColor<<OK>> LightGreen
+    BackgroundColor<<WAIT>> LightYellow
+    BackgroundColor<<ERROR>> LightCoral
+}
+
+state "subcmd=00\nHANDOFF" as s00 <<OK>>
+state "subcmd=04\nPRE_FEED" as s04 <<OK>>
+state "subcmd=05\nSTART_FEED" as s05 <<WAIT>>
+state "subcmd=06\nCONTINUE" as s06 <<OK>>
+state "subcmd=07\nSTOP" as s07 <<OK>>
+
+[*] --> s00 : Start load
+s00 --> s04 : ~4.5s\nBox motor -> hub
+s04 --> s05 : Prepare
+s05 --> s06 : Sensor triggered
+s05 --> s07 : 0x0c timeout
+s06 --> s07 : Complete
+s07 --> [*] : ff05 returns 00
+
+note right of s00
+    Physical: Filament moves
+    from box helper motor
+    to hub/buffer motor
+end note
+
+note right of s05
+    Waits for filament sensor
+    Returns 0x0c on timeout
+    (LED double red blink)
+end note
+
+note right of s07
+    Stop loop polls ff05
+    until status = 00
+    Value sent = 0x03
+end note
+
+@enduml
+
+@startuml FF11_Subcmds
+title FF11 Unload Command Subcodes
+
+skinparam state {
+    BackgroundColor<<OK>> LightGreen
+    BackgroundColor<<LOOP>> LightYellow
+}
+
+state "subcmd=00\nPRE_RETRACT" as s00 <<LOOP>>
+state "subcmd=01\nMAIN_RETRACT" as s01 <<OK>>
+
+[*] --> s00 : Start unload
+s00 --> s00 : Repeat 4x\n(~250-500ms each)
+s00 --> s01 : After 4 pulses
+s01 --> [*] : ~18s complete
+
+note right of s00
+    Short retract pulses
+    Prepares filament for
+    full retraction
+end note
+
+note right of s01
+    Main retraction
+    Filament fully returns
+    to material box
+    (~18 seconds)
+end note
+
+@enduml
