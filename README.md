@@ -6,28 +6,38 @@ Reverse engineering project for Creality K2 Plus 3D printer firmware.
 
 ```
 k2plus/
-├── tracing/           # Runtime traces
-│   ├── captures/      # Discovery: raw JSONL traces
-│   └── (ANALYSIS.md)  # Analysis: theories about traces
+├── re/                  # Reverse engineering
+│   ├── from_printer/    # Binaries from device
+│   ├── decompiled/      # Ghidra output
+│   ├── introspection/   # Runtime inspection dumps
+│   ├── observations/    # Observations & theories
+│   └── reconstructed/   # Reconstructed Python code
 │
-├── re/                # Reverse engineering
-│   ├── from_printer/  # Discovery: binaries from device
-│   ├── decompiled/    # Discovery: Ghidra output
-│   ├── introspection/ # Discovery: runtime inspection
-│   ├── docs/          # Analysis: theories about behavior
-│   └── reconstructed/ # Analysis: reconstructed code
+├── tracing/             # Runtime tracing
+│   ├── captures/        # Raw JSONL trace files
+│   ├── observations/    # Observations from traces
+│   └── scripts/         # Tracing scripts
 │
-└── verified/          # Confirmed facts
-    ├── test_plan/     # Verified protocols
-    ├── docs/          # Verified documentation
-    └── src/           # Tested implementations
+├── tests/               # Test plans
+│   ├── *.md             # Test procedures & inventories
+│   └── test_scripts.py  # REPL test helpers
+│
+└── verified/            # Verified & confirmed
+    ├── docs/            # Verified documentation
+    └── src/             # Tested implementations
 ```
 
 ## Workflow
 
-1. **Discover** → Raw data in `tracing/captures/` and `re/` discovery dirs
-2. **Analyze** → Best theories in `tracing/ANALYSIS.md` and `re/docs/`
-3. **Verify** → Confirmed facts promoted to `verified/`
+```
+re/observations/        ─┐
+                         ├─→ tests/  ─→ verified/{docs,src}
+tracing/observations/   ─┘
+```
+
+1. **Observe** → Record findings in `*/observations/`
+2. **Test** → Create test plans in `tests/`
+3. **Verify** → Promote passing tests to `verified/`
 
 ## Setup
 
