@@ -206,33 +206,59 @@ class TraceHooks:
 
     def _handle_client_read(self, eventtime, client_fd):
         """Handle data from client (mainly to detect disconnect)."""
-        if client_fd not in self.stream_clients:
-            return
-        client_sock = self.stream_clients[client_fd]
         try:
-            data = client_sock.recv(1024)
-            if not data:
-                # Client disconnected
-                self._disconnect_client(client_fd)
-        except BlockingIOError:
-            pass  # No data available
-        except:
-            self._disconnect_client(client_fd)
+            if client_fd not in self.stream_clients:
+                return
+            client_sock = self.stream_clients.get(client_fd)
+            if client_sock is None:
+                return
+            try:
+                data = client_sock.recv(1024)
+                if not data:
+                    # Client disconnected gracefully
+                    self._disconnect_client(client_fd, log=True)
+            except BlockingIOError:
+                pass  # No data available
+            except (ConnectionResetError, BrokenPipeError, OSError):
+                # Client disconnected abruptly
+                self._disconnect_client(client_fd, log=True)
+            except Exception:
+                # Any other error - disconnect silently
+                self._disconnect_client(client_fd, log=False)
+        except Exception:
+            # Catch-all to prevent crashing the reactor
+            pass
 
-    def _disconnect_client(self, client_fd):
-        """Clean up a disconnected client."""
-        if client_fd in self.stream_clients:
-            client_sock = self.stream_clients.pop(client_fd)
+    def _disconnect_client(self, client_fd, log=True):
+        """Clean up a disconnected client safely."""
+        try:
+            if client_fd not in self.stream_clients:
+                return
+            client_sock = self.stream_clients.pop(client_fd, None)
             self.client_buffers.pop(client_fd, None)
+
+            # Unregister fd first (before closing socket)
             try:
                 self.reactor.unregister_fd(client_fd)
-            except:
+            except Exception:
                 pass
-            try:
-                client_sock.close()
-            except:
-                pass
-            self._log_msg(f"Client disconnected (fd={client_fd})")
+
+            # Now close the socket
+            if client_sock is not None:
+                try:
+                    client_sock.close()
+                except Exception:
+                    pass
+
+            # Only log if safe (not during shutdown)
+            if log and self.running:
+                try:
+                    self._log_msg(f"Client disconnected (fd={client_fd})")
+                except Exception:
+                    pass
+        except Exception:
+            # Never crash on disconnect cleanup
+            pass
 
     def _send_to_client(self, client_sock, event):
         """Send event to a specific client."""
@@ -244,21 +270,30 @@ class TraceHooks:
 
     def _stream_event(self, event):
         """Send event to all connected clients."""
-        if not self.stream_clients:
-            return
+        try:
+            if not self.stream_clients:
+                return
 
-        event_json = json.dumps(event, default=str) + '\n'
-        event_bytes = event_json.encode('utf-8')
-
-        dead_clients = []
-        for client_fd, client_sock in self.stream_clients.items():
             try:
-                client_sock.sendall(event_bytes)
-            except:
-                dead_clients.append(client_fd)
+                event_json = json.dumps(event, default=str) + '\n'
+                event_bytes = event_json.encode('utf-8')
+            except Exception:
+                return  # Can't serialize event, skip it
 
-        for client_fd in dead_clients:
-            self._disconnect_client(client_fd)
+            # Copy items to avoid modification during iteration
+            dead_clients = []
+            for client_fd, client_sock in list(self.stream_clients.items()):
+                try:
+                    client_sock.sendall(event_bytes)
+                except Exception:
+                    dead_clients.append(client_fd)
+
+            # Clean up dead clients outside the loop
+            for client_fd in dead_clients:
+                self._disconnect_client(client_fd, log=False)
+        except Exception:
+            # Never crash on streaming
+            pass
 
     def _discover_objects(self):
         """Find all loaded Klipper objects we can trace."""
@@ -339,11 +374,15 @@ class TraceHooks:
 
             # Filter noisy serial polling commands unless explicitly enabled
             if not trace_hooks.trace_serial_polling and 'serial_485' in object_name:
-                # Check first positional arg (after self) for _bytes
+                # Check first positional arg (after self) for bytes data
                 if len(args) > 1:
                     first_arg = args[1]
-                    if hasattr(first_arg, '_bytes'):
+                    bytes_hex = None
+                    if isinstance(first_arg, bytes):
+                        bytes_hex = first_arg.hex().lower()
+                    elif hasattr(first_arg, '_bytes'):
                         bytes_hex = first_arg._bytes.hex().lower()
+                    if bytes_hex:
                         for pattern in trace_hooks.quiet_serial_patterns:
                             if pattern in bytes_hex:
                                 return original_method(*args, **kwargs)

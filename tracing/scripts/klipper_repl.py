@@ -1,27 +1,111 @@
 # Klipper REPL - Interactive Python shell in running Klipper process
 #
-# Updated: 2025-01-01 - Rewritten to use Klipper reactor (no threads)
+# Hybrid approach:
+#   - Threading + InteractiveConsole for stable socket I/O
+#   - Reactor callbacks for thread-safe Klipper interaction
 #
 # Add to printer.cfg:
 #   [klipper_repl]
-#   port: 9877  # optional, default is 9877 (one above trace streaming port)
+#   port: 9877
 #
 # Connect with:
-#   nc k2plus 9877
-#
-# Available objects in REPL:
-#   printer - the main Klipper printer object
-#   reactor - the Klipper reactor
-#   gcode   - gcode dispatch object
-#   config  - printer config
-#
-# Note: This REPL processes one line at a time via reactor callbacks.
-#       Multi-line statements must use semicolons or backslash continuation.
+#   socat readline tcp:k2plus:9877
 
 import logging
+import threading
 import socket
+import code
 import sys
+import io
 import traceback
+
+
+class ReactorConsole(code.InteractiveConsole):
+    """Interactive console that executes code in the Klipper reactor thread."""
+
+    def __init__(self, conn, reactor, locals=None):
+        self.conn = conn
+        self.reactor = reactor
+        self._locals = locals or {}
+        super().__init__(locals=self._locals)
+
+    def write(self, data):
+        """Write data to the socket."""
+        if isinstance(data, str):
+            data = data.encode('utf-8')
+        try:
+            self.conn.sendall(data)
+        except:
+            pass
+
+    def raw_input(self, prompt=""):
+        """Read a line from the socket."""
+        self.write(prompt)
+        data = b""
+        while True:
+            chunk = self.conn.recv(1)
+            if not chunk:
+                raise EOFError()
+            data += chunk
+            if chunk == b'\n':
+                break
+        line = data.decode('utf-8', errors='replace').rstrip('\r\n')
+        return line
+
+    def runsource(self, source, filename="<input>", symbol="single"):
+        """Execute source code in the reactor thread."""
+        # Check for incomplete input (multi-line)
+        try:
+            code_obj = code.compile_command(source, filename, symbol)
+        except (OverflowError, SyntaxError, ValueError):
+            # Syntax error - show it
+            self.showsyntaxerror(filename)
+            return False
+
+        if code_obj is None:
+            # Incomplete input - need more
+            return True
+
+        # Execute in reactor thread
+        self._runcode_in_reactor(code_obj)
+        return False
+
+    def _runcode_in_reactor(self, code_obj):
+        """Run compiled code in the reactor thread and capture output."""
+        result = {'output': '', 'error': None}
+        done = threading.Event()
+
+        def _execute(eventtime):
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            capture = io.StringIO()
+            try:
+                sys.stdout = capture
+                sys.stderr = capture
+                exec(code_obj, self._locals)
+            except SystemExit:
+                raise
+            except:
+                result['error'] = traceback.format_exc()
+            finally:
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+                result['output'] = capture.getvalue()
+                done.set()
+
+        self.reactor.register_callback(_execute)
+
+        # Wait for completion with timeout
+        if not done.wait(timeout=60):
+            self.write("Error: Command timed out (60s)\n")
+            return
+
+        # Write captured output
+        if result['output']:
+            self.write(result['output'])
+        if result['error']:
+            self.write(result['error'])
+
 
 class KlipperRepl:
     def __init__(self, config):
@@ -30,34 +114,28 @@ class KlipperRepl:
         self.gcode = self.printer.lookup_object('gcode')
         self.config = config
 
-        # Port is one higher than trace streaming default (9876)
         self.port = config.getint('port', 9877)
 
         self.server_socket = None
-        self.server_fd = None
-        self.clients = {}  # fd -> {'socket': sock, 'addr': addr, 'buffer': b'', 'namespace': {}}
+        self.server_thread = None
+        self.clients = []
         self.running = False
 
-        # Register for ready event
         self.printer.register_event_handler('klippy:ready', self._handle_ready)
         self.printer.register_event_handler('klippy:shutdown', self._handle_shutdown)
 
-        # Register gcode commands
         self.gcode.register_command('REPL_STATUS', self.cmd_REPL_STATUS,
                                     desc="Show REPL server status")
 
         logging.info(f"[klipper_repl] Initialized, will listen on port {self.port}")
 
     def _handle_ready(self):
-        """Start the REPL server when Klipper is ready."""
         self._start_server()
 
     def _handle_shutdown(self):
-        """Clean up on shutdown."""
         self._stop_server()
 
     def _start_server(self):
-        """Start the TCP server for REPL connections using reactor."""
         if self.running:
             return
 
@@ -68,41 +146,27 @@ class KlipperRepl:
                 self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
             except:
                 pass
-            self.server_socket.setblocking(False)
             self.server_socket.bind(('0.0.0.0', self.port))
             self.server_socket.listen(2)
+            self.server_socket.settimeout(1.0)
 
-            self.server_fd = self.server_socket.fileno()
-            self.reactor.register_fd(self.server_fd, self._handle_server_read)
             self.running = True
+            self.server_thread = threading.Thread(target=self._accept_loop, daemon=True)
+            self.server_thread.start()
 
             logging.info(f"[klipper_repl] Server started on port {self.port}")
         except Exception as e:
             logging.error(f"[klipper_repl] Failed to start server: {e}")
 
     def _stop_server(self):
-        """Stop the REPL server."""
         self.running = False
 
-        # Close all client connections
-        for fd, client_info in list(self.clients.items()):
+        for client in self.clients[:]:
             try:
-                self.reactor.unregister_fd(fd)
-            except:
-                pass
-            try:
-                client_info['socket'].close()
+                client.close()
             except:
                 pass
         self.clients.clear()
-
-        # Close server socket
-        if self.server_fd is not None:
-            try:
-                self.reactor.unregister_fd(self.server_fd)
-            except:
-                pass
-            self.server_fd = None
 
         if self.server_socket:
             try:
@@ -113,14 +177,29 @@ class KlipperRepl:
 
         logging.info("[klipper_repl] Server stopped")
 
-    def _handle_server_read(self, eventtime):
-        """Handle incoming connection on server socket."""
-        try:
-            conn, addr = self.server_socket.accept()
-            conn.setblocking(False)
-            client_fd = conn.fileno()
+    def _accept_loop(self):
+        while self.running:
+            try:
+                conn, addr = self.server_socket.accept()
+                logging.info(f"[klipper_repl] Client connected from {addr}")
+                self.clients.append(conn)
 
-            # Build namespace for this client
+                client_thread = threading.Thread(
+                    target=self._handle_client,
+                    args=(conn, addr),
+                    daemon=True
+                )
+                client_thread.start()
+            except socket.timeout:
+                continue
+            except Exception as e:
+                if self.running:
+                    logging.error(f"[klipper_repl] Accept error: {e}")
+                break
+
+    def _handle_client(self, conn, addr):
+        try:
+            # Build namespace with useful objects
             namespace = {
                 'printer': self.printer,
                 'reactor': self.reactor,
@@ -133,152 +212,70 @@ class KlipperRepl:
                 'heaters': lambda: self.printer.lookup_object('heaters'),
                 'box': lambda: self.printer.lookup_object('box'),
                 'filament_rack': lambda: self.printer.lookup_object('filament_rack'),
-                'serial_485': lambda: self.printer.lookup_object('serial_485 serial485'),
+                'rs': lambda: self.printer.lookup_object('serial_485 serial485'),
                 'auto_addr': lambda: self.printer.lookup_object('auto_addr'),
+                # Helper to run gcode safely
+                'run_gcode': self._make_run_gcode(),
             }
 
-            self.clients[client_fd] = {
-                'socket': conn,
-                'addr': addr,
-                'buffer': b'',
-                'namespace': namespace
-            }
+            console = ReactorConsole(conn, self.reactor, locals=namespace)
 
-            # Register for read events
-            self.reactor.register_fd(client_fd, self._handle_client_read, client_fd)
-
-            logging.info(f"[klipper_repl] Client connected from {addr}")
-
-            # Send banner
-            banner = b"""
+            banner = """
 Klipper REPL - Interactive Python Shell
 ========================================
+Commands execute in the reactor thread for safety.
+
 Available objects:
-  printer       - Main printer object
-  reactor       - Klipper reactor
-  gcode         - Gcode dispatch
-  config        - Printer config
-  lookup(name)  - Lookup any printer object
+  printer, reactor, gcode, config
+  lookup(name) - Lookup any printer object
 
 Shortcuts (call as functions):
   toolhead(), extruder(), heaters()
-  box(), filament_rack(), serial_485(), auto_addr()
+  box(), filament_rack(), rs(), auto_addr()
+
+Helpers:
+  run_gcode("GCODE_CMD") - Run gcode and wait for completion
 
 Type 'exit()' or Ctrl-D to disconnect.
+"""
+            console.interact(banner=banner, exitmsg="Goodbye!\n")
 
->>> """
+        except Exception as e:
+            logging.error(f"[klipper_repl] Client error: {e}")
+        finally:
             try:
-                conn.sendall(banner)
+                conn.close()
             except:
                 pass
+            if conn in self.clients:
+                self.clients.remove(conn)
+            logging.info(f"[klipper_repl] Client {addr} disconnected")
 
-        except BlockingIOError:
-            pass
-        except Exception as e:
-            logging.error(f"[klipper_repl] Accept error: {e}")
+    def _make_run_gcode(self):
+        """Create a helper function to run gcode commands."""
+        def run_gcode(cmd, timeout=30):
+            result = [None]
+            error = [None]
+            done = threading.Event()
 
-    def _handle_client_read(self, eventtime, client_fd):
-        """Handle data from a REPL client."""
-        if client_fd not in self.clients:
-            return
-
-        client_info = self.clients[client_fd]
-        conn = client_info['socket']
-
-        try:
-            data = conn.recv(4096)
-            if not data:
-                self._disconnect_client(client_fd)
-                return
-
-            # Add to buffer
-            client_info['buffer'] += data
-
-            # Process complete lines
-            while b'\n' in client_info['buffer']:
-                line, client_info['buffer'] = client_info['buffer'].split(b'\n', 1)
-                line = line.rstrip(b'\r').decode('utf-8', errors='replace')
-
-                if line.strip() in ('exit()', 'quit()'):
-                    try:
-                        conn.sendall(b"Goodbye!\n")
-                    except:
-                        pass
-                    self._disconnect_client(client_fd)
-                    return
-
-                # Execute the line
-                output = self._execute_line(line, client_info['namespace'])
-                if output:
-                    try:
-                        conn.sendall(output.encode('utf-8'))
-                    except:
-                        self._disconnect_client(client_fd)
-                        return
-
-                # Send prompt
+            def _run(eventtime):
                 try:
-                    conn.sendall(b">>> ")
-                except:
-                    self._disconnect_client(client_fd)
-                    return
+                    self.gcode.run_script(cmd)
+                    result[0] = "OK"
+                except Exception as e:
+                    error[0] = str(e)
+                done.set()
 
-        except BlockingIOError:
-            pass
-        except Exception as e:
-            logging.error(f"[klipper_repl] Client read error: {e}")
-            self._disconnect_client(client_fd)
+            self.reactor.register_callback(_run)
+            if not done.wait(timeout=timeout):
+                return "TIMEOUT"
+            if error[0]:
+                return f"ERROR: {error[0]}"
+            return result[0]
 
-    def _execute_line(self, line, namespace):
-        """Execute a line of Python code and return output."""
-        if not line.strip():
-            return ""
-
-        # Capture output
-        import io
-        old_stdout = sys.stdout
-        old_stderr = sys.stderr
-        capture = io.StringIO()
-
-        try:
-            sys.stdout = capture
-            sys.stderr = capture
-
-            try:
-                # Try eval first (for expressions)
-                result = eval(line, namespace)
-                if result is not None:
-                    print(repr(result))
-            except SyntaxError:
-                # Fall back to exec (for statements)
-                exec(line, namespace)
-
-        except Exception as e:
-            traceback.print_exc()
-        finally:
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
-
-        return capture.getvalue()
-
-    def _disconnect_client(self, client_fd):
-        """Disconnect a client."""
-        if client_fd not in self.clients:
-            return
-
-        client_info = self.clients.pop(client_fd)
-        try:
-            self.reactor.unregister_fd(client_fd)
-        except:
-            pass
-        try:
-            client_info['socket'].close()
-        except:
-            pass
-        logging.info(f"[klipper_repl] Client {client_info['addr']} disconnected")
+        return run_gcode
 
     def cmd_REPL_STATUS(self, gcmd):
-        """Report REPL server status."""
         if self.running:
             gcmd.respond_info(f"REPL server running on port {self.port}, "
                             f"{len(self.clients)} clients connected")
