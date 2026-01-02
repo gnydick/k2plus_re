@@ -217,6 +217,49 @@ Encoder queries (ff0e) occur after FLUSH phase (+17-100s) for verification.
 Note: Encoder tick-to-mm conversion uncertain. Queries are sparse and
 occur post-operation, likely for position verification rather than control.
 
+## Encoder-Based Velocity Analysis
+
+Attempted to calculate actual velocity from encoder tick deltas:
+
+  Encoder Resolution   Calculated Velocity Range
+  ------------------   -------------------------
+  2500 ticks/mm        380-490 mm/min
+  3000 ticks/mm        370-456 mm/min
+
+At ~3000 ticks/mm, T1A flush phase shows ~456 mm/min, close to requested 450 mm/min.
+
+**Limitations:**
+- Encoder reads are sparse (only queried as post-operation verification)
+- Time deltas between reads include idle periods, not just motor-on time
+- Unknown encoder resolution (ticks/mm not documented)
+- Cannot definitively verify velocity matches requested rate
+
+**Conclusion:** Data is *consistent with* requested 450 mm/min at reasonable
+encoder resolutions, but not conclusively verified.
+
+---
+
+# 5. Future Work
+
+## Velocity Control Verification Session
+
+A future trace session should be designed to verify we can control box feed speed:
+
+1. **Test Matrix:** Request a range of specific velocities (e.g., 100, 200, 300,
+   400, 500, 600 mm/min) and measure actual movement
+
+2. **High-Frequency Encoder Sampling:** Query FF0E at 10Hz+ during active
+   FEED_TO_EXTRUDER phase to capture real-time velocity
+
+3. **Determine Encoder Resolution:** Use known distance moves to calibrate
+   ticks/mm conversion factor
+
+4. **Compare Requested vs Actual:** Build a calibration curve to understand
+   any velocity offsets or non-linearities
+
+This would confirm whether the `remain_material_velocity` parameter actually
+controls feed rate, or if it's just a nominal/reported value.
+
 ## Load vs Unload Comparison
 
   Operation  Duration    Phases  Complexity
