@@ -200,19 +200,23 @@ Physical: ERROR - printer doesn't believe any slot is loaded
 - Subcmd=07 uses value 03 in actual firmware sequence, not 00
 - ff05 = status polling during stop loop
 - ff0e = encoder/position query during flush
+- Slot byte uses bitmask encoding: A=0x01, B=0x02, C=0x04, D=0x08 (verified)
 
 ## Command Reference
 
   Command        Name           Description
   -------------  -------------  -----------------------------------------------
-  ff04 XX YY     SET_MODE       XX=slot, YY=mode (00=normal, 01=loading)
+  ff04 XX YY     SET_MODE       XX=slot (bitmask), YY=mode (00=normal, 01=loading)
   ff05           STATUS_QUERY   Returns 01=busy, 00=complete
   ff08 XX        MOTOR_ENABLE   XX=00 disable, 01 enable
   ff0a           BOX_STATE      Query box status
-  ff0e XX        ENCODER_QUERY  XX=slot, returns position data
+  ff0e XX        ENCODER_QUERY  XX=slot (bitmask), returns position data
   ff0f XX        SENSOR_QUERY   XX=mode? Returns sensor status
-  ff10 VV SS DD  LOAD_CMD       VV=variant, SS=subcmd, DD=data
-  ff11 VV SS DD  UNLOAD_CMD     VV=variant, SS=subcmd, DD=data
+  ff10 SL SS DD  LOAD_CMD       SL=slot (bitmask), SS=subcmd, DD=data
+  ff11 SL SS DD  UNLOAD_CMD     SL=slot (bitmask), SS=subcmd, DD=data
+
+**Slot Bitmask (VERIFIED 2026-01-10):** A=0x01, B=0x02, C=0x04, D=0x08
+See session 20260101_221648_filament_sensors for verification test.
 
 ## Status Codes
 

@@ -141,7 +141,7 @@ Example sequence (T1A load):
 
 Wire format: ADDR 05 FF 11 SLOT SUBCMD
   - ADDR: Box address (01=Box1, 03=Box3, etc)
-  - SLOT: Slot within box (01=A, 02=B)
+  - SLOT: Bitmask within box (01=A, 02=B, 04=C, 08=D)
 
 ## Unload Durations
 
@@ -183,6 +183,56 @@ Wire format: ADDR 05 FF 11 SLOT SUBCMD
 5. Multiple COMPLETE phase polls indicate async completion
 6. FEED_TO_EXTRUDER may run multiple times (retries)
 7. Box address in command indicates which material box (01-04)
+8. Slot byte uses bitmask encoding, NOT linear (verified 2026-01-10)
+
+## Slot Byte Encoding (VERIFIED 2026-01-10)
+
+Slot bytes use **bitmask encoding** (1 << slot_index), NOT linear values.
+
+  Slot   Index   Byte    Encoding      Status
+  -----  ------  ------  ------------  ------------------------------------------
+  A      0       0x01    1 << 0        Observed in traces
+  B      1       0x02    1 << 1        Observed in traces
+  C      2       0x04    1 << 2        VERIFIED via REPL (Box 1 & 2)
+  D      3       0x08    1 << 3        VERIFIED via REPL (Box 2)
+
+**Verification Test (T1C / Slot C):**
+```
+# Test bitmask encoding (0x04 for slot C)
+TX: 0106ff10040000
+RX: f701040010000f   <- Status 0x00 = OK
+
+# Test linear encoding (0x03 for slot C)
+TX: 0106ff10030000
+RX: f701030110d8     <- Status 0x01 = ERROR
+```
+
+**Verification Test (T2D / Slot D on Box 2):**
+```
+# Test bitmask encoding (0x08 for slot D)
+TX: 0206ff10080000
+RX: f702040010000f   <- Status 0x00 = OK
+
+# Also confirmed 0x04 (slot C) works on Box 2
+TX: 0206ff10040000
+RX: f702040010000f   <- Status 0x00 = OK
+```
+
+**Invalid Slot Byte Tests (Box 2):**
+```
+# 0x03 = not power of 2 (would be A+B combined)
+TX: 0206ff10030000
+RX: f702030110d8     <- Status 0x01 = ERROR
+
+# 0x10 = out of range (would be slot E, 1<<4)
+TX: 0206ff10100000
+RX: f702030110d8     <- Status 0x01 = ERROR
+```
+
+**Conclusion:** Box validates slot bytes must be single-bit powers of 2 in range 0x01-0x08.
+
+**Implication:** Code converting slot index to wire format must use `1 << slot`
+not `slot + 1`. This matches contrib/box_protocol.py implementation.
 
 ## Unload Workflow Analysis
 
