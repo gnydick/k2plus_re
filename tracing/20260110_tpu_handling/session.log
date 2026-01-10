@@ -1,0 +1,224 @@
+# Trace Session: TPU Filament Handling
+Date: 2026-01-10
+Status: COMPLETE
+
+---
+
+# 1. Setup and Givens
+
+## Objectives
+- Develop safe load/unload routines for TPU filament
+- Prevent TPU stretching during unload
+- Prevent TPU buckling during load
+- Document working procedures
+
+## Problem Statement
+TPU (Thermoplastic Polyurethane) is an elastic filament that:
+- **Stretches** when pulled under tension (during unload)
+- **Buckles** when pushed through PTFE tube (during load stage 5)
+
+Standard AMS load/unload routines are too aggressive for TPU.
+
+## Test Slot
+- T2D (Box 2, Slot D, bitmask 0x08)
+
+---
+
+# 2. TPU Safe Unload Routine
+
+## Why Standard Unload Fails
+- Slot motor pulls from spool end
+- Friction points in PTFE tube resist movement
+- TPU elongates instead of sliding
+- Result: stretched, damaged filament
+
+## Safe Unload Sequence
+
+```python
+exec('''s = rs()
+import time
+
+# Enable motor
+s.cmd_send_data_with_response(bytes.fromhex("02 04 ff 08 01"), 2, False)
+
+# Set mode to loading
+s.cmd_send_data_with_response(bytes.fromhex("02 05 ff 04 00 01"), 2, False)
+
+# Phase 1: Hub releases (4x) - releases slack gently
+for i in range(4):
+    s.cmd_send_data_with_response(bytes.fromhex("02 05 ff 11 08 00"), 5, False)
+    time.sleep(0.5)
+
+# Phase 2: Slot motor retract
+s.cmd_send_data_with_response(bytes.fromhex("02 05 ff 11 08 01"), 8, False)
+
+# Poll until complete
+for i in range(10):
+    time.sleep(2)
+    resp = s.cmd_send_data_with_response(bytes.fromhex("02 03 ff 05"), 2, False)
+    if resp and len(resp) > 3 and resp[3] == 0x00:
+        break
+
+# Disable motor
+s.cmd_send_data_with_response(bytes.fromhex("02 04 ff 08 00"), 2, False)''')
+```
+
+## Command Reference (Unload)
+
+  Command              Description
+  -------------------  ------------------------------------------
+  02 04 ff 08 01       Motor enable
+  02 05 ff 04 00 01    Set mode to loading
+  02 05 ff 11 08 00    FF11 subcmd 0x00 - hub motor release
+  02 05 ff 11 08 01    FF11 subcmd 0x01 - slot motor retract
+  02 03 ff 05          Poll status (0x00 = complete)
+  02 04 ff 08 00       Motor disable
+
+## Results
+- TPU returns to box without stretching
+- Filament remains healthy and reusable
+- Tested multiple times successfully
+
+---
+
+# 3. TPU Assisted Load Routine
+
+## Why Standard Load Fails
+- Stage 5 (FEED_TO_EXTRUDER) pushes filament through PTFE tube
+- TPU is too flexible to push - it buckles
+- Box times out with status 0x0c (LOAD_FAILED)
+
+## Assisted Load Approach
+Extruder PULLS while box PUSHES - keeps TPU taut.
+
+### User Actions (Fluidd)
+```gcode
+M83              ; Relative extrusion
+G1 E300 F600     ; Fast, long extrusion to pull filament
+```
+
+### Box Commands (REPL - triggered while extruding)
+```python
+exec("""s = rs()
+import time
+
+# Enable motor
+s.cmd_send_data_with_response(bytes.fromhex("02 04 ff 08 01"), 2, False)
+
+# Set mode to loading
+s.cmd_send_data_with_response(bytes.fromhex("02 05 ff 04 00 01"), 2, False)
+
+# Stage 0: INIT (box motor to hub)
+s.cmd_send_data_with_response(bytes.fromhex("02 06 ff 10 08 00 00"), 5, False)
+time.sleep(1)
+
+# Stage 4: PRE_FEED
+s.cmd_send_data_with_response(bytes.fromhex("02 06 ff 10 08 04 00"), 5, False)
+time.sleep(1)
+
+# Stage 5: FEED_TO_EXTRUDER (extruder pulling helps)
+s.cmd_send_data_with_response(bytes.fromhex("02 06 ff 10 08 05 00"), 8, False)
+
+# Stage 6: CONTINUE
+s.cmd_send_data_with_response(bytes.fromhex("02 06 ff 10 08 06 00"), 5, False)
+
+# Stage 7: COMPLETE
+s.cmd_send_data_with_response(bytes.fromhex("02 06 ff 10 08 07 03"), 5, False)
+
+# Set mode to normal
+s.cmd_send_data_with_response(bytes.fromhex("02 05 ff 04 08 00"), 2, False)
+
+# Disable motor
+s.cmd_send_data_with_response(bytes.fromhex("02 04 ff 08 00"), 2, False)
+""")
+```
+
+## Command Reference (Load)
+
+  Command              Stage  Description
+  -------------------  -----  ------------------------------------------
+  02 04 ff 08 01       -      Motor enable
+  02 05 ff 04 00 01    -      Set mode to loading
+  02 06 ff 10 08 00 00 0      INIT - box motor to hub (~4.5s)
+  02 06 ff 10 08 04 00 4      PRE_FEED - prepare for feed
+  02 06 ff 10 08 05 00 5      FEED_TO_EXTRUDER - push to extruder
+  02 06 ff 10 08 06 00 6      CONTINUE - continue feeding
+  02 06 ff 10 08 07 03 7      COMPLETE - finish load
+  02 05 ff 04 08 00    -      Set mode to normal
+  02 04 ff 08 00       -      Motor disable
+
+## Timing
+- Start extruder pull BEFORE triggering box load
+- Fast extrusion (F600) gives time for coordination
+- Long extrusion (E300) ensures filament reaches extruder
+
+## Results
+- Stage 5 succeeds with status 0x00 (not 0x0c timeout)
+- TPU loads without buckling
+- Requires manual coordination between extruder and box
+
+---
+
+# 4. Alternative: Small Burst Load
+
+Tried using undocumented subcmds 01-03 for gentler feeding:
+
+```python
+# After stages 0 and 4, use small bursts instead of stage 5
+for i in range(30):
+    s.cmd_send_data_with_response(bytes.fromhex("02 06 ff 10 08 01 00"), 3, False)
+    time.sleep(0.5)
+```
+
+## Results
+- Physically loads the filament
+- But printer state not updated (doesn't know filament is loaded)
+- Fast extrusion + normal load is more reliable
+
+---
+
+# 5. Key Findings
+
+## REPL Notes
+- NEVER call exit() in REPL - crashes the printer
+- Let connections timeout naturally
+
+## Error Recovery
+Clear box error state with:
+```python
+s.cmd_send_data_with_response(bytes.fromhex("02 06 ff 10 08 07 03"), 5, False)
+```
+
+## Status Codes
+
+  Code  Meaning
+  ----  ------------------------------------------
+  0x00  OK / Complete
+  0x01  ERROR
+  0x02  BUSY
+  0x0c  LOAD_FAILED / Timeout
+  0x0d  Continue state (during stage 6)
+  0x0e  Clearing state
+
+## Slot Bitmask (T2D)
+- Box address: 0x02
+- Slot D bitmask: 0x08
+
+---
+
+# 6. Future Work
+
+## Automation
+- Create GCode macro for TPU load/unload
+- Integrate safe routines into toolchanger.py
+- Add material-type detection to select routine
+
+## Speed Control
+- Investigate if box feed speed can be reduced
+- ff20, ff21, ff30, ff31 probed but returned ERROR
+- Speed may be firmware-controlled per material type
+
+## State Synchronization
+- Manual load via small bursts doesn't update printer state
+- Need to find how to sync filament_rack and box_state
+- Tn_data['filament'] and Tn_inner_data['buffer'] can be set directly
