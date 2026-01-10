@@ -232,10 +232,16 @@ See session 20260101_221648_filament_sensors for verification test.
   Subcmd  Name        Notes
   ------  ----------  -----------------------------------------------
   00      HANDOFF     Box motor to hub motor (~4.5s) - CONFIRMED
+  01      UNDOC       Short motor burst (~1-4mm, blocking) - DISCOVERED
+  02      UNDOC       Medium motor burst (~2-4mm, blocking) - DISCOVERED
+  03      UNDOC       Micro motor burst (~1mm, blocking) - DISCOVERED
   04      PRE_FEED    Prepare for feed - CONFIRMED
   05      START_FEED  Wait for sensor, 0x0c on timeout - CONFIRMED
   06      CONTINUE    Called after 05 (observed in trace)
   07      STOP        Value=03 used in firmware sequence - CONFIRMED
+
+**Note:** Subcmds 01-03 exist but are blocking and give inconsistent distances.
+No reliable "move X mm" command exists. Use extruder for precise distance control.
 
 ## FF11 Subcmd Reference (Unload)
 

@@ -117,11 +117,29 @@ For each slot, execute load then unload while capturing traces:
 
   Subcmd  Name               Description
   ------  -----------------  ------------------------------------------
-  0x00    INIT               Initialize load for slot
+  0x00    INIT               Initialize load for slot (~4.5s, blocking)
+  0x01    UNDOCUMENTED       Short motor burst (~1-4mm, blocking)
+  0x02    UNDOCUMENTED       Medium motor burst (~2-4mm, blocking)
+  0x03    UNDOCUMENTED       Micro motor burst (~1mm, blocking)
   0x04    SENSOR_DETECTED    Filament detected at box sensor
-  0x05    FEED_TO_EXTRUDER   Pushing filament toward extruder
+  0x05    FEED_TO_EXTRUDER   Pushing filament toward extruder (blocks until sensor)
   0x06    FLUSH              Final flush/purge operation
   0x07    COMPLETE           Load complete (param=0x03 = success)
+
+**Undocumented Subcmds 0x01-0x03 (DISCOVERED 2026-01-10):**
+```
+# These exist and move filament, but are blocking and inconsistent:
+TX: 0106ff10010100  -> moves ~1-4mm (variable)
+TX: 0106ff10010200  -> moves ~2-4mm (variable)
+TX: 0106ff10010300  -> moves ~1mm (variable)
+
+# All return status OK but block waiting for internal condition
+# Distance varies based on buffer slack and motor state
+# NOT reliable for precise distance control
+```
+
+**No "move X mm" command exists.** The box protocol is sensor/stage-based.
+For precise distance control, use extruder G1 E commands with box tracking.
 
 Example sequence (T1A load):
 ```
@@ -184,6 +202,8 @@ Wire format: ADDR 05 FF 11 SLOT SUBCMD
 6. FEED_TO_EXTRUDER may run multiple times (retries)
 7. Box address in command indicates which material box (01-04)
 8. Slot byte uses bitmask encoding, NOT linear (verified 2026-01-10)
+9. FF10 subcmds 0x01-0x03 exist but are blocking/inconsistent (discovered 2026-01-10)
+10. No "move X mm" command - protocol is sensor/stage-based
 
 ## Slot Byte Encoding (VERIFIED 2026-01-10)
 
